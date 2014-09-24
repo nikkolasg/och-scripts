@@ -3,31 +3,37 @@
 require 'mysql'
 require './info'
 require './datalayer' # custom module for encapsulation of database
+require './logger'
+require './config'
+def create_tables
 
+	database = Datalayer::MysqlDatabase.new(EMMConfig['DB_HOST'],
+						EMMConfig['DB_NAME'],
+						EMMConfig['DB_LOGIN'],
+						EMMConfig['DB_PASS'])
+	database.connect do 
+		Logger.<<($0,"INFO","Connected to " + database.info.to_s)
 
-# call and connect to the db
-def create_retrieved_cdr_table()
-	table_name = "retrieved_cdr_table"
-	database = Datalayer::Database.new(Info.db)
-	return unless database.connect
-	database.query do | con |
-		# send return to the yield
-		 con.query("CREATE TABLE IF NOT EXISTS \
-			#{table_name}( \
+		name = EMMConfig['DB_TABLE_MSS_CDR']
+		retr_table = Datalayer::GenericTable.new(database,name)
+		retr_table.query ("CREATE TABLE IF NOT EXISTS \
+				#{name}( \
 				id INT NOT NULL AUTO_INCREMENT,
 				file_name VARCHAR(40) NOT NULL UNIQUE,
-				last_seen DATE,
-				is_done BOOLEAN DEFAULT NULL,
-				PRIMARY KEY (id));")	
-	
-		con.list_fields(table_name)
+				processed BOOLEAN DEFAULT 0,
+				time TIMESTAMP,
+				PRIMARY KEY (id));")
+		# TO SEE if needed.
+		# maybe on processed also
+		retr_table.query("CREATE INDEX processed_index
+				ON #{name} (file_name);")
+		retr_table.describe
 	end
-	database.info
-	database.close
 end
 
 
-if create_retrieved_cdr_table
+
+if create_tables
 	puts "Success !"
 	exit
 else
