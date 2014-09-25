@@ -1,0 +1,14 @@
+-check for .gz files --> remove the ext when searching in db, + add field in db
+			so post pre processor can extract them and change in db a			after
+- check speed of sftp download -< maybe download everything in one batch instead
+				of directory per directory
+
+dependency: 	SImpleConfig
+		pry
+		net/sftp
+		
+
+CHECK ERROR : collector , if two database update, may be an error . ? check block begin / rescue NET::MySqlError => match/duplicate/ => RETRY !
+CHECK QUERY SIZE : for IN query on the server
+
+sql : select FROM_UNIXTIME(timest,"%k:%i %M %Y") as min from STATS_MSS group by min order by timest
