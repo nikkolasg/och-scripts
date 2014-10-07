@@ -29,7 +29,7 @@ unless ARGV[0]
     abort
 end
 
-if EMMConfig["CDR_TYPES"].include? ARGV[0]
+if EMMConfig["CDR_TYPES"].include? ARGV[0].upcase
     $type = ARGV[0].upcase.to_sym
 else
     $stderr.puts "Specified type doesn't exist in config file..." if $opts[:v]
@@ -89,13 +89,11 @@ def insert json
         file_inserted = stdout.read
 
         if !thr.value.success?
-            error = true
+            error = stderr.read
         end
     end
     if error
-        puts json
-        puts file_inserted
-        Logger.<<($0,"ERROR","Error while inserting ...")
+        Logger.<<($0,"ERROR","Error while inserting ... #{error}")
         abort
     end
     file_inserted
@@ -109,11 +107,11 @@ def backup file
         stdin.close
 
         if !thr.value.success?
-            error = true
+            error = stderr.read
         end
     end
     if error
-        Logger.<<($0,"ERROR","Error while backup file #{file}")
+        Logger.<<($0,"ERROR","Error while backup file #{file}.#{error}")
         abort
     end
 end

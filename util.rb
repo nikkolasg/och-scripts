@@ -1,16 +1,49 @@
 #!/usr/bin/ruby
 
 require './config'
-
+require './ruby_util'
 class Util
-
+    
+    # return the flow name from the file name of the cdr
+    def self.flow file_name
+        re = /\w+_(\w+)_\d+_\d+\.(DAT|DAT\.GZ)/
+        return unless file_name.match re
+        switch = $1
+        flows = RubyUtil::arrayize EMMConfig["CDR_FLOWS"]
+        params = Hash[flows.map { |t| [t,EMMConfig["#{t}_SWITCHES"]]}]
+        params.each  do |flow,v|
+            next if !params[flow].include? switch
+            return flow.upcase.to_sym
+        end
+        return nil
+    end
+    def self.switch file_name
+         re = /\w+_(\w+)_\d+_\d+\.(DAT|DAT\.GZ)/
+         return unless file_name.match re
+         switch = $1
+         switch
+    end
 	##
 	## Concat the path and return the full path 
 	## with the BASE_DIRECTORY + DATA_DIR
+    # Possible to specify from which direction you are working on
+    # input or output flow
 	def self.data_path(*path)
-		EMMConfig['BASE_DIR'] + "/" + EMMConfig['DATA_DIR'] + "/" + path.join('/')
+        opts = path.last.is_a?(Hash) ? path.pop : nil
+		str = EMMConfig['BASE_DIR'] + "/" + 
+              EMMConfig['DATA_DIR'] + "/" 
+        if opts && opts[:dir] && opts[:dir] == :output
+            str << "OUT/"
+        end
+        str << path.join('/')
+        return str
 	end
 
+    # return the interger value of a direction of a flow
+    # for storing ind atabase
+    def self.dir2int direction
+        direction == :input ? 0 : 1
+    end
     # return the timestamp associated with
     # the filename of a cdr
     # RETURN AT THE MINUTE PRECISION
@@ -30,16 +63,18 @@ class Util
     end
     
     ## return list of folders for
-    # this type of CDR
+    # this flow of CDR
     # folders used on the local machine in the
     # DATA_STORE_DIR / DATA_BACK_DIR / DATA_TMP_DIR
-    def self.folders type
+    # DEPRECATED !!!
+    def self.folders flow
+        flow = flow.upcase.to_sym
         folders = []
-        case type
+        case flow
         when :MSS
-            switches = EMMConfig["MSS_SWITCHES"]
+            switches = RubyUtil::arrayize EMMConfig["MSS_HOSTS"]
             switches.each do |s|
-                folders << EMMConfig["MSS_SWITCHES_#{s.upcase}"]
+                folders << EMMConfig["#{s.upcase}_SWITCHES"]
             end
             folders.flatten!
         when :gprs
@@ -50,4 +85,14 @@ class Util
         folders
     end
 
+    ## find the flow of cdr host is hosting and return its switches
+    #i.e. its folder where to find the raw cdrs
+    # make a check if it exists before
+    def self.switches host
+       flows = RubyUtil::arrayize EMMConfig["CDR_FLOWS"]
+       flows.each do |t|
+            next unless EMMConfig["#{t.upcase}_HOSTS"].include? host
+            return EMMConfig["#{host.upcase}_FOLDERS"]      
+       end 
+    end
 end
