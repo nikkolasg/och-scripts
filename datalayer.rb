@@ -70,8 +70,8 @@ require 'set'
 		ret = yield
 		return ( ret ? ret : true ) # return not nil, otherwise return true
 		rescue Mysql::Error => e
-			Logger.<<($0,"CRITICAL","#{e.errno}, #{e.error}")
-			return 
+			Logger.<<($0,"ERROR","#{e.errno}, #{e.error}")
+			raise e 
 	end
 
 	

@@ -2,6 +2,9 @@
 			so post pre processor can extract them and change in db a			after
 - check speed of sftp download -< maybe download everything in one batch instead
 				of directory per directory
+- check timestamp of cdr name , may not be related to timestamp of calls ... ???? wtf
+
+- make script to arrange table if fields modified in the records table,i.e. create /delete new field, and put default value for others,or reanalyse them
 
 dependency: 	SImpleConfig
 		pry
