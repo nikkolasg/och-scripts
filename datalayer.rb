@@ -17,10 +17,8 @@ require 'set'
 	class MysqlDatabase
     @@default_db = nil   
     def self.default
-         MysqlDatabase.new(EMMConfig['DB_HOST'],
-                              EMMConfig['DB_NAME'],
-                              EMMConfig['DB_LOGIN'],
-                              EMMConfig['DB_PASS'])
+         db = App.database
+         MysqlDatabase.new(db.host,db.name,db.login,db.password)
     end
 	def initialize(h,db,login,pass)
 		@host = h

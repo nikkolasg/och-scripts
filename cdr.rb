@@ -16,7 +16,7 @@
 #   res.map { |k,v| ... }
 #end
 module CDR
-require './config'
+require './config/config'
 require 'open3'
 
     def self.decode file, opts = {}
@@ -28,15 +28,18 @@ require 'open3'
             raise "CDR Module:decode() File does not exists #{file}"
         end
 
-        flow = opts[:flow] # to change after, guess automatically from name
-        unless EMMConfig["#{flow.to_s.upcase}_DECODER"]
+        flow = opts[:flow].upcase.to_sym # to change after, guess automatically from name
+        raise "CDR Module:decode() Flow does not exists" unless App.flow(flow)
+        flow = App.flow(flow)
+        unless flow.decoder
             raise "CDR Module:decode() Type has no decoder specified #{flow}"
         end
 
-        case flow
+        case flow.name
             when :MSS
                 out = decode_mss(file,opts)
-                json = convert_json(out,:MSS,opts) if !opts[:intact] # do not specify to get default json output
+                return nil if out.size == 0
+                json = convert_json(out,:MSS,opts) 
             else
                 raise "CDR Module:decode() Type is not implemented"
         end
@@ -45,20 +48,20 @@ require 'open3'
     
     # decode a MSS file data
     def self.decode_mss file,opts = {}
-        decoder_cmd = EMMConfig["MSS_DECODER"].dup        
+        flow = App.flow(:MSS)
+        decoder_cmd = flow.decoder      
         if opts[:allowed]
-            decoder_cmd << " --allowed=#{opts[:allowed]} "
+            decoder_cmd += " --allowed=#{flow.records_allowed} "
         end
-        decoder_cmd << file
+        decoder_cmd += file
         if opts[:out]
-            decoder_cmd << " > #{opts[:out]}"
+            decoder_cmd += " > #{opts[:out]}"
         end
         error = nil
         out = nil
         Open3.popen3(decoder_cmd) do |sin,sout,serr,thr|
             sin.close
             out = sout.read
-
             error = !thr.value.success?
         end
         if error
@@ -67,13 +70,13 @@ require 'open3'
         out
     end
 
+    # convert the output of the decoder 
+    # to json format output described at top
     def self.convert_json raw,flow,opts = {}
         return unless raw
-        out = []
         if flow == :MSS
-            out = convert_json_mss raw, opts
+            return convert_json_mss raw, opts
         end
-        out
     end
     
     def self.convert_json_mss raw, opts = {}
@@ -92,9 +95,7 @@ require 'open3'
                 if rec == nil
                     fields = line.split(":")
                     name = fields.shift # first value is the name of the record flow
-                    
                     fields,indexes = filter(:MSS,fields) if opts[:filter]   
-                    
                     rec =  { name: name, fields: fields, values: []} 
                     next
                 end
@@ -115,7 +116,7 @@ require 'open3'
     # where fields is an array of filtered field
     #       indexes is an array of indexes to filter for the data
     def self.filter flow,fields
-        f2keep = RubyUtil::arrayize EMMConfig["#{flow}_RECORDS_FIELDS"]
+        f2keep = App.flow(:MSS).records_fields.keys 
         newFields = []
         indexes = []
         fields.each_with_index do |value,index|
@@ -130,27 +131,30 @@ require 'open3'
     # to launch when moving arch, or go to prod
     # TO UPGRADE so it can fetch a file alone by flow etcetc
     def self.test_decode opts = {}
+        unless opts[:flow] && App.flow(opts[:flow])
+            $stderr.puts "No flow specified"
+            abort
+        end
+        flow = App.flow(opts[:flow])
         if opts[:file]
             file = opts[:file]
             puts "File specified : #{file}"
         else
-            file = EMMConfig["MSS_TEST"]
+            file = flow.test_file
             puts "No file specified, switch to config file ... #{file}"
         end
-
         unless File.exists? file
             $stderr.puts "File does not exists"        
             abort
         end
-        unless opts[:flow]
-            $stderr.puts "No flow specified"
-            abort
-        end
-        # MSS TEST
+        opts[:filter] = true
+        opts[:allowed] = true
+       # MSS TEST
         begin
             out = decode_mss(file,opts)
-            json = convert_json(out,:MSS)
-            dump_table_file json, :MSS
+            puts out
+            return  convert_json(out,:MSS)
+            #dump_table_file json, :MSS
         rescue => e
             $stderr.puts e.message + "\n" + e.backtrace.join("\n")
             abort
@@ -164,8 +168,8 @@ require 'open3'
     #used to create multiple table easily directly from
     #the output of the decoder
     #snend this file to create_table after
-    def self.dump_table_file json,flow
-       open("fields_#{flow.downcase}_records.db","w") do |file|
+    def self.dump_table_file json,file_name
+       open(file_name,"w") do |file|
             json.each do |record|
                 values = record[:values].first
                 record[:fields].each_with_index do |field,index|

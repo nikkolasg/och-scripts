@@ -9,7 +9,7 @@
 dependency: 	SImpleConfig
 		pry
 		net/sftp
-		
+		activesupport-4.1.6		
 
 CHECK ERROR : collector , if two database update, may be an error . ? check block begin / rescue NET::MySqlError => match/duplicate/ => RETRY !
 CHECK QUERY SIZE : for IN query on the server

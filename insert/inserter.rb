@@ -1,4 +1,4 @@
-require_relative '../config'
+require_relative '../config/config'
 require_relative '../logger'
 require_relative '../util'
 require_relative '../ruby_util'
@@ -22,50 +22,57 @@ module Inserter
     end
 
     def decode_file switch, file_path
-
-        json = CDR::decode(file_path, decoder_options )
-        Logger.<<(__FILE__,"INFO","Decoded #{file_path}, from #{switch}") if @v
+        flow = App.flow(@flow_name)
+        opts = { flow: @flow_name, filter: true, allowed: flow.records_allowed }
+        json = CDR::decode(file_path, opts )
+        Logger.<<(__FILE__,"INFO","Decoded #{file_path} from #{switch}") 
         json
     end
 
-    def decoder_options
-        if @flow == :MSS
-            allowed = EMMConfig["MSS_RECORDS"].join(',')
-            { flow: @flow, filter: true, allowed: allowed}
+   
+    #fields is an array of fields
+    #arr is a matrix of array values
+    def insert_decoded_record file_name,switch,record_name,fields, values
+
+        table = App.flow(@flow_name).table_records(@dir)
+
+        query = "INSERT INTO #{table} (switch,file_name,name, "
+        query << fields.join(',') << ")"
+        query << " VALUES "
+        # collect all the values , making one entry for each record
+        string_values_arr = values.map do |row|
+            "('" + switch + "','" + file_name + "','" + record_name + "'," +
+                row.map{|f| "'#{f}'"}.join(',') + ")"
+        end
+        query << string_values_arr.join(',') << ";"
+        @db.query(query)
+
+        Logger.<<(__FILE__,"INFO","Inserted  #{values.size} #{record_name} records from #{file_name} in db...") 
+    end
+
+    def insert_decoded_records file_name,switch,records
+        records.each do |record|
+            insert_decoded_record file_name,switch,record[:name],record[:fields],record[:values]
         end
     end
-    # insert the records information in the database
-    # decoded is the json from CDR::decode
-    # switch is the name of the switch it comes from
-    # file is the name of the file it comes from
-    # dir is the direction of the decoded flow (input / output)
-    def insert_decoded_files decoded
-        config_name = "DB_TABLE_#{@flow}_RECORDS"
-        config_name << "_OUT" unless @dir == :input
 
-        table = EMMConfig[config_name]
-            decoded.keys.each do |switch|
-                decoded[switch].each do |file,arr|
-                    log={}
-                    arr.each do |hash|
-                        name = hash[:name]
-                        fields = hash[:fields]
-                
-                        query = "INSERT INTO #{table} (switch,file_name,name, "
-                        query << fields.join(',') << ")"
-                        query << " VALUES "
-                        # collect all the values , making one entry for each record
-                        values = hash[:values].map do |row|
-                            "('" + switch + "','" + file + "','" + name + "'," +
-                                row.map{|f| "'#{f}'"}.join(',') + ")"
-                        end
-                        query << values.join(',') << ";"
-                        @db.query(query)
-                        log[name] = hash[:values].size
-                    end
-                    Logger.<<(__FILE__,"INFO","Inserted  #{log.inject("") { |c,(name,size)| c = c + size.to_s + " " + name + ", " }}} from #{file} in db...") if @v
-                end
-        end
+    # make the decoded files as processed in the cdr table 
+    # so we wont decode them again next time .. !!!
+    # input is a flat list of files
+    def mark_processed_decoded_files files
+        table = App.flow(@flow_name).table_cdr(@dir)
+        sql = "UPDATE #{table} SET processed=1 WHERE file_name IN ( "
+        sql << files.map{ |f| "'#{f}'"}.join(',') << ");"
+        @db.query(sql)
+        Logger.<<(__FILE__,"INFO","Mark as 'processed' #{files.size} files in db ...")
+    end
+
+    def backup_file switch, file
+        require_relative '../get/fetchers'
+        fetch = Fetchers::create(:LOCAL,{})
+        oldp = App.directories.store(@dir) + "/" + switch
+        newp = App.directories.backup(@dir) + "/" + switch
+        fetch.download_files oldp,newp,[file]
     end
 
     class FileInserter
@@ -79,22 +86,21 @@ module Inserter
             @flow = Util.flow(File.basename(@files.first))
             @switch = Util.switch(File.basename(@files.first))
             @db = Datalayer::MysqlDatabase.default
-            raise "Unkonwn flow file .. " unless @flow
+            raise "Unkonwn flow file .. " unless App.flow(@flow)
         end
 
         def insert
-            decoded = {}
-            decoded[@switch] = @files.inject({}) do |col,file|
-                file_path = @folder + "/" + file
-                col[file] = decode_file @switch,file_path
-                col
-            end
-            Logger.<<(__FILE__,"INFO","Decoded #{@files.size} files ...")
-            @db.connect do 
-                insert_decoded_files decoded
-            end
-            Logger.<<(__FILE__,"INFO","Inserted all files ! Operation finished !")
+            @db.connect do
+                @files.each do |file|
+                    file_path = @folder + "/" + file
+                    records = decode_file @switch,file_path
+                    next if records.nil?
 
+                    insert_decoded_records file,@switch,records
+
+                    mark_processed_decoded_files ([file])
+                end
+            end
         end
 
     end
@@ -111,50 +117,48 @@ module Inserter
         def initialize(infos)
             @v = infos[:v]
             @dir = infos[:dir].downcase.to_sym
-            @flow = infos[:flow].upcase.to_sym
-            @folders = Util.folders @flow
-            name_table_config = @dir == :input ? "DB_TABLE_#{@flow}_CDR" : "DB_TABLE_#{@flow}_CDR_OUT"
-            @cdr_table = EMMConfig[name_table_config]
+            @flow_name = infos[:flow]
+            @flow = App.flow(@flow_name)
+            @folders = @flow.switches
+            @cdr_table = @flow.table_cdr(@dir)
             @db = Datalayer::MysqlDatabase.default
         end
 
         def insert
-            if @dir == :input
-                insert_input
-            elsif @dir == :output
-                insert_output
-            end
-        end
-
-        def insert_input
             files,count = get_files_to_insert 
-            Logger.<<(__FILE__,"INFO","Found #{count} files to decode & insert for #{@flow}:input...");
+            Logger.<<(__FILE__,"INFO","Found #{count} files to decode & insert for #{@flow.name}:#{@dir}...");
             return unless count > 0
             @db.connect do 
-                decode_files files do |switch,file|
-                    decoded = { switch => {} }
-                    path = Util.data_path(EMMConfig["DATA_STORE_DIR"],switch,file,{dir: @dir})
-                    decoded[switch][file] = decode_file switch, path
-                    insert_decoded_files decoded
+                iterate_over files do |switch,file|
+                    path = App.directories.store(@dir)+"/"+switch+"/"+file 
+
+                    records = decode_file switch, path
+
+                    if records.nil?
+                        Logger.<<(__FILE__,"WARNING","Found null output for file #{file}")
+                        next
+                    end
+
+                    insert_decoded_records file,switch,records
+
+                    mark_processed_decoded_files ([file])
+                    backup_file switch,file
                 end
             end
             Logger.<<(__FILE__,"INFO","Decoded & Inserted #{count} files ...")
+            Logger.<<(__FILE__,"INFO","Insert operation finished !")
         end
 
-        def insert_output
-
-        end
-
-
-        def decode_files files
-            decoded = {}
+        ## sequential approach rather
+        #than decode everything then insert everything
+        # it sends the switch and file to the block
+        # which will decode then insert
+        def iterate_over files
             files.keys.each do |switch|
-                decoded[switch] = {}
                 files[switch].each do |file|
                     yield switch, file
                 end
             end
-            decoded
         end
 
 
@@ -165,7 +169,7 @@ module Inserter
         def get_files_to_insert 
             db = Datalayer::MysqlDatabase.default
             # SWITCHE1 => [file1,f2,f3...]
-            files = Hash[RubyUtil::arrayize(EMMConfig["#{@flow}_SWITCHES"]).map{|s| [s,[]]}]
+            files = Hash.new { |h,k| h[k] = []}
             count = 0
             db.connect do 
                 query = "SELECT file_name,switch FROM #{@cdr_table} WHERE processed=0;"

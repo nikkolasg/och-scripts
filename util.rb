@@ -1,16 +1,16 @@
 #!/usr/bin/ruby
 
-require './config'
+require './config/config'
 require './ruby_util'
-class Util
+module Util
     
     # return the flow name from the file name of the cdr
     def self.flow file_name
         re = /\w+_(\w+)_\d+_\d+\.(DAT|DAT\.GZ)/
         return unless file_name.match re
         switch = $1
-        flows = RubyUtil::arrayize EMMConfig["CDR_FLOWS"]
-        params = Hash[flows.map { |t| [t,EMMConfig["#{t}_SWITCHES"]]}]
+        flows = App.flows
+        params = Hash[flows.map { |t| [t.name,t.switches]}]
         params.each  do |flow,v|
             next if !params[flow].include? switch
             return flow.upcase.to_sym
@@ -28,6 +28,7 @@ class Util
 	## with the BASE_DIRECTORY + DATA_DIR
     # Possible to specify from which direction you are working on
     # input or output flow
+    # DEPRECATED
 	def self.data_path(*path)
         opts = path.last.is_a?(Hash) ? path.pop : nil
 		str = EMMConfig['BASE_DIR'] + "/" + 
@@ -41,6 +42,7 @@ class Util
 
     # return the interger value of a direction of a flow
     # for storing ind atabase
+    # DEPRECATED
     def self.dir2int direction
         direction == :input ? 0 : 1
     end
@@ -88,6 +90,7 @@ class Util
     ## find the flow of cdr host is hosting and return its switches
     #i.e. its folder where to find the raw cdrs
     # make a check if it exists before
+    # DEPRECATED !!!
     def self.switches host
        flows = RubyUtil::arrayize EMMConfig["CDR_FLOWS"]
        flows.each do |t|

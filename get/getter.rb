@@ -4,11 +4,12 @@ module Getter
     require_relative './fetchers'
     require_relative '../datalayer'
     require_relative '../logger'
-    require_relative '../config'
+    require_relative '../config/config'
     require 'open3'
     require 'json'
     def self.create type, info = nil
         c = @@getters[type]
+        info[:flow] = type
         if c
             c.new(info)
         else
@@ -20,12 +21,16 @@ module Getter
     def self.register_getter type,name
         @@getters[type] = name
     end
-    def get_saved_files
+
+    ## 
+    # Will return the files that are already contained in the database
+    # from the given list of files
+    def filter_db_files remote_files
         db = Datalayer::MysqlDatabase.default
         files = {}
-        table = EMMConfig["DB_TABLE_#{@flow}_CDR"]
+        table = App.flow(@flow_name).table_cdr(@direction)
         db.connect do 
-            query = "SELECT file_name,switch FROM #{table} WHERE processed=0;"
+            query = "SELECT file_name,switch FROM #{table} WHERE file_name IN #{RubyUtil::sqlize remote_files};"
             res = db.query query
             res.each_hash do |row|
                 switch = row['switch']
@@ -41,25 +46,17 @@ module Getter
     # register theses files for the given switch
     def register_files_for_switch switch, files
         db = Datalayer::MysqlDatabase.default
-        table = EMMConfig["DB_TABLE_#{@flow}_CDR"]
+        table = App.flow(@flow_name).table_cdr(@direction)
         db.connect do 
             sql = "INSERT INTO #{table} (file_name,switch)
                    VALUES "
             sql << files.map do |f|
-                    "( '#{f}','#{switch}' )"
-                end.join(',')
+                "( '#{f}','#{switch}' )"
+            end.join(',')
             sql << ";"
             db.query(sql)
         end
         Logger.<<(__FILE__,"INFO","Inserted #{files.size} files in #{table}")
-    end
-
-    # just a wrapper for registering files belonging
-    # to different switches
-    def register_host_files data
-        data.each do |switch,files|
-            register_files_for_switch switch,files
-        end
     end
 
     class FilesGetter
@@ -72,73 +69,79 @@ module Getter
             @files = infos[:files].map { |f| File.basename(f)} # just in case !
             @v = infos[:v]
             # try to guess the type
-            @flow = Util.type(File.basename(@files.first))
+            @flow_name = Util.type(File.basename(@files.first))
             @switch = Util.switch(File.basename(@files.first))
             raise "Unknown type file... " unless @flow
         end
 
         def get
-            db_files = get_saved_files
-            filter_files db_files
+            filter_files 
             return unless @files.size > 0
             move_files
             register_files_for_switch @switch, @files
         end
 
 
-        def filter_files db_files
+        def filter_files
+            # return the files in @files also contained in the db
+            db_files = filter_db_files @files
             before = @files.size
             @files.select! do |file|
-
                 !db_files.include? file
             end
             Logger.<<(__FILE__,"INFO","Filtering files. Before #{before} ==>  #{@files.size}..." )
         end
-        
+
         def move_files
-            fetch = Fetchers::FileFetcher.create(:local,{})
-            new_dir = Util.data_path(EMMConfig["DATA_STORE_DIR"],@switch,{dir: @dir})
+            fetch = Fetchers::create(:LOCAL,{})
+            new_dir = App.directories.store(@dir) + "/" + @switch
             fetch.download_files new_dir,@folder,@files
             Logger.<<(__FILE__,"INFO","Moved files from #{@folder} to #{new_dir}")
         end            
     end
 
-    # responsible for handling the MSS get operations
-    class MSSGetter
+    # responsible for handling the flows get operations
+    class GenericFlowGetter
         Getter.register_getter :MSS,self
-        
         include Getter
 
         def initialize(infos)
-            @flow = :MSS
+            @flow = App.flow(infos[:flow])
+            @flow_name = infos[:flow]
             # todo the direction is important
             @direction = infos[:dir]
-            @hosts = RubyUtil::arrayize EMMConfig["MSS_HOSTS"]
-            ## create the main structure used during the collection process
-            @hosts = @hosts.inject({}) do |col,h|
-                col[h] = {}
-                Util::switches(h).each do |f|
-                    col[h][f] = []
-                end
+            @sources = @flow.sources(@direction)
+            ## structure that contains the files
+            # organized by switches ( hash)
+            @files = @sources.inject({}) do |col,source|
+                source.switches.each { |s| col[s] = [] }
                 col
             end
-            @fetchers = get_fetchers
+
+            ## structure that relates the source to
+            # a fetcher for this source
+            @sources = @sources.map do |source|
+                [source,Fetchers::create(source.protocol,
+                                         source.host,
+                                         source.login,
+                                         source.password) ]
+            end
             @v = infos[:v]
         end
 
         def get
             Logger.<<(__FILE__,"INFO", "Starting GET operations in #{self.class.name}.." )
             get_remote_files
-            db_files = get_saved_files
-            count = filter db_files 
-            Logger.<<(__FILE__,"INFO","Filtering on remote files done ... ")
+            filter
+            list,count = list_to_download # filter out files already downloaded:
+            Logger.<<(__FILE__,"INFO","Filtering on remote files done ... will download #{count} files. ")
             if count > 0
-                download_files
-                move_files
+                download_files list
+                move_files list
                 Logger.<<(__FILE__,"INFO","Files downloaded & moved into right folders ...")
             end
-            @hosts.each do |host,switches|
-                register_host_files switches
+            @files.each do |switch,list_files|
+                register_files_for_switch switch,list_files
             end
             Logger.<<(__FILE__,"INFO","Files registered into the system ! ")
             Logger.<<(__FILE__,"INFO","GET Operation finished !")
@@ -146,29 +149,26 @@ module Getter
 
         private
         ## after downloaded files will be moved
-        def move_files
-            old_base_p = Util.data_path(EMMConfig["DATA_DOWN_DIR"])
-            new_base_p = Util.data_path(EMMConfig["DATA_STORE_DIR"])
-            @hosts.each do |h, sws|
-                sws.each do |switch,files|
-                    next if files.empty?
-                    oldp = old_base_p + "/" + switch
-                    newp = new_base_p + "/" + switch
-                    cmd = "mv -t #{newp} #{files.map{|f| oldp+"/"+f}.join(" ")}"
-                    if !system(cmd)
-                        Logger.<<(__FILE__,"ERROR","with mv command : #{cmd}")
-                        raise  "Error with mv command #{cmd}"
-                    end
-                end
-            end     
-        end
+        def move_files files_to_dl
+            old_base_p = App.directories.tmp(@direction)
+            new_base_p = App.directories.store(@direction)
+            fetcher = Fetchers::create(:LOCAL,{})
+            files_to_dl.each do |switch,list_files|
+                next if list_files.empty?
+                oldp = old_base_p + "/" + switch
+                newp = new_base_p + "/" + switch
+                fetcher.download_files newp,oldp,list_files
+            end
+        end     
 
-        def download_files
-            remote_base_p = EMMConfig["MSS_BASE_DIR"] 
-            local_base_p = Util.data_path(EMMConfig["DATA_DOWN_DIR"])
-            @fetchers.each do |fetcher|
+        ## actually take the data to the app
+        def download_files files_to_dl
+            local_base_p = App.directories.tmp(@direction)
+            @sources.each do |source,fetcher|
+                remote_base_p = source.base_dir 
                 fetcher.connect do 
-                    @hosts[fetcher.host].each do |switch,files|
+                    source.switches.each do |switch|
+                        files = files_to_dl[switch]
                         local = local_base_p + "/" + switch
                         remote = remote_base_p + "/" + switch
                         fetcher.download_files local,remote,files
@@ -180,65 +180,118 @@ module Getter
         ## filter the files to get
         # by the db and thoses already downloaded
         # (sometimes useful to testing multiple times )
-        def filter saved_files
+        # return the files to download
+        def filter 
+            # get files contained in the list and also in db
+            # ==> files to eliminate
+            f = @files.values.flatten(1)
+            saved_files = filter_db_files f
             count_to_dl = 0
-            @hosts.keys.each do |h|
-                break if saved_files.empty?
-                switches = @hosts[h].keys & saved_files.keys
-                next if switches.empty?
+            return count_to_dl if saved_files.empty?
+            #intersection of switches
+            # limit the comparison between db and files
+            switches = @files.keys & saved_files.keys
+            return count_to_dl if switches.empty?
 
-                switches.each do |sw|
-                    str = "(DB)#{sw}: #{@hosts[h][sw].size} "
-                    @hosts[h][sw] = @hosts[h][sw] - saved_files[sw]
-                    count_to_dl = count_to_dl + @hosts[h][sw].size
-                    str << "=> #{@hosts[h][sw].size}..."
-                    Logger.<<(__FILE__,"INFO",str)
-                end
+            # THESE files wont have to be download
+            # so we remove them from the global list
+            switches.each do |sw|
+                str = "(DB)#{sw}: #{@files[sw].size} "
+                @files[sw] = @files[sw] - saved_files[sw]
+                count_to_dl = count_to_dl + @files[sw].size
+                str << "=> #{@files[sw].size}..."
+                Logger.<<(__FILE__,"INFO",str)
             end
+
+            return count_to_dl
+        end
+        def list_to_download
             ## FIlter by files contained in SERVER folder too !
-            path = Util.data_path(EMMConfig["DATA_STORE_DIR"])
-            @hosts.each do |h,sws|
-                sws.each do |switch,files|
-                    cmd = "ls #{path}/#{switch}"
-                    out = `#{cmd}`
-                    files_stored = out.split("\n")
-                    str = "(LOCAL) #{switch}: #{files.size} "
-                    @hosts[h][switch] = files - files_stored
-                    count_to_dl = count_to_dl + @hosts[h][switch].size
-                    str << " => #{@hosts[h][switch].size}..."
-                    Logger.<<(__FILE__,"INFO",str)
-                end
+            #file NOT contained in the server, will have to be downloaded
+            # SO we create a list of files to download, which is by definition
+            # also contained in the global list (since .clone)
+            count_to_dl = 0
+            path = App.directories.store(@direction)
+            local_fetch = Fetchers::create(:LOCAL,{})
+            files_to_dl = @files.clone
+            files_to_dl.each do |switch,list_files|
+                _path = "#{path}/#{switch}"
+                # get files already downloaded for theses switches
+                files_stored = local_fetch.list_files_from _path   
+                # simple out put
+                str = "(LOCAL) #{switch}: #{list_files.size} "
+
+                files_to_dl[switch] = list_files - files_stored
+                count_to_dl = count_to_dl + files_to_dl[switch].size
+
+                str << " => #{files_to_dl[switch].size}..."
+                Logger.<<(__FILE__,"INFO",str)
             end
-            count_to_dl
+            return files_to_dl,count_to_dl
         end
 
         def get_remote_files
-            base_path = EMMConfig["MSS_BASE_DIR"] + "/"
-            @fetchers.each do |fetcher|
+            @sources.each do |source,fetcher|
                 fetcher.connect do 
-                    @hosts[fetcher.host].keys.each do |switch|
-                        path = base_path + switch + "/"
-                        @hosts[fetcher.host][switch] = @hosts[fetcher.host][switch] +  fetcher.list_files_from(path).to_a
+
+                    source.switches.each do |switch|
+                        path = source.base_dir + "/" + switch + "/"
+                        @files[switch] = @files[switch] +  fetcher.list_files_from(path).to_a
                     end
                 end
             end
 
         end
-        def get_fetchers
-            fetchers = []
-            proto = EMMConfig["MSS_FETCH_PROTOCOL"].to_sym
-            case proto
-            when :sftp
-                #careful if changing the layout of config file...
-                credentials = {}
-                credentials[:login] = EMMConfig["MSS_#{proto.upcase}_LOGIN"] 
-                credentials[:pass] = EMMConfig["MSS_#{proto.upcase}_PASS"]
-                @hosts.keys.each do |h|
-                    credentials[:host] = h
-                    fetchers << Fetchers::FileFetcher.create(proto,credentials)
+
+    end
+
+    # represent a "source"
+    # middle class that handles the creation of fetcher
+    # the listing of files 
+    # and the downloading !
+    # very usefule for a clean code because of the complexity of
+    # the different sources => cdr into multiple subfolders etc etc
+    class Source
+
+        def initialize(configSource)
+            @conf = configSource
+            @data = Hash[ @conf.switches.map{|s| [s,[]] }] unless @conf.sub_folders
+            @data = Hash[ @conf.switches.map{|s| [s,{}] }] if @conf.sub_folders
+            @fetcher = Fetcher::create(@conf.protocol,@conf.host,@conf.login,@conf.password)
+        end
+
+        # return an hash of files present on the source
+        # key : switch
+        # values : files
+        def list_files
+            @fetcher.connect do 
+                @conf.switches.each do |switch|
+                    if !@conf.sub_folders ## no subfolders
+                    else ## subfolder ...
+
+                        folders = subfolders_listing
+                    end
                 end
             end
-            fetchers
+        end
+
+        private
+
+        # simply list all files directly from the different switches
+        def simple_listing switch
+
+            path = @conf.base_dir + "/" + switch
+            @data[switch] =@fetcher.list_files_from path
+        end 
+
+        # list all files contained in sub folders.
+        # Will take the N first folders specified in 
+        # the conf as "sub_folders"
+        def subfolders_listing switch
+            path = @conf.base_dir + "/" + switch
+            folders = list_entries_from path
+            folders.select! { |e| e.directory? }
+             
         end
 
     end

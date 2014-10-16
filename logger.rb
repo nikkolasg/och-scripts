@@ -2,15 +2,14 @@
 
 class Logger
 
-	require './config'
-	TO_STDOUT= EMMConfig['STDOUT'] ? EMMConfig["STDOUT"] : nil
+	require './config/config.rb'
+	
 	def self.<<(script,level,msg)
         script = File.basename(script)
 		log =  "#{Time.now} #{script} : #{msg}" 
-		puts "#{level}\t #{log}" if TO_STDOUT
+		puts "#{level}\t #{log}" if App.logging.stdout
 		cmd = "do_alert.pl \"#{level}\" \"#{log}\""
 		`#{cmd}`
 	end
-
 end
 

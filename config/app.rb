@@ -11,13 +11,14 @@
 #end
 #etc
 module Printer
-    def to_s
-        instance_variables.each do |var|
-            puts "#{var}  => " + instance_variable_get("#{var}").to_s
-        end
-    end
+    #def to_s
+        #instance_variables.each do |var|
+            #puts "#{var}  => " + instance_variable_get("#{var}").to_s
+        #end
+    #end
 end
 module App
+
     include Printer         
     ## MODULE    
     extend self
@@ -25,7 +26,7 @@ module App
     @@fields.each do |f|
         instance_eval("def #{f}(param=nil); param.nil? ? @#{f} : (@#{f} = param);end")
     end
-    
+
     def define_accessor f
         "def #{f}(param=nil); param.nil? ? @#{f} : (@#{f} = param);end"
     end
@@ -64,7 +65,16 @@ module App
     end
 
     def config &block
-        instance_eval(&block) 
+        str = "Parsing config file ..."
+        begin
+            instance_eval(&block) 
+        rescue => e
+            str << "Error ! #{e.message}"
+            $stderr.puts str
+        end
+        str << " Ok :) "
+        Logger.<<(__FILE__,"INFO","#{App.app_name} (v. #{App.app_version}) starting")
+        Logger.<<(__FILE__,"INFO",str)
     end
 
     # find a flow by its name in the array of flow
@@ -76,49 +86,137 @@ module App
         to_s
     end
 
-    
+
 
     #########################################
     #subclasses for each categories of the config
     #Flow, Source, Log, Directories, Database ...
     #########################################
 
-     class Flow
+    class Flow
         include Printer
-        @@fields = [ :name,:table_cdr,:table_records,:table_stats ]
-        @@fields.each do |f|
-           Flow.class_eval(App.define_accessor(f))
+        [ :name,:out_suffix,:decoder,:test_file].each do |f|
+            Flow.class_eval(App.define_accessor(f))
         end
+        ## create custom accessor when the direction is supplied
+        # u can call it like this
+        # flow.table_cdr(:input) ==> CDR_MSS
+        # flow.table_cdr         ==> CDR_MSS (input is default)
+        # flow.table_cdr(:output)==> CDR_MSS_OUT
+        # flow.table_cdr "CDR_MSS" ==> affectation !
+        [ :table_cdr,:table_records,:table_stats ].each do |f|
+            str = "def #{f}(param=nil)
+                    if param
+                        if :input == param
+                            return @#{f}
+                        elsif :output == param
+                            return @#{f} + @out_suffix
+                        else 
+                            @#{f} = param
+                        end
+                    end
+                    @#{f} 
+               end"
+            Flow.class_eval(str)
+        end 
+        ## Create custom access
+        #   when specified cdr_fields_file , it will
+        #   trigger the reading of the file 
+        #   and put the fields into cdr_fields !!
+        [ :cdr_fields,:records_fields,:records_fields].each do |f|
+            str = "def #{f.to_s + "_file"}(param=nil)
+                        if param
+                            @#{f.to_s + "_file"} = param
+                            @#{f} = parse_fields_file(param)
+                        else
+                            @#{f.to_s + "_file"}
+                        end
+                   end"
+           ## define the fields attributes
+           Flow.class_eval(App.define_accessor(f))
+           Flow.class_eval(str)
+
+        end
+
+
+
         def initialize name
             @name = name
+            @sources = []
+            @monitors = []
         end
-        def source  direction, &block
-            if !instance_variable_defined?(:@sources)
-               #Flow.class_eval(App.define_accessor("sources"))
-                @sources = []
-            end
+        def source  name, &block
             newSource = Source.new
-            newSource.direction (direction.downcase.to_sym)
+            newSource.name (name.downcase.to_sym)
             @sources << newSource
             newSource.instance_eval(&block)
         end
 
-        def sources direction = nil
-            if direction
-                @sources.select { |s| s.direction == direction }
+        def sources search = nil
+            if search ## if we want specific source
+                if [:input,:output].include?( search)
+                    # we want sources from a given direction
+                    return @sources.select { |s| s.direction == search }
+                else
+                    # we want source from a given name
+                    return @sources.select { |s| s.name == search }.first
+                end
             else
                 @sources
             end
         end
 
+        ## return all the switches for this flow
+        #  
+        def switches
+            @sources.map { |s| s.switches }.flatten(1)
+        end
         
+        def records_allowed *args
+            if args.size == 0 ## no args, ==> accesssor
+                @records_allowed
+            else ## affectation
+                @records_allowed = args.join(',')
+            end
+        end
+
+        def monitor name, &block
+            m = Monitor.new
+            m.name name
+            @monitors << m
+            m.instance_eval(&block)
+        end
+        # accesor of monitors by name or all the monitors
+        def monitors name = nil
+            if name
+                @monitors.select { |m| m.name == name }
+            else
+                @monitors
+            end
+        end
+           
+        private
+        # read the fields, and create custom accessor for it
+        # file must be in format
+        # column_name:SQL TYPE
+        # output format is a Hash
+        # key => column_name
+        # value => sql type
+        def parse_fields_file file
+            hash = {}
+            File.read(file).split("\n").each do |line|
+                field,sql = line.split ':'
+                hash[field] = sql
+            end
+            hash
+        end
     end
 
     class Source
         include Printer
-        @@fields =[ :direction, :protocol, :host, :base_dir , :login,:password ]
+        @@fields =[ :name,:direction, :host, :base_dir , :login,:password, :regexp ]
         @@fields.each do |f|
-           Source.class_eval(App.define_accessor(f))
+            Source.class_eval(App.define_accessor(f))
         end
 
         def switch(*args)
@@ -128,6 +226,39 @@ module App
             end
             @switches = @switches + args
         end
+        def protocol(param = nil)
+            if param 
+                @protocol = param.upcase.to_sym
+            else
+                @protocol
+            end
+        end
+    end
+
+    class Monitor
+        
+       [:input,:output].each do |f|
+           str = "def #{f}(*param)
+                    if param.size > 0
+                        @#{f} = @#{f} + param.map {|p| p.downcase.to_sym }
+                    else
+                        @#{f}
+                    end
+                  end"
+          Monitor.class_eval(str)
+       end
+
+       [:time_interval,:aggregate_by,:name].each do |f|
+           Monitor.class_eval(App.define_accessor(f))
+       end
+
+          
+        def initialize
+            @input = []
+            @output = []
+            self.aggregate_by :time # default
+        end       
+
     end
 
     class Database 
@@ -147,7 +278,7 @@ module App
         end
 
         def levels (args)
-           
+
             if !instance_variable_defined?(:@log_level)
                 Logging.class_eval(App.define_accessor("log_level"))
                 @log_level = {}
@@ -157,13 +288,13 @@ module App
             end
         end
     end
-    
+
     ## old style made class
     #  to directly transform relative path
     #  into full path
     class Directories
         include Printer
-        [:app,:out_suffix].each do |f|
+        [:app,:out_suffix,:database_dump].each do |f|
             Directories.class_eval(App.define_accessor(f))
         end
 
@@ -174,26 +305,23 @@ module App
                 @data = @app + "/" + param
             end
         end
-
+        ## accesor and affectation at the same time
+        #if specified a direction => add suffix
+        #if specified other => affectation
+        #else return value
         def tmp(param=nil)
             ret = dir @tmp,param
-            if ret.nil?
-                @tmp = @data + "/" + param
-            end
+            ret.nil? ? (@tmp = @data + "/" + param) : ret
         end
 
         def store(param=nil)
             ret = dir @store,param
-            if ret.nil?
-                @store = @data + "/" + param
-            end
+            ret.nil? ? (@store = @data+"/"+param) : ret
         end
 
         def backup(param=nil)
             ret = dir @backup,param
-            if ret.nil?
-                @backup = @data + "/" + param
-            end
+            ret.nil? ? (@backup = @data + "/" + param) : ret
         end
 
         private 
@@ -210,8 +338,6 @@ module App
             end
         end
     end
-         
-
 end
 
 

@@ -1,42 +1,40 @@
 module Fetchers
 require_relative '../logger'
 require 'io/wait'
+
 # Multiple definitions of classes / factory 
 # to easily retrieve raw cdr in case the source change 
 # and method of retrieval also
 # i.e. either by database, by sftp, or by local files etc
-class FileFetcher
 	@@subclasses = {}
 	
-	def self.create type, options = nil
-		Logger.<<(__FILE__,"ERROR","No options given for the raw cdr fetcher") unless options
-		raise "No options given for the raw cdr fetcher" unless options
+	def self.create (type, *args)
+		(Logger.<<(__FILE__,"ERROR","No options given for the raw cdr fetcher");raise "Error";) unless args.size > 0
 		c = @@subclasses[type]
 		if c
-			c.new(options)
+			c.new(*args)
 		else
 			raise "Bad fetcher type #{type}, not in #{@@subclasses.inspect}"
 		end
 	end
-
-	def self.register_reader name
-		@@subclasses[name] = self
+    
+    # fetchres class must register here
+    # so they can be instantiated by Fetchers.create
+	def self.register_reader name,class_name
+		@@subclasses[name] = class_name
 	end
-end
-
-
-class SftpFileFetcher < FileFetcher
+class SftpFileFetcher 
 	require 'net/sftp'
 	require 'set'
-	# register to the mother class so it can be isntantiated
-	register_reader :sftp
+	# register to the fetchers module so it can be isntantiated
+	Fetchers.register_reader :SFTP,self
 	protected_methods :new	
     attr_reader :host
-	def initialize(options)	
-		@host = options[:host].to_s
-		@login = options[:login].to_s		
-		@password = options[:pass] if options.has_key? :pass
-		@regexp = options.has_key?(:regexp) ? options[:regexp] : "*.DAT"
+	def initialize(host,login,password,regexp = nil)	
+		@host = host
+		@login =login
+		@password = password
+		@regexp = regexp ? regexp : "*.DAT"
 		@sftp = nil
 	end
 	## MAIN METHOD , everything must pass inside this method
@@ -51,6 +49,7 @@ class SftpFileFetcher < FileFetcher
 			Logger.<<(__FILE__,"ERROR",e.message)
 			raise e
 		end	
+        Logger.<<(__FILE__,"INFO","Disconnected from #{@login}@#{@host}")
         @sftp = nil	
 	end
 	# list all files from the given path (SINGLE PATH)
@@ -66,6 +65,13 @@ class SftpFileFetcher < FileFetcher
 		list_files
 		end
 	end
+
+    def list_entries_from path
+        entries = []
+        safe_fetch do 
+            @sftp.dir.entries(path)
+        end
+    end
 	
 	# download a file
 	def download_file (remote_path,local_path)
@@ -101,8 +107,8 @@ class SftpFileFetcher < FileFetcher
 	end
 end	
 
-class LocalFileFetcher < FileFetcher
-    register_reader :local
+class LocalFileFetcher 
+    Fetchers.register_reader :LOCAL,self
     def initialize(opts = {})
         @opts = opts
     end
@@ -115,6 +121,7 @@ class LocalFileFetcher < FileFetcher
        out = `#{cmd}`
        return out.split("\n")
     end
+    
 
     def download_files new_dir,old_dir,remote_files, opts = {}
         unless (Dir.exists?(new_dir) && Dir.exists?(old_dir))
@@ -132,16 +139,24 @@ class LocalFileFetcher < FileFetcher
             raise "Error LocalFileFetcher"
         end
     end
+
+    def delete_files_from dir
+       Dir[dir+"/*"].each do |file|
+          delete_file file
+       end 
+    end
+
+    def delete_file file
+        unless File.exists? file
+            Logger.<<(__FILE__,"ERROR","FileFetcher can not delete a non existant file ! #{file}")
+            abort;
+        end
+        cmd = "rm #{file}"
+        unless system(cmd)
+            Logger.<<(__FILE__,"ERROR","FileFetcher trouble for deleting file #{file}")
+            abort
+        end
+    end
 end
 
-class DatabaseFileFetcher < FileFetcher
-
-	register_reader :database
-
-	def initialize(options = {})
-	end
-
-	def list_files
-	end
-end
 end
