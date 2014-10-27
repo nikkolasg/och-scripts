@@ -20,8 +20,9 @@ module RubyUtil
     def self.quotify list
         list.map { |l| "'#{l}'"}
     end
-    def self.sqlize list
-        "(" + RubyUtil::quotify(list).join(',') + ")"
+    def self.sqlize list,opts = {}
+        str = opts[:no_quote] ? list : RubyUtil::quotify(list)
+        "(" + str.join(',') + ")"
     end
 
 end

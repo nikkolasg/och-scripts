@@ -19,7 +19,10 @@ opt_parse = OptionParser.new do |opt|
     end
     opt.on("-d","--direction DIR","For BOTH options (all,flow), a direction can be appended : input or output or both. By default it is both.
                                 It specifies from which direction you want to process a flow. ") do |d|
-        $opts[:dir] = d
+        $opts[:dir] = d.downcase.to_sym
+    end
+    opt.on("-m","--monitor MONITOR","If you are doing a monitoring operation, you can specify which monitors you'd like (regarding the flow)") do |d|
+        $opts[:monitor] = d
     end
 
 end
@@ -34,19 +37,23 @@ def main
     # defines operation and subject
     $ope = ARGV[0].downcase.to_sym
    ## redirect to the right action
+    Util::starts_for $opts[:dir] do |dir|
+        opts = $opts.clone
+        opts[:dir] = dir
+        argv = ARGV.clone
     case $ope
     ## shortcut for main operation, no need to specify type of operation
     when *OperationParser.actions
-        OperationParser.parse(ARGV,$opts)
+        OperationParser.parse(argv,opts)
     when :setup
-        ARGV.shift ## because here we specified the type of operation
-        SetupParser.parse(ARGV,$opts)
+        argv.shift ## because here we specified the type of operation
+        SetupParser.parse(argv,opts)
     when :reset
-        ARGV.shift
-        ResetParser.parse(ARGV,$opts)
+        argv.shift
+        ResetParser.parse(argv,opts)
     when :test
-        ARGV.shift
-        TestParser.parse(ARGV)
+        argv.shift
+        TestParser.parse(argv)
     when :usage
         puts "OPERATION ===>\n\t"
         puts OperationParser.usage.join("\n\t")
@@ -55,6 +62,7 @@ def main
     else
         $stderr.puts "Operation unknown :(" 
         abort
+    end
     end
 end 
 

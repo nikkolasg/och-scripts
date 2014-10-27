@@ -3,25 +3,51 @@
 require './config/config'
 require './ruby_util'
 module Util
-    
+    SEC_IN_MIN = 60
+
+    def self.starts_for dir
+        if dir == :input || dir == :output
+            yield dir if block_given?
+        elsif dir == :both
+            yield :input if block_given?
+            yield :output if block_given?
+        end
+    end
+
     # return the flow name from the file name of the cdr
-    def self.flow file_name
-        re = /\w+_(\w+)_\d+_\d+\.(DAT|DAT\.GZ)/
-        return unless file_name.match re
-        switch = $1
+    # can return the Flow object directly if specified with return: :class
+    def self.flow (file_name,opts = {})
+        switch = Util::switch (file_name)
         flows = App.flows
-        params = Hash[flows.map { |t| [t.name,t.switches]}]
+        params = Hash[flows.map { |t| [t,t.switches]}]
         params.each  do |flow,v|
             next if !params[flow].include? switch
-            return flow.upcase.to_sym
+            if opts[:return] 
+                if opts[:return] == :class 
+                    return flow
+                elsif opts[:return] == :name
+                    return flow.name
+                end
+            end
+            return flow.name
         end
         return nil
     end
+
     def self.switch file_name
          re = /\w+_(\w+)_\d+_\d+\.(DAT|DAT\.GZ)/
          return unless file_name.match re
          switch = $1
          switch
+    end
+
+    # decompose time field into 
+    # year month day etc.. 
+    def self.decompose time_field
+            # Year   Month  Day    Hours  Min    Secs
+       re = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
+       return unless time_field.match re
+       return $1,$2,$3,$4,$5,$6
     end
 	##
 	## Concat the path and return the full path 

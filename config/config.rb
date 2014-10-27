@@ -6,9 +6,11 @@
 require './config/app.rb'
 require './logger'
 require './ruby_util'
+
 App.config do 
+
     app_name "Emm monitoring"
-    app_version 1.3
+    app_version 1.4
      
     # all stuff relative to the directories in the application
     directories do
@@ -42,7 +44,9 @@ App.config do
         
         test_file "test/NOKIA_LSMSS10_20140915221135_0723.DAT"
         
-        source :miles do
+        time_field_records "charging_start_time" 
+
+        source "miles" do
             direction :input
             protocol "sftp"
             host "miles"
@@ -50,37 +54,60 @@ App.config do
             password "Asd..asd"
             base_dir "/cdr/work/archive/raw"
             switch "LSMSS10","LSMSS11","LSMSS30"
+            regexp "*.dat *.DAT"
         end
 
-        source "rislan" do
+        source "barclay" do
             direction :input
             protocol "sftp"
-            host "rislan"
+            host "barclay"
             login "cgarnero"
             password "Asd..asd"
             switch "LSMSS31","ZHMSS20","ZHMSS21"
             base_dir "/cdr/work/archive/raw"
+            regexp "*.dat *.DAT"
         end
 
-        source "emm_crisser" do
+        source "emm_crissier" do
             direction :output
             protocol :sftp
             host "10.23.3.20"
             login "mmsuper"
             password "mediation"
             base_dir "/var/opt/mediation/MMStorage/ARCHIVAL/RAW/MSS"
+            #switch "LSMSS10"
             switch "LSMSS31","ZHMSS20","ZHMSS21","LSMSS10","LSMSS11","LSMSS30"
-            #sub_folders 3 # inside each switch folders, the cdr are organized into subfolders. This option specify the last N subfolder the monitoring tool must search into. It will take the N more recent ones.
+            sub_folders 1 # inside each switch folders, the cdr are organized into subfolders. This option specify the last N subfolder the monitoring tool must search into. It will take the N more recent ones.
         end
         
         ## create a "monitor", that will regroup the important info
         #together. A table will be named for each monitor, like
-        # MONITOR_MSS_BY_DEFAULT
-        monitor "by_default" do
+        # MONITOR_MSS_POC_INTERNATIONAL
+        #monitor "moc_international" do
+            #input "miles"
+            #output "emm"
+            ## interval % 1h == 0 || 1h % interval == 0
+            #time_interval 30.minutes
+            #filter_records "MOC" # if you want only specific records
+            ##If you wantspecific records details aggregation operation
+            ##careful : this will NOT be operated by the DB but by the script
+            ##itself. It might be slow if your computations are complex!
+            #filter_where :called_number do |n| 
+             ## return true if you want to analyse (i.e. process) this record 
+                #!n.starts_with?("021")
+            #end
+            #filter_where :calling_number do |n|
+                #n.end_with?("89")
+            #end
+        #end
+
+        monitor "types" do 
             input "miles"
-            output "emm"
-            time_interval 30.minute
+            output "emm_crissier"
+            time_interval 1.hours
         end
+
+        
     end
     
     database do

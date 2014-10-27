@@ -3,51 +3,37 @@
 ## Read the different directories listed in the config.cfg file
 ## check if they exists, mkdir if not
 
-require './config'
+require './config/config'
 
 def exists_or_create dir
-	print "Check directory #{Dir.pwd}/#{dir} ... "
+	str =  "Check directory #{dir} ... "
 	if !Dir.exists? dir
 		Dir.mkdir dir
-		print "created.\n"
+		str <<  "created.\n"
 	else
-		print "checked.\n"
+		str << "checked.\n"
 	end
+    Logger.<<(__FILE__,"INFO",str)
 end
-## check if the dir is specified in config
-def check_config dir
-	dir_ = EMMConfig[dir]
-    unless dir_
-        $stderr.puts "No #{dir} entry specified in config file" 
-        abort
+
+dirs = App.directories
+exists_or_create dirs.data
+flows = App.flows
+[:tmp,:store,:backup].each do |f|
+    instance_eval("exists_or_create dirs.#{f}")
+    instance_eval("exists_or_create dirs.#{f}(:output)")
+    flows.each do |flow|
+        path = instance_eval("App.directories.#{f}") 
+        path_out = instance_eval("App.directories.#{f}(:output)")
+        flow.switches.each do |sw|
+            str = "exists_or_create \"#{path}/#{sw}\""
+            str2 = "exists_or_create \"#{path_out}/#{sw}\""
+            instance_eval(str)
+            instance_eval(str2)
+        end
     end
-	dir_
 end
 
-#Check log 
-log_ = check_config "LOG_DIR"
-exists_or_create log_
+log = App.logging
+exists_or_create log.log_dir
 
-#Check data dirs
-data_ = check_config "DATA_DIR"
-exists_or_create  data_
-
-# check all subdirectories of data
-# based on rule DATA_######_DIR
-list_data_dir = EMMConfig.list_params.select { |p| p =~ /^DATA_(.*)_DIR$/ }.map {|d| EMMConfig[d] }
-Dir.chdir data_
-list_data_dir.each do |dir|
-	exists_or_create dir
-end
-
-# check MSS subdirectories
-list_mss_dir = EMMConfig.list_params.select { |p| p =~ /^MSS_SWITCHES_(.*)$/ }.map {|d| EMMConfig[d] }.flatten(1)
-list_data_dir.each do |data_dir|
-	Dir.chdir data_dir
-	list_mss_dir.each do |mss_dir|
-		exists_or_create mss_dir
-	end
-	Dir.chdir '..'
-end
-
-exit

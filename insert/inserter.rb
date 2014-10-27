@@ -21,15 +21,16 @@ module Inserter
         @@inserters[flow] = name
     end
 
-    def decode_file switch, file_path
-        flow = App.flow(@flow_name)
-        opts = { flow: @flow_name, filter: true, allowed: flow.records_allowed }
-        json = CDR::decode(file_path, opts )
-        Logger.<<(__FILE__,"INFO","Decoded #{file_path} from #{switch}") 
-        json
+   # just make a nice printing to the log
+    def log_file_summary file,records
+       str = "#{file.name} has been decoded ( "
+       arr = records.map do |record_type|
+           "#{record_type[:name]} => #{record_type[:values].size}"
+       end
+       str << arr.join(',') << " ) & inserted & backed up (zip)"
+       Logger.<<(__FILE__,"INFO",str)
     end
 
-   
     #fields is an array of fields
     #arr is a matrix of array values
     def insert_decoded_record file_name,switch,record_name,fields, values
@@ -47,7 +48,7 @@ module Inserter
         query << string_values_arr.join(',') << ";"
         @db.query(query)
 
-        Logger.<<(__FILE__,"INFO","Inserted  #{values.size} #{record_name} records from #{file_name} in db...") 
+        #Logger.<<(__FILE__,"INFO","Inserted  #{values.size} #{record_name} records from #{file_name} in db...") 
     end
 
     def insert_decoded_records file_name,switch,records
@@ -58,21 +59,21 @@ module Inserter
 
     # make the decoded files as processed in the cdr table 
     # so we wont decode them again next time .. !!!
-    # input is a flat list of files
+    # input is a flat list of files (CDR::File)
     def mark_processed_decoded_files files
         table = App.flow(@flow_name).table_cdr(@dir)
         sql = "UPDATE #{table} SET processed=1 WHERE file_name IN ( "
-        sql << files.map{ |f| "'#{f}'"}.join(',') << ");"
+        sql << files.map{ |f| "'#{f.name}'"}.join(',') << ");"
         @db.query(sql)
-        Logger.<<(__FILE__,"INFO","Mark as 'processed' #{files.size} files in db ...")
+        #Logger.<<(__FILE__,"INFO","Mark as 'processed' #{files.size} files in db ...")
     end
 
-    def backup_file switch, file
+    def backup_file switch,file
         require_relative '../get/fetchers'
         fetch = Fetchers::create(:LOCAL,{})
-        oldp = App.directories.store(@dir) + "/" + switch
         newp = App.directories.backup(@dir) + "/" + switch
-        fetch.download_files oldp,newp,[file]
+        file.zip!
+        fetch.download_files file.path,newp,[file.cname] 
     end
 
     class FileInserter
@@ -129,20 +130,22 @@ module Inserter
             Logger.<<(__FILE__,"INFO","Found #{count} files to decode & insert for #{@flow.name}:#{@dir}...");
             return unless count > 0
             @db.connect do 
-                iterate_over files do |switch,file|
-                    path = App.directories.store(@dir)+"/"+switch+"/"+file 
-
-                    records = decode_file switch, path
+                iterate_over files do |switch,f|
+                    path = App.directories.store(@dir)+"/"+switch
+                    file = CDR::File.new(f,path,search: true)
+                    opts = {filter: true, allowed: @flow.records_allowed.join(',') }
+                    records = file.decode! opts
 
                     if records.nil?
                         Logger.<<(__FILE__,"WARNING","Found null output for file #{file}")
                         next
                     end
 
-                    insert_decoded_records file,switch,records
+                    insert_decoded_records file.name,switch,records
 
                     mark_processed_decoded_files ([file])
                     backup_file switch,file
+                    log_file_summary file,records
                 end
             end
             Logger.<<(__FILE__,"INFO","Decoded & Inserted #{count} files ...")

@@ -1,0 +1,4 @@
+file_name:CHAR(40) NOT NULL
+processed:BOOLEAN DEFAULT 0 
+switch:CHAR(10)
+

@@ -16,42 +16,128 @@
 #   res.map { |k,v| ... }
 #end
 module CDR
-require './config/config'
-require 'open3'
+    require './config/config'
+    require 'open3'
+    require './util'
+    # helper class to facilitate the 
+    # different format of cdr, and compressed or not ,
+    # stored in subfolder ( ==> cname) etc.
+    class File
+        ## cname is the "real"  name
+        #  name is just the name of the cdr, without any others extensions
+        attr_accessor :name,:cname,:full_path
 
-    def self.decode file, opts = {}
-        unless opts[:flow]
-            raise "CDR Module:decode() No flow specified"
-        end
-
-        unless File.exists?(file)
-            raise "CDR Module:decode() File does not exists #{file}"
-        end
-
-        flow = opts[:flow].upcase.to_sym # to change after, guess automatically from name
-        raise "CDR Module:decode() Flow does not exists" unless App.flow(flow)
-        flow = App.flow(flow)
-        unless flow.decoder
-            raise "CDR Module:decode() Type has no decoder specified #{flow}"
-        end
-
-        case flow.name
-            when :MSS
-                out = decode_mss(file,opts)
-                return nil if out.size == 0
-                json = convert_json(out,:MSS,opts) 
+        def initialize(name,path,opts = {})
+            if opts[:search]
+                find_itself name,path
             else
-                raise "CDR Module:decode() Type is not implemented"
+                @name = remove_ext name
+                @path = path
+                @cname = name
+                @full_path = path + "/" + name
+            end
+            @flow = Util::flow name, return: :class
+        end
+
+        # custom writer so it updates relative attributes also
+        def path= param 
+            @path = param
+            @full_path = @path + "/" + @cname
+        end
+        def path
+            @path
+        end
+
+        def ==(other)
+            return true if @cname == other.cname && @path == other.path
+            return false
+        end
+        alias :eql? :== 
+        def hash
+            @cname.hash + @path.hash
+        end
+
+        # return true if the file is a zipped file
+        def zip?
+            find_itself unless @cname
+            if @cname.end_with?(".GZ") || @cname.end_with?(".gz")
+                return true
+            end
+            false
+        end
+
+        ## compress the file and change inner variables
+        def zip!
+            find_itself unless @full_path
+            cmd = "gzip -f #{@full_path}"
+            unless system(cmd)
+                Logger.<<(__FILE__,"ERROR","CDR::File could not zip itself (#{@cname}). Abort.");
+                abort
+            end
+            @cname = @name 
+            @full_path = @path + "/" + @cname       
+        end
+
+
+        def decode! opts = {}
+            find_itself unless @cname
+            unless ::File.exists?(@full_path)
+                Logger.<<(__FILE__,"ERROR","CDR::File does not exists #{@cname}")
+                abort
+            end
+            unless @flow.decoder
+                Logger.<<(__FILE__,"ERROR","CDR::File flow #{@flow} does not have any decoder.")
+                abort
+            end
+            unzip if zip?
+            meth = "decode_#{@flow.name.downcase}"
+            CDR::send(meth.to_sym,@full_path,opts)
+        end
+        def to_s
+            "CDR::File #{@name} (exists = #{::File.exists?(@path + "/" +@cname)}) Compressed : #{zip?}"
+        end
+
+        private
+
+        # will try to find the value of cname
+        # searching in the directory
+        def find_itself name,path
+            @full_path = nil
+            f = path + "/" + name
+            ["",".gz",".GZ"].each do |ext|
+                f_ = f + ext
+                if ::File.exists? f_
+                    @full_path = f_
+                    break
+                end
+            end
+            (Logger.<<(__FILE__,"ERROR","CDR:File cannot find it self ... #{path}/#{name}");abort;) unless @full_path
+            @cname = ::File.basename(@full_path)
+            @name = name
+            @path = path
+        end
+        # remove the extension pf the name
+        def remove_ext name
+            ::File.basename(name.gsub(/(\.GZ|\.gz)/,""))
+        end
+
+        def unzip
+            cmd = "gunzip #{@full_path}"
+            unless system(cmd)
+                Logger.<<(__FILE__,"ERROR","CDR::File uncompress error ...")
+            end
+            @cname = @name
+            @full_path = @path + "/" + @cname
         end
 
     end
-    
+
     # decode a MSS file data
     def self.decode_mss file,opts = {}
         flow = App.flow(:MSS)
-        decoder_cmd = flow.decoder      
+        decoder_cmd = flow.decoder + " "      
         if opts[:allowed]
-            decoder_cmd += " --allowed=#{flow.records_allowed} "
+            decoder_cmd += " --allowed=#{flow.records_allowed.join(',')} "
         end
         decoder_cmd += file
         if opts[:out]
@@ -67,46 +153,37 @@ require 'open3'
         if error
             raise "CDR Module:decode_mss() error while executing #{decoder_cmd}"
         end
-        out
+        return convert_json_mss out, opts
     end
 
-    # convert the output of the decoder 
-    # to json format output described at top
-    def self.convert_json raw,flow,opts = {}
-        return unless raw
-        if flow == :MSS
-            return convert_json_mss raw, opts
-        end
-    end
-    
     def self.convert_json_mss raw, opts = {}
-            out = []
-            rec = nil # current record flow we are examinating
-            indexes = nil # indexes to keep if filtering enabled
-            raw.split("\n").each do |line|
-                # line starting with ### are delimieter between different record flow
-                if line.start_with? "###"
-                    out << rec
-                    rec = nil
-                    indexes = nil
-                    next
-                end
-                ## no record selected yet, so there should be the definition of one 
-                if rec == nil
-                    fields = line.split(":")
-                    name = fields.shift # first value is the name of the record flow
-                    fields,indexes = filter(:MSS,fields) if opts[:filter]   
-                    rec =  { name: name, fields: fields, values: []} 
-                    next
-                end
-                # finally , the rest is pur data !
-                values = line.split(":")
-                # filter values for selected fields
-                values = values.values_at(*indexes) if (opts[:filter] && indexes)
-
-                rec[:values] << values
+        out = []
+        rec = nil # current record flow we are examinating
+        indexes = nil # indexes to keep if filtering enabled
+        raw.split("\n").each do |line|
+            # line starting with ### are delimieter between different record flow
+            if line.start_with? "###"
+                out << rec
+                rec = nil
+                indexes = nil
+                next
             end
-            out
+            ## no record selected yet, so there should be the definition of one 
+            if rec == nil
+                fields = line.split(":")
+                name = fields.shift # first value is the name of the record flow
+                fields,indexes = filter(:MSS,fields) if opts[:filter]   
+                rec =  { name: name, fields: fields, values: []} 
+                next
+            end
+            # finally , the rest is pur data !
+            values = line.split(":")
+            # filter values for selected fields
+            values = values.values_at(*indexes) if (opts[:filter] && indexes)
+
+            rec[:values] << values
+        end
+        out
     end
 
     # filter out the fields for the particular record
@@ -127,39 +204,7 @@ require 'open3'
         end
         return newFields,indexes
     end
-    ## test function 
-    # to launch when moving arch, or go to prod
-    # TO UPGRADE so it can fetch a file alone by flow etcetc
-    def self.test_decode opts = {}
-        unless opts[:flow] && App.flow(opts[:flow])
-            $stderr.puts "No flow specified"
-            abort
-        end
-        flow = App.flow(opts[:flow])
-        if opts[:file]
-            file = opts[:file]
-            puts "File specified : #{file}"
-        else
-            file = flow.test_file
-            puts "No file specified, switch to config file ... #{file}"
-        end
-        unless File.exists? file
-            $stderr.puts "File does not exists"        
-            abort
-        end
-        opts[:filter] = true
-        opts[:allowed] = true
-       # MSS TEST
-        begin
-            out = decode_mss(file,opts)
-            puts out
-            return  convert_json(out,:MSS)
-            #dump_table_file json, :MSS
-        rescue => e
-            $stderr.puts e.message + "\n" + e.backtrace.join("\n")
-            abort
-        end
-    end
+
 
 
     ## create a file used by create_tables
@@ -169,15 +214,15 @@ require 'open3'
     #the output of the decoder
     #snend this file to create_table after
     def self.dump_table_file json,file_name
-       open(file_name,"w") do |file|
+        open(file_name,"w") do |file|
             json.each do |record|
                 values = record[:values].first
                 record[:fields].each_with_index do |field,index|
-                   str = field + ":"
-                   str << "CHAR(#{values[index].length})"
-                   file.puts str
+                    str = field + ":"
+                    str << "CHAR(#{values[index].length})"
+                    file.puts str
                 end
             end
-       end
+        end
     end
 end

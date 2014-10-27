@@ -95,7 +95,7 @@ module App
 
     class Flow
         include Printer
-        [ :name,:out_suffix,:decoder,:test_file].each do |f|
+        [ :name,:out_suffix,:decoder,:test_file,:time_field_records].each do |f|
             Flow.class_eval(App.define_accessor(f))
         end
         ## create custom accessor when the direction is supplied
@@ -123,7 +123,7 @@ module App
         #   when specified cdr_fields_file , it will
         #   trigger the reading of the file 
         #   and put the fields into cdr_fields !!
-        [ :cdr_fields,:records_fields,:records_fields].each do |f|
+        [ :cdr_fields,:records_fields].each do |f|
             str = "def #{f.to_s + "_file"}(param=nil)
                         if param
                             @#{f.to_s + "_file"} = param
@@ -144,6 +144,7 @@ module App
             @name = name
             @sources = []
             @monitors = []
+            @records_allowed = []
         end
         def source  name, &block
             newSource = Source.new
@@ -159,6 +160,7 @@ module App
                     return @sources.select { |s| s.direction == search }
                 else
                     # we want source from a given name
+                    search = search.downcase.to_sym
                     return @sources.select { |s| s.name == search }.first
                 end
             else
@@ -169,19 +171,19 @@ module App
         ## return all the switches for this flow
         #  
         def switches
-            @sources.map { |s| s.switches }.flatten(1)
+            @sources.map { |s| s.switches }.flatten(1).uniq
         end
         
         def records_allowed *args
             if args.size == 0 ## no args, ==> accesssor
                 @records_allowed
             else ## affectation
-                @records_allowed = args.join(',')
+                @records_allowed +=  args
             end
         end
 
         def monitor name, &block
-            m = Monitor.new
+            m = Monitor.new self
             m.name name
             @monitors << m
             m.instance_eval(&block)
@@ -214,17 +216,20 @@ module App
 
     class Source
         include Printer
-        @@fields =[ :name,:direction, :host, :base_dir , :login,:password, :regexp ]
+        @@fields =[ :name,:direction, :host, :base_dir , :login,:password, :regexp,:sub_folders ]
         @@fields.each do |f|
             Source.class_eval(App.define_accessor(f))
         end
 
+        def initialize
+            @regexp = "*.DAT *.dat *.DAT.GZ *.DAT.gz *.dat.gz *.dat.GZ"
+        end
         def switch(*args)
             if !instance_variable_defined?(:@switches)
                 Source.class_eval(App.define_accessor("switches"))
                 @switches = []
             end
-            @switches = @switches + args
+            @switches = @switches +  args
         end
         def protocol(param = nil)
             if param 
@@ -240,25 +245,71 @@ module App
        [:input,:output].each do |f|
            str = "def #{f}(*param)
                     if param.size > 0
-                        @#{f} = @#{f} + param.map {|p| p.downcase.to_sym }
+                        @#{f} = @#{f} + param.map {|p| p.downcase}
                     else
                         @#{f}
                     end
                   end"
           Monitor.class_eval(str)
        end
+       alias :inputs :input
+       alias :outputs :output
 
-       [:time_interval,:aggregate_by,:name].each do |f|
+       [:time_interval,:filters,:flow,:table].each do |f|
            Monitor.class_eval(App.define_accessor(f))
        end
 
           
-        def initialize
+        def initialize flow
+            @flow = flow
             @input = []
             @output = []
-            self.aggregate_by :time # default
+            @filters = {}
+            @filter_records = flow.records_allowed
         end       
+    
+        def name (param = nil)
+            if param
+                @name = param.upcase
+                @table = "MON_#{@flow.name}_#{@name}"
+            else
+                @name
+            end
+        end
 
+        # only aggregate specific records
+        def filter_records *args
+            if args.size > 0 ## affectation
+                @filter_records =  args
+            else
+                @filter_records
+            end
+        end
+        # only aggregate records where the block for this field
+        # return true
+        def filter_where field,&block
+            filters[field.downcase.to_sym] = block
+        end
+
+        # return the column name for a given record name
+        # depending on the direction
+        def column_record name,dir = nil
+            if dir
+                if dir == :input
+                   return  name + "_IN"
+                elsif dir == :output
+                   return  name + "_OUT"
+                end
+            end
+            [name+"_IN",name+"_OUT"]
+        end
+
+        # return the switches where this monitor looks up
+        def switches
+            @switches ||= (@input + @output).map do |source|
+                @flow.sources(source).switches
+            end.flatten(1).uniq
+        end
     end
 
     class Database 
