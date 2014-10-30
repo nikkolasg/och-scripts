@@ -2,39 +2,40 @@
 # configuration ruby file dsl
 #
 #
-require './config/config.rb'
+class SuperTest
+    attr_accessor :value
+    def initialize value = nil
+        @value = value
+    end
+  def self.custom_class_method
+        self.new("CUSTOM VALUE")
+  end 
+end
+class Test < SuperTest 
+end
+class Test2 < SuperTest
+end
+def test_action(klass, action)
 
-class Test
+    klass.instance_eval do 
+        define_method action do |*args, &block|
+            puts "#{klass.name}(v = #{@value}) : #{action} => #{args.inspect}"
+            puts "BLOCK RESULT => #{instance_eval(&block)}" if block 
+        end
 
-    @actions = [:action1]
-    
-    def initialize(a1,a2=nil,opts = {})
-        if opts[:test]
-            puts "TEST OPTS"
-        else
-            puts "TEST INITIALIZE"
+        define_method :block_method do
+            "INSIDE CUSTOM DEFINED BLOCK METHOD"
         end
     end
-    def self.parse action
-
-        Test.send(action.to_sym)
-
-    end
-    def self.action1
-        puts "ACTION 1 CALLED!"
-    end
 end
-
+test_action(Test,:delete)
+test_action(Test2,:reset)
+t = Test.new "test"
+t2 = Test2.new "test2"
+t.delete "1","2"
+t2.reset "1","2"
+puts Test.custom_class_method.delete "youpi"
+t.delete ("?") { block_method }
 require './ruby_util'
-require './get/fetchers'
-require './get/getter'
-require './cdr'
-require './create_tables'
 require 'net/ssh'
-require './stats/process'
-i = 1 
-puts App.flow(:MSS).monitors.class
 
-mon = App.flow(:MSS).monitors.first
-
-Tables::create_table_monitors App.flow(:MSS)

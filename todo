@@ -1,8 +1,3 @@
--check for .gz files --> remove the ext when searching in db, + add field in db
-			so post pre processor can extract them and change in db a			after
-- check speed of sftp download -< maybe download everything in one batch instead
-				of directory per directory
-- check timestamp of cdr name , may not be related to timestamp of calls ... ???? wtf
 
 - make script to arrange table if fields modified in the records table,i.e. create /delete new field, and put default value for others,or reanalyse them
 
@@ -11,8 +6,6 @@ dependency: 	SImpleConfig
 		net/sftp
 		activesupport-4.1.6		
 
-CHECK ERROR : collector , if two database update, may be an error . ? check block begin / rescue NET::MySqlError => match/duplicate/ => RETRY !
-CHECK QUERY SIZE : for IN query on the server
 
 sql : select FROM_UNIXTIME(timest,"%k:%i %M %Y") as min from STATS_MSS group by min order by timest
 
@@ -21,5 +14,9 @@ unix_timestamp : date => timestamp
 
 
 CDR STATS => 5000-5500 records / cdr
-             150-200 cdr / day
+             150-200 cdr / day => MORE MORE MORE
              ==> 750000-1,100000 records / day
+
+TODO
+    - database parser requires rotation methods . TODO for cdr & records
+    - replace records_fields_file :dump  to automatically dump a file

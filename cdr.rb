@@ -32,7 +32,7 @@ module CDR
                 find_itself name,path
             else
                 @name = remove_ext name
-                @path = path
+                @path = path || ::File.dirname(name)
                 @cname = name
                 @full_path = path + "/" + name
             end

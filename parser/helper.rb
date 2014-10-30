@@ -5,8 +5,8 @@ module Parser
     # and verify its validity (i.e. verify if a folder exists,
     # if a flow exists etc)
     # return [ typeOfSubject, Subject ]
-    # typeOfSubject => :all,:flow,:files etc
-    def self.parse_subject argv
+    # typeOfSubject => :all,:flow,:backlog etc
+    def parse_subject argv
         (Logger.<<(__FILE__,"ERROR","Operation: No subject given. Abort");abort;) unless argv.size > 0
         sub = argv.shift.downcase.to_sym
         case sub
@@ -20,8 +20,13 @@ module Parser
             flow = App.flow(flow)
             (Logger.<<(__FILE__,"ERROR","Operation: flow unknown. Abort."); abort;) unless flow
             return [:flow, flow]
-
-        when :files
+        when :monitor
+            (Logger.<<(__FILE__,"ERROR","Operation: no monitor given ! Abort."); abort;) unless argv.size > 0
+            mon = argv.shift.upcase
+            (Logger.<<(__FILE__,"ERROR","Operation: monitor does not exists.Abort.");abort;) unless App.monitors.include? mon
+            mon = App.monitors mon
+            return [:monitor,mon]
+        when :backlog
             if argv.size > 0 ## folder specified
                 folder =  argv.shift 
                 folder = folder[0..-1] if folder[-1] == "/"
@@ -29,10 +34,10 @@ module Parser
                 (Logger.<<(__FILE__,"ERROR","Operation: folder does not exists ! Abort."); abort;) unless Dir.exists? folder
 
                 files = Dir.glob(folder + "/*")
-                return [:files,files]
+                return [:backlog,files]
             elsif (!$stdin.tty? && files = $stdin.read)
                 files = files.split("\n")
-                return [:files,files]
+                return [:backlog,files]
             else
                 Logger.<<(__FILE__,"ERROR","Operation: no files or folder specified .... Abort.")
                 abort
@@ -40,5 +45,21 @@ module Parser
         end
     end
 
+    def take_actions argv,action_flow,action_backlog,action_monitor = nil
+        type,sub = parse_subject argv
+
+        case type
+        when :all
+            App.flows.each do |flow|
+                action_flow.call(flow)
+            end
+        when :flow
+            action_flow.call(sub)
+        when :backlog
+            action_backlog.call(sub)
+        when :monitor 
+            action_monitor.call(sub) if action_monitor
+        end
+    end
 
 end

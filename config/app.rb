@@ -12,9 +12,9 @@
 #etc
 module Printer
     #def to_s
-        #instance_variables.each do |var|
-            #puts "#{var}  => " + instance_variable_get("#{var}").to_s
-        #end
+    #instance_variables.each do |var|
+    #puts "#{var}  => " + instance_variable_get("#{var}").to_s
+    #end
     #end
 end
 module App
@@ -30,6 +30,19 @@ module App
     def define_accessor f
         "def #{f}(param=nil); param.nil? ? @#{f} : (@#{f} = param);end"
     end
+    def define_inout_reader f
+        "def #{f} (param=nil);
+            if param
+                if param == :input
+                    return @#{f}
+                elsif param == :output
+                    return @#{f} + App.database.output_suffix
+                end
+            end
+            @#{f}
+         end"
+    end
+
 
     def flow name, &block
         name = name.upcase.to_sym
@@ -64,6 +77,14 @@ module App
         @directories.instance_eval(&block)
     end
 
+    # find a particular monitor
+    def monitors name
+        @flows.each do |flow|
+            mon = flow.monitors name
+            return mon if mon
+        end
+    end
+
     def config &block
         str = "Parsing config file ..."
         begin
@@ -71,6 +92,7 @@ module App
         rescue => e
             str << "Error ! #{e.message}"
             $stderr.puts str
+            abort
         end
         str << " Ok :) "
         Logger.<<(__FILE__,"INFO","#{App.app_name} (v. #{App.app_version}) starting")
@@ -95,7 +117,7 @@ module App
 
     class Flow
         include Printer
-        [ :name,:out_suffix,:decoder,:test_file,:time_field_records].each do |f|
+        [ :name,:decoder,:test_file,:time_field_records,:table_records_union,:table_cdr_union].each do |f|
             Flow.class_eval(App.define_accessor(f))
         end
         ## create custom accessor when the direction is supplied
@@ -104,21 +126,23 @@ module App
         # flow.table_cdr         ==> CDR_MSS (input is default)
         # flow.table_cdr(:output)==> CDR_MSS_OUT
         # flow.table_cdr "CDR_MSS" ==> affectation !
-        [ :table_cdr,:table_records,:table_stats ].each do |f|
+        [ :table_cdr,:table_records ].each do |f|
             str = "def #{f}(param=nil)
                     if param
                         if :input == param
                             return @#{f}
                         elsif :output == param
-                            return @#{f} + @out_suffix
+                            return @#{f} + App.database.output_suffix
                         else 
-                            @#{f} = param
+                            @#{f} = param.upcase
+                            @#{f}_union = @#{f} + '_UNION'
                         end
                     end
                     @#{f} 
                end"
-            Flow.class_eval(str)
+                            Flow.class_eval(str)
         end 
+        Flow.class_eval(App.define_inout_reader(:table_records_union)
         ## Create custom access
         #   when specified cdr_fields_file , it will
         #   trigger the reading of the file 
@@ -132,9 +156,9 @@ module App
                             @#{f.to_s + "_file"}
                         end
                    end"
-           ## define the fields attributes
-           Flow.class_eval(App.define_accessor(f))
-           Flow.class_eval(str)
+                            ## define the fields attributes
+                            Flow.class_eval(App.define_accessor(f))
+                            Flow.class_eval(str)
 
         end
 
@@ -173,7 +197,7 @@ module App
         def switches
             @sources.map { |s| s.switches }.flatten(1).uniq
         end
-        
+
         def records_allowed *args
             if args.size == 0 ## no args, ==> accesssor
                 @records_allowed
@@ -196,8 +220,10 @@ module App
                 @monitors
             end
         end
-           
+
+        
         private
+
         # read the fields, and create custom accessor for it
         # file must be in format
         # column_name:SQL TYPE
@@ -241,25 +267,27 @@ module App
     end
 
     class Monitor
-        
-       [:input,:output].each do |f|
-           str = "def #{f}(*param)
+
+        [:input,:output].each do |f|
+            str = "def #{f}(*param)
                     if param.size > 0
                         @#{f} = @#{f} + param.map {|p| p.downcase}
                     else
                         @#{f}
                     end
                   end"
-          Monitor.class_eval(str)
-       end
-       alias :inputs :input
-       alias :outputs :output
+                        Monitor.class_eval(str)
+        end
+        alias :inputs :input
+        alias :outputs :output
 
-       [:time_interval,:filters,:flow,:table].each do |f|
-           Monitor.class_eval(App.define_accessor(f))
-       end
+        [:time_interval,:filters,:flow,:table].each do |f|
+            Monitor.class_eval(App.define_accessor(f))
+        end
+        
+        App.define_inout_reader(:table_records)
+        App.define_inout_reader(:table_records_union)
 
-          
         def initialize flow
             @flow = flow
             @input = []
@@ -267,17 +295,18 @@ module App
             @filters = {}
             @filter_records = flow.records_allowed
         end       
-    
+
         def name (param = nil)
             if param
                 @name = param.upcase
                 @table = "MON_#{@flow.name}_#{@name}"
+                # used to store all the records analysed by this mon
+                @table_records = @table + "_RECORDS"
             else
-                @name
+                return @name
             end
         end
-
-        # only aggregate specific records
+            # only aggregate specific records
         def filter_records *args
             if args.size > 0 ## affectation
                 @filter_records =  args
@@ -296,9 +325,9 @@ module App
         def column_record name,dir = nil
             if dir
                 if dir == :input
-                   return  name + "_IN"
+                    return  name + "_IN"
                 elsif dir == :output
-                   return  name + "_OUT"
+                    return  name + "_OUT"
                 end
             end
             [name+"_IN",name+"_OUT"]
@@ -314,7 +343,7 @@ module App
 
     class Database 
         include Printer
-        @@fields = [:host,:name,:login,:password,:timestamp]
+        @@fields = [:host,:name,:login,:password,:timestamp,:output_suffix]
         @@fields.each do |f|
             Database.class_eval(App.define_accessor(f))
         end

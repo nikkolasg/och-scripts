@@ -4,13 +4,15 @@
 #i.e get, insert and process
 
 class OperationParser
-    require './parser/helper'
-    @usage = "Type can be all, flow , or files. If all, all flows will be operated on.
+    @usage = "Type can be all, flow , or backlog. If all, all flows will be operated on.
         With flow, you can specify which flow you wanna get in subject
-        With files, you can either specifiy a folder in subject, or send a list of fill path names of files via stdin"
+        With backlog, you can either specifiy a folder in subject, or send a list of fill path names of files via stdin"
 
-    @actions = [:get,:insert,:stats ]
-    class << self; attr_accessor :actions end
+    @actions = [:get,:insert,:process ]
+    class << self 
+        include './parser/helper'
+        attr_accessor :actions 
+    end
     ## special shortcut for operation since
     # theses will be the main action taken by monitor
     # so no need to specify "monitor operation get|insert" etc
@@ -24,45 +26,33 @@ class OperationParser
     end
 
     def self.get argv,opts
-        type,sub = Parser::parse_subject argv
         require './get/getter'
         Logger.<<(__FILE__,"INFO","Operation: GET on #{type}")
-        case type 
-        when :all
-            flows = App.flows
-            flows.each do |f|
-                Getter.create(f.name,opts).get
-            end
-        when :flow
-            Getter.create(sub.name,opts).get
-        when :files
-            opts[:files] = sub
-            Getter.create(:files,opts).get
-        end
+        flow_action = Proc.new { |flow|  Getter.create(flow.name,opts).get }
+        backlog_action = Proc.new { |files| 
+            opts[:files] = files
+            Getter.create(:backlog,opts).get
+        }
+
+        take_actions(argv,flow_action,backlog_action)
     end
 
     def self.get_usage
         "GET type [subject] 
-         #{OperationParser.usage}"
+        #{OperationParser.usage}"
     end
 
     def self.insert argv,opts
-        type, sub = Parser::parse_subject argv
         require './insert/inserter'
-        Logger.<<(__FILE__,"INFO","Operation: INSERT on #{type}")
-     
-        case type
-            when :all
-                flows = App.flows
-                flows.each do |f|
-                    Inserter.create(f.name,opts).insert
-                end
-            when :flow
-                Inserter.create(sub.name,opts).insert
-            when :files
-                opts[:files] = sub
-                Inserter.create(:files,opts).insert
-            end
+
+        flow_action = Proc.new { |flow| 
+            Inserter.create(f.name,opts).insert }
+
+        backlog_action = Proc.new { |files| 
+            opts[:files] = files
+            Inserter.create(:backlog,opts).insert }
+
+        take_actions argv,flow_action,backlog_action
     end
 
     def self.insert_usage
@@ -70,20 +60,18 @@ class OperationParser
         #{OperationParser.usage}"
     end
 
-    def self.stats argv,opts
-        require './stats/process'
-        type,sub = Parser::parse_subject argv
-        Logger.<<(__FILE__,"INFO","Operation: STATS on #{type}")
-        case type
-        when :all
-            flows = App.flows
-            flows.each do |f|
-                Stats::create(f.name,opts).compute
-            end
-        when :flow
-            Stats::create(sub.name,opts).compute
-        end
+    def self.process argv,opts
+        require './process/processer'
+        flow_action = Proc.new { |flow| 
+            Stats::create(f.name,opts).compute }
+        backlog_action = Proc.new { |files| 
+            Stats::create(sub.name,opts).compute }
+        monitor_action = Proc.new { |monitor| 
+            opts[:monitor] = monitor
+            Stats::create(monitor.flow.name,opts }
+        take_actions argv,flow_action,backlog_action,monitor_action
     end
+
     def self.stats_usage
     end
 

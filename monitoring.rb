@@ -45,12 +45,12 @@ def main
     ## shortcut for main operation, no need to specify type of operation
     when *OperationParser.actions
         OperationParser.parse(argv,opts)
-    when :setup
+    when :database
         argv.shift ## because here we specified the type of operation
-        SetupParser.parse(argv,opts)
-    when :reset
+        DatabaseParser.parse(argv,opts)
+    when :directories
         argv.shift
-        ResetParser.parse(argv,opts)
+        DirectoriesParser.parse(argv,opts)
     when :test
         argv.shift
         TestParser.parse(argv)
