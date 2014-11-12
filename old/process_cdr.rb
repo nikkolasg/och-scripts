@@ -9,7 +9,7 @@
 require 'optparse'
 require 'open3'
 require './config'
-require './datalayer'
+require './database'
 require './util'
 require './logger'
 
@@ -47,8 +47,8 @@ puts "Type: #{$type}, Table: #{$table}, Stats: #{$stats}" if $opts[:v]
 ## get files to be processed
 ## Hash[:folder] = [f1,f2,f3...]
 def new_files
-    db = Datalayer::MysqlDatabase.default
-    table = Datalayer::GenericTable.new(db,$table)
+    db = Database::Mysql.default
+    table = Database::GenericTable.new(db,$table)
     # generate the hash structure
     files = Util.folders($type).inject({}) {|col,f| col[f] = []; col}
     puts files.inspect

@@ -1,12 +1,38 @@
 #!/usr/bin/ruby
 
-require './config/config'
+require './config'
 require './ruby_util'
 module Util
     SEC_IN_MIN = 60
+  
+    DATE_FORMAT = "%Y%m%d"
+   
+    def self.date cuando,opts = {}
+        format = opts[:format] || DATE_FORMAT
+        cmd = "date '+#{format}' --date='#{cuando}'"
+        o,e,s = Open3.capture3(cmd)
+        unless s.success?
+            Logger.<<(__FILE__,"ERROR","While getting the date #{cmd} => #{e}.")
+            abort
+        end
+        return o.chomp
+    end
 
+   def self.array_avg arr
+      arr.inject(0) { |col,ar| col += ar.size } / arr.size
+   end
+    ## util that handles the directions flows
+    # use with blocks to execute for any directions
     def self.starts_for dir
-        if dir == :input || dir == :output
+        if dir.is_a?(Array) 
+           if !(dir & [:input,:output]).empty?
+            yield :input if block_given?
+            yield :output if block_given?
+           elsif dir.include? :both
+               yield :input if block_given?
+               yield :output if block_given?
+           end
+        elsif dir == :input || dir == :output
             yield dir if block_given?
         elsif dir == :both
             yield :input if block_given?
@@ -43,34 +69,24 @@ module Util
 
     # decompose time field into 
     # year month day etc.. 
-    def self.decompose time_field
+    def self.decompose time_field,granularity = :all
             # Year   Month  Day    Hours  Min    Secs
-       re = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/
+       re = /(\d{4})?(\d{2})?(\d{2})?(\d{2})?(\d{2})?(\d{2})?/
        return unless time_field.match re
-       return $1,$2,$3,$4,$5,$6
-    end
-	##
-	## Concat the path and return the full path 
-	## with the BASE_DIRECTORY + DATA_DIR
-    # Possible to specify from which direction you are working on
-    # input or output flow
-    # DEPRECATED
-	def self.data_path(*path)
-        opts = path.last.is_a?(Hash) ? path.pop : nil
-		str = EMMConfig['BASE_DIR'] + "/" + 
-              EMMConfig['DATA_DIR'] + "/" 
-        if opts && opts[:dir] && opts[:dir] == :output
-            str << "OUT/"
+        case granularity
+        when :year
+            return $1
+        when :month
+            return $1,$2
+        when :day
+            return $1,$2,$3
+        when :hour
+            return $1,$2,$3,$4
+        when :min 
+            return $1,$2,$3,$4,$5
+        when :sec, :all
+            return $1,$2,$3,$4,$5,$6
         end
-        str << path.join('/')
-        return str
-	end
-
-    # return the interger value of a direction of a flow
-    # for storing ind atabase
-    # DEPRECATED
-    def self.dir2int direction
-        direction == :input ? 0 : 1
     end
     # return the timestamp associated with
     # the filename of a cdr
@@ -90,38 +106,4 @@ module Util
         Time.at(timestamp).utc
     end
     
-    ## return list of folders for
-    # this flow of CDR
-    # folders used on the local machine in the
-    # DATA_STORE_DIR / DATA_BACK_DIR / DATA_TMP_DIR
-    # DEPRECATED !!!
-    def self.folders flow
-        flow = flow.upcase.to_sym
-        folders = []
-        case flow
-        when :MSS
-            switches = RubyUtil::arrayize EMMConfig["MSS_HOSTS"]
-            switches.each do |s|
-                folders << EMMConfig["#{s.upcase}_SWITCHES"]
-            end
-            folders.flatten!
-        when :gprs
-
-        else
-            folders = nil
-        end
-        folders
-    end
-
-    ## find the flow of cdr host is hosting and return its switches
-    #i.e. its folder where to find the raw cdrs
-    # make a check if it exists before
-    # DEPRECATED !!!
-    def self.switches host
-       flows = RubyUtil::arrayize EMMConfig["CDR_FLOWS"]
-       flows.each do |t|
-            next unless EMMConfig["#{t.upcase}_HOSTS"].include? host
-            return EMMConfig["#{host.upcase}_FOLDERS"]      
-       end 
-    end
 end

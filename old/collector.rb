@@ -11,7 +11,7 @@ require 'set'
 require './logger'
 require './config'
 require './fetchers'
-require './datalayer'
+require './database'
 require './util'
 
 class Collector

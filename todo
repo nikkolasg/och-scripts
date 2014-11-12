@@ -18,5 +18,14 @@ CDR STATS => 5000-5500 records / cdr
              ==> 750000-1,100000 records / day
 
 TODO
-    - database parser requires rotation methods . TODO for cdr & records
+    - FILTER MONITOR NOT WORKING !!! check allow? 
+    - make compressed the rotated tables ASK JAN 
+        => rotation like Jan cron job, midnight make today + yesterday => rotate
     - replace records_fields_file :dump  to automatically dump a file
+    - check rotator table so it can rotate the stats itself
+
+
+CHECK LIST : create a monitor with unknown source
+
+
+ton => international ==> called_number != start_with(041)

@@ -9,9 +9,11 @@ class OperationParser
         With backlog, you can either specifiy a folder in subject, or send a list of fill path names of files via stdin"
 
     @actions = [:get,:insert,:process ]
+    require './parser/helper'
+    
     class << self 
-        include './parser/helper'
         attr_accessor :actions 
+        include Parser
     end
     ## special shortcut for operation since
     # theses will be the main action taken by monitor
@@ -27,14 +29,10 @@ class OperationParser
 
     def self.get argv,opts
         require './get/getter'
-        Logger.<<(__FILE__,"INFO","Operation: GET on #{type}")
-        flow_action = Proc.new { |flow|  Getter.create(flow.name,opts).get }
-        backlog_action = Proc.new { |files| 
-            opts[:files] = files
-            Getter.create(:backlog,opts).get
-        }
+        ah = {}
+        ah[:flow] = Proc.new { |flow|  Getter.create(flow.name,opts).get }
 
-        take_actions(argv,flow_action,backlog_action)
+        take_actions(argv,ah)
     end
 
     def self.get_usage
@@ -44,15 +42,11 @@ class OperationParser
 
     def self.insert argv,opts
         require './insert/inserter'
-
+    
         flow_action = Proc.new { |flow| 
-            Inserter.create(f.name,opts).insert }
+            Inserter.create(flow.name,opts).insert }
 
-        backlog_action = Proc.new { |files| 
-            opts[:files] = files
-            Inserter.create(:backlog,opts).insert }
-
-        take_actions argv,flow_action,backlog_action
+        take_actions argv,{ flow: flow_action }
     end
 
     def self.insert_usage
@@ -63,13 +57,28 @@ class OperationParser
     def self.process argv,opts
         require './process/processer'
         flow_action = Proc.new { |flow| 
-            Stats::create(f.name,opts).compute }
-        backlog_action = Proc.new { |files| 
-            Stats::create(sub.name,opts).compute }
-        monitor_action = Proc.new { |monitor| 
+            opts[:flow] = flow
+            Stats::create(:generic,opts).compute }
+        monitor_action = Proc.new do |monitor| 
             opts[:monitor] = monitor
-            Stats::create(monitor.flow.name,opts }
-        take_actions argv,flow_action,backlog_action,monitor_action
+            opts[:flow] = monitor.flow
+            Stats::create(:generic,opts ).compute
+        end
+        ## will reprocess the input in "backlog" mode
+        backlog_action = Proc.new do |argv_|
+            hash = {}
+            hash[:monitor] = Proc.new do |monitor|
+                opts[:monitor] = monitor
+                Stats::create(:backlog,opts).compute
+            end
+            hash[:flow] = Proc.new do |flow|
+                opts[:flow] = flow
+                Stats::create(:backlog,opts).compute
+            end
+            take_actions argv_, hash
+        end
+
+        take_actions argv,{ flow: flow_action, monitor: monitor_action,backlog: backlog_action }
     end
 
     def self.stats_usage

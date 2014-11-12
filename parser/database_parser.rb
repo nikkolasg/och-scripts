@@ -1,82 +1,151 @@
 require_relative '../logger'
 
 class DatabaseParser
-    require './datalayer'
+    require './database'
 
     @actions = [:setup,:reset,:delete,:rotate,:dump]
+
+    require  './parser/helper'         
     class << self
         attr_accessor :actions
-        include './parser/helper'         
+        include Parser
     end
 
     def self.parse(argv,opts = {})
         (Logger.<<(__FILE__,"ERROR","No action given to database utility. Abort."); abort;) unless argv.size > 0
         action = argv.shift.downcase.to_sym
 
-        (Logger.<<(__FILE__,"ERROR","Database action unknown. Abort.");abort;) unless SetupParser.actions.include? action
+        (Logger.<<(__FILE__,"ERROR","Database action unknown. Abort.");abort;) unless self.actions.include? action
 
-        DatabaseParser.send(action,argv)
+        DatabaseParser.send(action,argv,opts)
     end
-    
+
     # create the tables used by the monitoring tool
     def self.setup argv, opts 
-        flow_action = Proc.new do |flow|
-            Tables::create_table_records flow
-            Tables::create_tables_monitors flow
-            Tables::create_tables_cdr flow
-            Logger.<<(__FILE__,"INFO","Created tables for the #{flow.name} flow.");
+        ah = {}
+        ah[:flow] = Proc.new do |flow|
+            Database::TableCreator.for flow do
+                cdr opts[:dir]
+                records opts[:dir]
+                monitor :all do
+                    table_stats
+                    table_records opts[:dir]
+                    table_records_backlog
+                end
+            end
         end
-        files_action = Proc.new do |files|
-            Logger.<<(__FILE__,"WARNING","No database setup for files.Abort.")
-            abort
+        ah[:cdr] = Proc.new do |flow|
+            Database::TableCreator.for flow { cdr opts[:dir] }
         end
-       
-        monitor_action = Proc.new do |monitor|
-            Datalayer::Tables::create_table_monitor monitor
+        ah[:records]= Proc.new do |flow|
+            Database::TableCreator.for flow { records opts[:dir] }
         end
-        take_actions argv,flow_action,files_action,monitor_action 
+        ah[:monitor] = Proc.new do |mon|
+            Database::TableCreator.for mon.flow do
+                monitor mon.name do
+                    table_stats
+                    table_records opts[:dir]
+                    table_records_backlog
+                end
+            end
+        end
+        take_actions argv,ah
     end
-    
+
     # flush the tables 
     def self.reset argv, opts
-        flow_action = Proc.new do |flow|
-            Datalayer::Tables::reset_monitor flow
-            Datalayer::Tables::reset_records flow
-            Datalayer::Tables::reset_cdr flow
+        ah = {}
+        ah[:flow] = Proc.new do |flow|
+            Database::TableReset.for flow do 
+                cdr opts[:dir]
+                records opts[:dir]
+                monitor :all do 
+                    table_stats
+                    table_records opts[:dir]
+                    table_records_backlog
+                end
+            end
+        end
+        ah[:cdr] = Proc.new do |flow|
+            Database::TableReset.for(flow) { cdr opts[:dir] }
+        end
+        ah[:record]= Proc.new do |flow|
+            Database::TableReset.for(flow) do
+                cdr opts[:dir] 
+                records opts[:dir]
+            end
         end
 
-        backlog_action = Proc.new do |files|
-            Logger.<<(__FILE__,"WARNING","No reset action for backlog yet.Abort.");
-            abort
+        ah[:monitor]= Proc.new do |mon|
+            Database::TableReset.for mon.flow do
+                monitor mon.name do 
+                    table_stats 
+                    table_records opts[:dir]
+                    table_records_backlog
+                end
+            end
         end
-        monitor_action = Proc.new do |monitor|
-            Datalayer::Tables::reset_monitor monitor.flow,monitor
-        end
-        take_actions argv,flow_action,backlog_action,monitor_action
+        take_actions argv,ah
     end
-    
+
     # delete the tables
     def self.delete argv, opts
-        flow_action = Proc.new do |flow|
-            Datalayer::Tables::delete_monitor flow
-            Datalayer::Tables::delete_records flow
-            Datalayer::Tables::delete_cdr flow
+        print = Proc.new do |subject,tables|
+            Logger.<<(__FILE__,"INFO","Deleted operation terminated for #{subject.name} => #{tables.join(',')}")
         end
-        backlog_action = Proc.new do |files|
-            Logger.<<(__FILE__,"WARNING","No delete action for backlog yet.Abort.")
-            abort
+        ahash = {}
+        ahash[:flow] = Proc.new do |flow|
+            Database::TableDelete.for flow do 
+                records opts[:dir]
+                records_union opts[:dir]
+                monitor :all  do
+                    table_stats
+                    table_records opts[:dir]
+                    table_records_backlog
+                end
+                cdr opts[:dir]
+            end
+            print.call(flow,[:records,:table_stats,:table_records,:cdr])
         end
-        monitor_action = Proc.new do |monitor|
-            Datalayer::Tables::delete_monitor monitor.flow,monitor
+        ahash[:cdr] = Proc.new do |flow|
+            Database::TableDelete.for(flow) { cdr opts[:dir] }
         end
+        ahash[:records] = Proc.new do |flow|
+            Database::TableDelete.for(flow) { records opts[:dir] }
+        end
+        ahash[:monitor] = Proc.new do |mon|
+            Database::TableDelete.for mon.flow do 
+                monitor mon.name do
+                    table_stats 
+                    table_records opts[:dir]
+                    table_records_backlog
+                end
+            end
+        end
+        take_actions argv,ahash
     end
-    
+
     # rotate the tables if necessary  
     def self.rotate argv, opts
-
+        ah = {}
+        ah[:flow] = Proc.new do |flow|
+            flow.monitors.each {|m| Database::TableRotator.monitors(m,opts) }
+            Database::TableRotator.records flow,opts
+            Database::TableRotator.cdr flow,opts
+        end
+        ah[:cdr] = Proc.new do |flow|
+            Database::TableRotator.cdr flow,opts
+        end
+        ah[:records] = Proc.new do |flow|
+            Database::TableRotator.records flow,opts
+        end
+        ah[:monitor] = Proc.new do |monitor|
+            Database::TableRotator.monitor monitor,opts
+        end
+        take_actions argv,ah
     end
 
-     def self.dump argv,opts
+    def self.dump argv,opts
         (Logger.<<(__FILE__,"ERROR","No flow specified to setup : dump action . Abort."); abort) unless argv.size > 0
         flow = argv.shift.upcase.to_sym
         (Logger.<<(__FILE__,"ERROR","Flow unknown to setup : dump action. Abort."); abort;) unless App.flow(flow)
@@ -84,7 +153,7 @@ class DatabaseParser
         test_file = CDR::File.new(flow.test_file)
 
         require './cdr'
-       
+
         opts = { flow: flow.name, allowed: flow.records_allowed }  
         json = test_file.decode test_file, opts
         file_name = App.directories.database_dump + "#{flow.name}_records_fields.db"
@@ -93,6 +162,6 @@ class DatabaseParser
         Logger.<<(__FILE__,"INFO","Dumped database file to #{file_name}")
     end
 
- 
-   
+
+
 end

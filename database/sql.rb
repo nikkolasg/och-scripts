@@ -1,4 +1,4 @@
-module Datalayer
+module Database
     require './logger'	
     require 'set'
     require 'mysql'
@@ -14,11 +14,13 @@ module Datalayer
         end
     end
 
-    class MysqlDatabase
+    class Mysql
+        CONNECTION_TRY = 5
+        attr_reader :con
         @@default_db = nil   
         def self.default
             db = App.database
-            MysqlDatabase.new(db.host,db.name,db.login,db.password)
+            Mysql.new(db.host,db.name,db.login,db.password)
         end
         def initialize(h,db,login,pass)
             @host = h
@@ -28,16 +30,40 @@ module Datalayer
             @con = nil
         end
 
+        def connect_
+            @con = ::Mysql.new(@host,@name,@pass,@db) unless @con
+            return test_connection
+        end
+        def test_connection
+            begin
+                return false unless @con
+                @con.ping()
+            rescue ::Mysql::Error => e
+                Logger.<<(__FILE__,"WARNING","Database not responding to ping...")
+                return false
+            end
+            return true
+        end
+
+
         ##
         ## Main method, must call every other method inside this method
         def connect
             safe_query do 
-                @con = Mysql.new(  @host,@name,@pass,@db) unless @con
-                Logger.<<($0,"INFO","Logged into #{@db} at #{@name}@#{@host}")
+                i = 0
+                connected = false
+                while (i < CONNECTION_TRY && !connected) do 
+                    connected = connect_
+                    i = i + 1
+                end
+                unless connected
+                    Logger.<<(__FILE__,"ERROR","Can not connect to DB ..Abort.")
+                    abort
+                end
+                Logger.<<(__FILE__,"INFO","Logged into #{@db} at #{@name}@#{@host}")
                 yield
                 @con.close if @con
-                Logger.<<($0,"INFO","Logged OUT from  #{@db} at #{@name}@#{@host}")
-
+                Logger.<<(__FILE__,"INFO","Logged OUT from  #{@db} at #{@name}@#{@host}")
             end
         end
         # useless for now	
@@ -46,11 +72,9 @@ module Datalayer
                 @con.close if @con 
             end
         end
-
         def  query(sql_query)
-            safe_query do 
-                @con.query(sql_query)  
-            end
+            #puts "#{@con}"
+            @con.query(sql_query)  
         end
 
         # display basic info on the database
@@ -65,10 +89,10 @@ module Datalayer
         ## Wrapper that handles exception
         ## and return the result for the query or true if no(result ^ exception)
         def safe_query()
-            ret = yield
+            ret = yield if block_given?
             return ( ret ? ret : true ) # return not nil, otherwise return true
-        rescue Mysql::Error => e
-            Logger.<<($0,"ERROR","#{e.errno}, #{e.error}")
+        rescue ::Mysql::Error => e
+            Logger.<<(__FILE__,"ERROR","#{e.errno}, #{e.error}")
             raise e 
         end
 
@@ -166,66 +190,6 @@ module Datalayer
         end
     end
 
-
-    class TableUtil
-       
-        def self.rename_table old_name,new_name
-            sql = "RENAME TABLE #{old_name} TO #{new_name}"
-            db = MysqlDatabase.default
-            db.connect do 
-                db.query(sql)
-            end
-        end
-        def self.reset_table table
-            sql = "DELETE FROM #{table};"
-            db = Datalayer::MysqlDatabase.default
-            db.connect do 
-                db.query(sql)
-            end
-        end
-        def self.delete_table table
-            sql = "DROP TABLE #{table} IF EXISTS;"
-            db = Datalayer::MysqlDatabase.default
-            db.connect do 
-                db.query sql
-            end
-        end
-        def self.reset_file_entries table, entries
-            sql = "DELETE FROM #{table} WHERE file_name IN "
-            sql << "(" << entries.map{|f| "'#{f}'"}.join(',') << ");"
-            db = Datalayer::MysqlDatabase.default
-            db.connect do
-                db.query(sql)
-            end
-        end
-
-        # return an array of table names  associated with this prefix 
-        def search_tables prefix_name
-            direction = prefix_name.include? App.database.output_suffix ?
-                :output : :input 
-            sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES " +
-                "  WHERE TABLE_NAME LIKE '#{prefix_name}%';" 
-            db = MysqlDatabase.default
-            names = []
-            db.connect do
-                res = db.query(sql)
-                res.each_hash do |row|
-                    names << row['TABLE_NAME']
-                end
-            end
-            ## FILTER names according to direction 
-            names.select do |name|
-                res = name.include? App.database.output_suffix
-                if direction == :input
-                    !res
-                elsif direction == :output
-                    res
-                end
-            end
-        end 
-
-    end
-
     class SqlGenerator
 
         def self.for_records table_name,records_fields
@@ -261,41 +225,42 @@ module Datalayer
         def self.for_cdr table_name
             sql = "CREATE TABLE IF NOT EXISTS 
             #{table_name}( 
-                file_id INT NOT NULL UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+                file_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
                 file_name CHAR(40) NOT NULL UNIQUE, 
                 processed BOOLEAN DEFAULT 0,
                 switch CHAR(10) NOT NULL,
-            #{App.database.timestamp} TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            #{App.database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             INDEX(processed),
-                )"
+            PRIMARY KEy(file_id)) "
             sql += "ENGINE=MYISAM"
             sql
         end
 
         def self.for_cdr_union table_name,opts
             sql = "CREATE TABLE IF NOT EXISTS 
-            #{table_name)}( 
+            #{table_name}( 
                 file_id INT NOT NULL UNSIGNED AUTO_INCREMENT,
-                file_name CHAR(40) NOT NULL UNIQUE, 
+                file_name CHAR(40) NOT NULL , 
                 processed BOOLEAN DEFAULT 0,
                 switch CHAR(10) NOT NULL,
-            #{App.database.timestamp} TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            #{App.database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             INDEX(processed),
-            INDEX(file_id)
-                )"
+            INDEX(file_id),
+            INDEX(file_name)
+                ) "
             sql += "ENGINE=MERGE UNION=(#{opts[:union].join(',')}) INSERT_METHOD=NO"
             sql
         end
 
-        def self.for_monitor monitor
-            sql = "CREATE TABLE IF NOT EXISTS #{monitor.table}"
+        def self.for_monitor_stats monitor
+            sql = "CREATE TABLE IF NOT EXISTS #{monitor.table_stats}"
             sql += "(#{App.database.timestamp} INT UNSIGNED UNIQUE DEFAULT 0, "
             maps = monitor.filter_records.map do |rec|
                 [ monitor.column_record(rec,:input) + " INT DEFAULT 0 ",
                   monitor.column_record(rec,:output) + " INT DEFAULT 0" ]
             end.flatten(1).join(',')
             sql += maps
-            sql += ");"
+            sql += ", PRIMARY KEY (#{App.database.timestamp}))"
             sql
         end
         def self.for_monitor_union
@@ -303,18 +268,27 @@ module Datalayer
         end
 
         def self.for_monitor_records table_name
-            sql =  "CREATE TABLE IF NOT EXISTS #{table_name}" +
-                " file_id INT PRIMARY KEY UNSIGNED NOT NULL," +
-                " #{App.database.timestamp} TIMESTAMP DEFAULT CURRENT_TIMESTAMP)" 
+            sql =  "CREATE TABLE IF NOT EXISTS #{table_name} (" +
+                " file_id INT UNSIGNED NOT NULL," +
+                " #{App.database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
+                " PRIMARY KEY (file_id))" 
             sql += " ENGINE=MYISAM"
             sql
 
         end
+        def self.for_monitor_records_backlog table_name
+            sql = "CREATE TABLE IF NOT EXISTS #{table_name} (" +
+                " file_id INT UNSIGNED NOT NULL AUTO_INCREMENT, " +
+                " file_name VARCHAR(40) UNIQUE, " +
+                " PRIMARY KEY (file_id)) " +
+                " ENGINE=MYISAM "
+                sql
+        end
 
         def self.for_monitor_records_union table_name,opts
-            sql =  "CREATE TABLE IF NOT EXISTS #{table_name}" +
+            sql =  "CREATE TABLE IF NOT EXISTS #{table_name} (" +
                 " file_id INT UNSIGNED NOT NULL,"+
-                " #{App.database.timestamp} TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
+                " #{App.database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP," +
                 " INDEX(file_id)) " 
             sql += "ENGINE=MERGE UNION=(#{opts[:union].join(',')} INSERT_METHOD=NO"
             sql

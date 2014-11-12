@@ -6,7 +6,7 @@
 ##
 require './fetchers'
 require './logger'
-require './datalayer'
+require './database'
 require './collector'
 
 @base_path = EMMConfig['MSS_BASE_DIR'].to_s
@@ -35,8 +35,8 @@ def execute
 	end
 
 	# prepare table 
-	database = Datalayer::MysqlDatabase.default
-	table = Datalayer::GenericTable.new(database,EMMConfig['DB_TABLE_CDR_MSS'])
+	database = Database::Mysql.default
+	table = Database::GenericTable.new(database,EMMConfig['DB_TABLE_CDR_MSS'])
 	database.connect do
 		# make the collector works its magic 
 		collector = Collector.new(table,coll_fetchers)

@@ -6,7 +6,7 @@
 # ## TODO make it guess the right table
 require 'optparse'
 require './config'
-require './datalayer'
+require './database'
 require './util'
 
 $opts = {}
@@ -76,7 +76,7 @@ end
 
 begin
 
-    db = Datalayer::MysqlDatabase.default
+    db = Database::Mysql.default
     db.connect do 
         process db
     end

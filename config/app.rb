@@ -10,19 +10,11 @@
 #   source.host
 #end
 #etc
-module Printer
-    #def to_s
-    #instance_variables.each do |var|
-    #puts "#{var}  => " + instance_variable_get("#{var}").to_s
-    #end
-    #end
-end
+require './ruby_util'
 module App
-
-    include Printer         
     ## MODULE    
     extend self
-    @@fields = [ :app_name,:app_version]
+    @@fields = [ :app_name,:app_version,:hosts]
     @@fields.each do |f|
         instance_eval("def #{f}(param=nil); param.nil? ? @#{f} : (@#{f} = param);end")
     end
@@ -43,9 +35,10 @@ module App
          end"
     end
 
+    RubyUtil::require_folder("config")
 
-    def flow name, &block
-        name = name.upcase.to_sym
+    def flow name_, &block
+        name = name_.upcase.to_sym
         # the "search flow function" is called here
         return find_flow(name) if !block_given?
 
@@ -54,34 +47,53 @@ module App
             instance_eval(define_accessor("flows"))
             @flows = []
         end
-        flow = Flow.new name
+        flow = App::Flow.new name
         @flows << flow
         flow.instance_eval(&block)
     end 
 
+    def flows
+        @flows
+    end
+
     def logging &block
         attr_accessor :logging
-        @logging = Logging.new
+        @logging = App::Logging.new
         @logging.instance_eval(&block)
     end
 
     def database &block
         attr_accessor :database
-        @database = Database.new
+        @database = App::Database.new
         @database.instance_eval(&block)
     end
 
     def directories &block
         attr_accessor :directories
-        @directories = Directories.new
+        @directories = App::Directories.new
         @directories.instance_eval(&block)
     end
 
     # find a particular monitor
-    def monitors name
+    def monitors name 
+        name = name.downcase.to_sym
         @flows.each do |flow|
-            mon = flow.monitors name
+            mon = flow.monitors(name)
             return mon if mon
+        end
+        nil
+    end
+
+    def host name, &block
+        @hosts ||= []
+        if block_given?
+            ## affectation
+            h = App::Host.new
+            h.name name
+            h.instance_eval(&block)
+            @hosts << h
+        else
+            return @hosts.select { |h|  h.name == name }.first
         end
     end
 
@@ -90,11 +102,12 @@ module App
         begin
             instance_eval(&block) 
         rescue => e
-            str << "Error ! #{e.message}"
-            $stderr.puts str
+            str << "Error ! #{e.message}\n#{e.backtrace.join("\n")}"
+            $stderr.puts str #Logger. is not ready yet 'cause uses the App.config
             abort
         end
         str << " Ok :) "
+        require './logger'
         Logger.<<(__FILE__,"INFO","#{App.app_name} (v. #{App.app_version}) starting")
         Logger.<<(__FILE__,"INFO",str)
     end
@@ -103,6 +116,8 @@ module App
     def find_flow name
         @flows.select { |f| f.name == name }.first
     end
+
+
     def summary
         puts "App Config Description : "
         to_s
@@ -115,234 +130,25 @@ module App
     #Flow, Source, Log, Directories, Database ...
     #########################################
 
-    class Flow
-        include Printer
-        [ :name,:decoder,:test_file,:time_field_records,:table_records_union,:table_cdr_union].each do |f|
-            Flow.class_eval(App.define_accessor(f))
-        end
-        ## create custom accessor when the direction is supplied
-        # u can call it like this
-        # flow.table_cdr(:input) ==> CDR_MSS
-        # flow.table_cdr         ==> CDR_MSS (input is default)
-        # flow.table_cdr(:output)==> CDR_MSS_OUT
-        # flow.table_cdr "CDR_MSS" ==> affectation !
-        [ :table_cdr,:table_records ].each do |f|
-            str = "def #{f}(param=nil)
-                    if param
-                        if :input == param
-                            return @#{f}
-                        elsif :output == param
-                            return @#{f} + App.database.output_suffix
-                        else 
-                            @#{f} = param.upcase
-                            @#{f}_union = @#{f} + '_UNION'
-                        end
-                    end
-                    @#{f} 
-               end"
-                            Flow.class_eval(str)
-        end 
-        Flow.class_eval(App.define_inout_reader(:table_records_union)
-        ## Create custom access
-        #   when specified cdr_fields_file , it will
-        #   trigger the reading of the file 
-        #   and put the fields into cdr_fields !!
-        [ :cdr_fields,:records_fields].each do |f|
-            str = "def #{f.to_s + "_file"}(param=nil)
-                        if param
-                            @#{f.to_s + "_file"} = param
-                            @#{f} = parse_fields_file(param)
-                        else
-                            @#{f.to_s + "_file"}
-                        end
-                   end"
-                            ## define the fields attributes
-                            Flow.class_eval(App.define_accessor(f))
-                            Flow.class_eval(str)
 
-        end
-
-
-
-        def initialize name
-            @name = name
-            @sources = []
-            @monitors = []
-            @records_allowed = []
-        end
-        def source  name, &block
-            newSource = Source.new
-            newSource.name (name.downcase.to_sym)
-            @sources << newSource
-            newSource.instance_eval(&block)
-        end
-
-        def sources search = nil
-            if search ## if we want specific source
-                if [:input,:output].include?( search)
-                    # we want sources from a given direction
-                    return @sources.select { |s| s.direction == search }
-                else
-                    # we want source from a given name
-                    search = search.downcase.to_sym
-                    return @sources.select { |s| s.name == search }.first
-                end
-            else
-                @sources
-            end
-        end
-
-        ## return all the switches for this flow
-        #  
-        def switches
-            @sources.map { |s| s.switches }.flatten(1).uniq
-        end
-
-        def records_allowed *args
-            if args.size == 0 ## no args, ==> accesssor
-                @records_allowed
-            else ## affectation
-                @records_allowed +=  args
-            end
-        end
-
-        def monitor name, &block
-            m = Monitor.new self
-            m.name name
-            @monitors << m
-            m.instance_eval(&block)
-        end
-        # accesor of monitors by name or all the monitors
-        def monitors name = nil
-            if name
-                @monitors.select { |m| m.name == name }
-            else
-                @monitors
-            end
-        end
-
-        
-        private
-
-        # read the fields, and create custom accessor for it
-        # file must be in format
-        # column_name:SQL TYPE
-        # output format is a Hash
-        # key => column_name
-        # value => sql type
-        def parse_fields_file file
-            hash = {}
-            File.read(file).split("\n").each do |line|
-                field,sql = line.split ':'
-                hash[field] = sql
-            end
-            hash
-        end
-    end
-
-    class Source
-        include Printer
-        @@fields =[ :name,:direction, :host, :base_dir , :login,:password, :regexp,:sub_folders ]
+    class Host
+        @@fields = [:name,:address,:login,:password,:protocol]
         @@fields.each do |f|
-            Source.class_eval(App.define_accessor(f))
-        end
-
-        def initialize
-            @regexp = "*.DAT *.dat *.DAT.GZ *.DAT.gz *.dat.gz *.dat.GZ"
-        end
-        def switch(*args)
-            if !instance_variable_defined?(:@switches)
-                Source.class_eval(App.define_accessor("switches"))
-                @switches = []
-            end
-            @switches = @switches +  args
+            Host.class_eval(App.define_accessor(f))
         end
         def protocol(param = nil)
             if param 
-                @protocol = param.upcase.to_sym
+                @protocol = param.downcase.to_sym
             else
                 @protocol
             end
         end
-    end
-
-    class Monitor
-
-        [:input,:output].each do |f|
-            str = "def #{f}(*param)
-                    if param.size > 0
-                        @#{f} = @#{f} + param.map {|p| p.downcase}
-                    else
-                        @#{f}
-                    end
-                  end"
-                        Monitor.class_eval(str)
-        end
-        alias :inputs :input
-        alias :outputs :output
-
-        [:time_interval,:filters,:flow,:table].each do |f|
-            Monitor.class_eval(App.define_accessor(f))
-        end
-        
-        App.define_inout_reader(:table_records)
-        App.define_inout_reader(:table_records_union)
-
-        def initialize flow
-            @flow = flow
-            @input = []
-            @output = []
-            @filters = {}
-            @filter_records = flow.records_allowed
-        end       
-
-        def name (param = nil)
-            if param
-                @name = param.upcase
-                @table = "MON_#{@flow.name}_#{@name}"
-                # used to store all the records analysed by this mon
-                @table_records = @table + "_RECORDS"
-            else
-                return @name
-            end
-        end
-            # only aggregate specific records
-        def filter_records *args
-            if args.size > 0 ## affectation
-                @filter_records =  args
-            else
-                @filter_records
-            end
-        end
-        # only aggregate records where the block for this field
-        # return true
-        def filter_where field,&block
-            filters[field.downcase.to_sym] = block
-        end
-
-        # return the column name for a given record name
-        # depending on the direction
-        def column_record name,dir = nil
-            if dir
-                if dir == :input
-                    return  name + "_IN"
-                elsif dir == :output
-                    return  name + "_OUT"
-                end
-            end
-            [name+"_IN",name+"_OUT"]
-        end
-
-        # return the switches where this monitor looks up
-        def switches
-            @switches ||= (@input + @output).map do |source|
-                @flow.sources(source).switches
-            end.flatten(1).uniq
+        def to_s 
+            "#{login}@#{name}(#{address})"
         end
     end
-
     class Database 
-        include Printer
+
         @@fields = [:host,:name,:login,:password,:timestamp,:output_suffix]
         @@fields.each do |f|
             Database.class_eval(App.define_accessor(f))
@@ -351,7 +157,7 @@ module App
     end
 
     class Logging
-        include Printer
+
         @@fields = [:log_dir,:stdout,:level_log,:level_email,:level_sms ]
         @@fields.each do |f|
             Logging.class_eval(App.define_accessor(f))
@@ -373,8 +179,8 @@ module App
     #  to directly transform relative path
     #  into full path
     class Directories
-        include Printer
-        [:app,:out_suffix,:database_dump].each do |f|
+
+        [:app,:output_suffix,:database_dump].each do |f|
             Directories.class_eval(App.define_accessor(f))
         end
 
@@ -410,7 +216,7 @@ module App
         # so calling method know what to do
         def dir field,param
             if param == :output || param == :out
-                field + @out_suffix
+                field + output_suffix
             elsif [:input,:in].include?(param) || !param
                 field
             else

@@ -14,51 +14,47 @@ module Parser
         when :all
             return [:all,nil]
 
-        when :flow
+        when :flow,:cdr,:records
             (Logger.<<(__FILE__,"ERROR","Operation: no flow given ! Abort."); abort;) unless argv.size > 0
-            flow = argv.shift.upcase.to_sym
-            flow = App.flow(flow)
-            (Logger.<<(__FILE__,"ERROR","Operation: flow unknown. Abort."); abort;) unless flow
-            return [:flow, flow]
+            flow_name = argv.shift
+            flow = App.flow(flow_name)
+            (Logger.<<(__FILE__,"ERROR","Operation: flow unknown(#{flow_name}). Abort."); abort;) unless flow
+            return [sub, flow]
         when :monitor
             (Logger.<<(__FILE__,"ERROR","Operation: no monitor given ! Abort."); abort;) unless argv.size > 0
             mon = argv.shift.upcase
-            (Logger.<<(__FILE__,"ERROR","Operation: monitor does not exists.Abort.");abort;) unless App.monitors.include? mon
-            mon = App.monitors mon
+            (Logger.<<(__FILE__,"ERROR","Operation: monitor does not exists.Abort.");abort;) unless (mon = App.monitors(mon))
             return [:monitor,mon]
         when :backlog
-            if argv.size > 0 ## folder specified
-                folder =  argv.shift 
-                folder = folder[0..-1] if folder[-1] == "/"
-
-                (Logger.<<(__FILE__,"ERROR","Operation: folder does not exists ! Abort."); abort;) unless Dir.exists? folder
-
-                files = Dir.glob(folder + "/*")
-                return [:backlog,files]
-            elsif (!$stdin.tty? && files = $stdin.read)
-                files = files.split("\n")
-                return [:backlog,files]
-            else
-                Logger.<<(__FILE__,"ERROR","Operation: no files or folder specified .... Abort.")
-                abort
-            end
+            # return the rest because so many possiblites
+            return [:backlog,argv]
         end
     end
 
-    def take_actions argv,action_flow,action_backlog,action_monitor = nil
+    # utility method to get DRY code
+    def take_actions (argv,hash)
         type,sub = parse_subject argv
 
         case type
         when :all
+            return unless hash[:flow]
             App.flows.each do |flow|
-                action_flow.call(flow)
+                hash[:flow].call(flow)
             end
         when :flow
-            action_flow.call(sub)
-        when :backlog
-            action_backlog.call(sub)
+            return unless hash[:flow]
+            hash[:flow].call(sub) 
+        when :cdr
+            return unless hash[:cdr]
+            hash[:cdr].call(sub) 
+        when :records
+            return unless hash[:records]
+            hash[:records].call(sub) 
         when :monitor 
-            action_monitor.call(sub) if action_monitor
+            return unless hash[:monitor]
+            hash[:monitor].call(sub)
+        when :backlog
+            hash[:backlog].call(sub) 
         end
     end
 

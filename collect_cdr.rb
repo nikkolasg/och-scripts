@@ -4,7 +4,7 @@
 
 require 'optparse'
 require './logger'
-require './datalayer'
+require './database'
 require 'open3'
 require 'json'
 require './ruby_util'
@@ -64,7 +64,7 @@ def fetch_files
 end
 
 def fetch_files_db
-    db = Datalayer::MysqlDatabase.default
+    db = Database::Mysql.default
     files = {}
     table = EMMConfig["DB_TABLE_CDR_#{$type}"]
     db.connect do 

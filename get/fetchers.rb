@@ -61,6 +61,7 @@ module Fetchers
             safe_fetch do
                 list_files = Set.new
                 var = "Search in #{path}  at #{@host}... "
+                cmd = "find #{path}"
                 cmd = "(cd #{path} && ls " ### dont know why cd alone doesn't work
                 cmd << "-td */" if opts[:directories]
                 cmd << opts[:regexp] if opts[:regexp]
@@ -74,8 +75,6 @@ module Fetchers
                 list_files
             end
         end
-
-
         # download a file
         # and return a handler so we can wait on it
         def download_file local_path,remote_path
@@ -150,7 +149,7 @@ module Fetchers
             cmd << remote_files.map{ |f| old_dir + "/" + f }.join(" ")
             error = nil
             Open3.popen3(cmd) do |stdin,stdout,stderr,thr|
-                error = stderr.read if (stderr.ready? &&!thr.value.success?)
+                error = stderr.read if (stderr.ready? && !thr.value.success?)
             end
             if error
                 Logger.<<(__FILE__,"ERROR","Local Fetcher: error while mv #{error}")
