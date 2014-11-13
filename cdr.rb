@@ -74,9 +74,10 @@ module CDR
             out,err,s = Open3.capture3(cmd)
             unless s.success?
                 Logger.<<(__FILE__,"ERROR","CDR::File could not zip itself (#{@cname}). #{err}.Abort.");
-                abort
+                return false
             end
             find_itself @full_path    
+            true
         end
 
         def to_s
@@ -86,9 +87,11 @@ module CDR
             cmd = "gunzip -f #{@full_path}"
             unless system(cmd)
                 Logger.<<(__FILE__,"ERROR","CDR::File uncompress error ...")
+                return false
             end
             @cname = @name
             @full_path = @path + "/" + @cname
+            return true
         end
 
         def delete
@@ -138,7 +141,7 @@ module CDR
                 values = record[:values].first
                 record[:fields].each_with_index do |field,index|
                     str = field + ":"
-                    str << "CHAR(#{values[index].length})"
+                    str << "CHAR(#{values[index].length}) DEFAULT ''"
                     file.puts str
                 end
             end

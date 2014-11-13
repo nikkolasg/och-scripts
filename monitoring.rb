@@ -42,42 +42,24 @@ end
 defaults
 opt_parse.parse!
 
-def main
-    unless ARGV[0] && ARGV[1]
-        $stderr.puts "Not enough argument ..."
-        abort
+def main2 args,opts
+    argv = args.clone
+    opt = opts.clone
+    opt[:argv] = argv.clone ## so parser can still get the full line if needed
+    RubyUtil::require_folder("parser")
+    #Dir["parser/*"].each { |f| require "./#{f}" }
+    
+    word = argv.shift.downcase.to_sym
+    
+    Parser::constants.each do |parser|
+        next unless Parser::const_get(parser)::KEYWORDS.include? word
+        Parser::const_get(parser).parse(argv,opt)
+        break # only one operation at a time !
     end
-
-    Dir["parser/*"].each { |f| require "./#{f}" }
-    # defines operation and subject
-    $ope = ARGV[0].downcase.to_sym
-    opts = $opts.clone
-    argv = ARGV.clone
-    case $ope
-        ## shortcut for main operation, no need to specify type of operation
-    when *OperationParser.actions
-        OperationParser.parse(argv,opts)
-    when :database
-        argv.shift ## because here we specified the type of operation
-        DatabaseParser.parse(argv,opts)
-    when :directories
-        argv.shift
-        DirectoriesParser.parse(argv,opts)
-    when :test
-        argv.shift
-        TestParser.parse(argv)
-    when :usage
-        puts "OPERATION ===>\n\t"
-        puts OperationParser.usage.join("\n\t")
-        puts "SETUP    ===>\n\t"
-        puts SetupParser.usage.join("\n\t")     
-    else
-        $stderr.puts "Operation unknown :( #{$ope} " 
-        abort
-    end
+    
+    Logger.<<(__FILE__,"INFO","Closing monitoring tool ...")
 end
 
-
-main
+main2 ARGV,$opts
 
 

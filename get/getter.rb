@@ -27,7 +27,7 @@ module Getter
     # Will return the files that are already contained in the database
     # from the given list of files
     def filter_db_files remote_files
-        return if remote_files.empty?
+        return {} if remote_files.empty?
         db = Database::Mysql.default
         files = {}
         table = App.flow(@flow_name).table_cdr(@direction)

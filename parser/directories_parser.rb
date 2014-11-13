@@ -1,7 +1,7 @@
 require_relative '../logger'
-
+module Parser
 class  DirectoriesParser
-
+    KEYWORDS = [:directories]
     @actions = [:setup,:reset]
     require './parser/helper'
     class << self
@@ -55,4 +55,5 @@ class  DirectoriesParser
         take_actions argv,{flow: flow,cdr: cdr,records: records}
     end
 
+end
 end

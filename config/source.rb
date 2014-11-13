@@ -3,7 +3,7 @@ module App
     class Source
         require './decoder'
         require './file_manager'
-        @@fields =[ :name,:direction, :host, :base_dir ,:decoder,:flow,:file_manager ]
+        @@fields =[ :name,:direction, :host, :base_dir ,:decoder,:flow,:file_manager,:test_file ]
         @@fields.each do |f|
             Source.class_eval(App.define_accessor(f))
         end

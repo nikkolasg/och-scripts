@@ -112,9 +112,6 @@ module Stats
             @flow = flow
             @monitors = opts[:monitor] ? RubyUtil::arrayize(opts[:monitor]) : @flow.monitors
             @current = nil # current monitor being analysed
-            # Cache proxy that stores the results of the filters
-            # for each monitors for each value
-            @monitors_filters_done = Hash.new { |h,k| h[k] = {} }
             ## represent the stats itself (number of records with bla bla bla
             # organized by
             # Monitor => Time(formatted) => Type of record => direction => number =)
@@ -174,19 +171,8 @@ module Stats
 
             # check if all filters return true !
             @current.filters.each do |field,block|
-                # check if we have results cached
-                if @monitors_filters_done[@current.name].key? field 
-                    # this filter let pass , so we check next on
-                    if @monitors_filters_done[@current.name][field] == true
-                        next
-                    else # this filter does not pass so directly say no !
-                        return false
-                    end
-                end
-
                 # caching results
                 out = block.call(record[field])
-                @monitors_filters_done[@current.name][field] = out
                 if out == true
                     next
                 else
@@ -194,7 +180,6 @@ module Stats
                 end
             end
             return true
-
         end
 
 

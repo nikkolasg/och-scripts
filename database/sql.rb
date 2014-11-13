@@ -50,6 +50,9 @@ module Database
         ## Main method, must call every other method inside this method
         def connect
             safe_query do 
+                if @con ## if we already are connected
+                    yield
+                else
                 i = 0
                 connected = false
                 while (i < CONNECTION_TRY && !connected) do 
@@ -63,7 +66,9 @@ module Database
                 Logger.<<(__FILE__,"INFO","Logged into #{@db} at #{@name}@#{@host}")
                 yield
                 @con.close if @con
+                @con = nil
                 Logger.<<(__FILE__,"INFO","Logged OUT from  #{@db} at #{@name}@#{@host}")
+                end
             end
         end
         # useless for now	
@@ -196,12 +201,8 @@ module Database
             sql =  "CREATE TABLE IF NOT EXISTS #{table_name} (
         id INT UNSIGNED NOT NULL AUTO_INCREMENT,
         file_id INT UNSIGNED NOT NULL,
-        switch CHAR(10) NOT NULL,
-        name CHAR(10) NOT NULL,
-        processed BOOLEAN DEFAULT 0,
             #{ records_fields.map { |k,v| "#{k} #{v}"}.join(',') },
         PRIMARY KEY (id),
-        INDEX (processed),
         INDEX (file_id)) "
             sql += " ENGINE=MYISAM"
             sql
@@ -211,12 +212,8 @@ module Database
             sql =  "CREATE TABLE IF NOT EXISTS #{table_name} (
         id INT UNSIGNED NOT NULL AUTO_INCREMENT,
         file_id INT UNSIGNED NOT NULL,
-        switch CHAR(10) NOT NULL,
-        name CHAR(10) NOT NULL,
-        processed BOOLEAN DEFAULT 0,
             #{ records_fields.map { |k,v| "#{k} #{v}"}.join(',') },
         INDEX (id),
-        INDEX (processed),
         INDEX (file_id)) "
             sql += "ENGINE=MERGE UNION=(#{opts[:union].join(',')}) INSERT_METHOD=NO"
             sql
@@ -228,10 +225,10 @@ module Database
                 file_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
                 file_name CHAR(40) NOT NULL UNIQUE, 
                 processed BOOLEAN DEFAULT 0,
-                switch CHAR(10) NOT NULL,
             #{App.database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             INDEX(processed),
-            PRIMARY KEy(file_id)) "
+            INDEX(file_name),
+            PRIMARY KEY(file_id)) "
             sql += "ENGINE=MYISAM"
             sql
         end
@@ -242,7 +239,6 @@ module Database
                 file_id INT NOT NULL UNSIGNED AUTO_INCREMENT,
                 file_name CHAR(40) NOT NULL , 
                 processed BOOLEAN DEFAULT 0,
-                switch CHAR(10) NOT NULL,
             #{App.database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             INDEX(processed),
             INDEX(file_id),
@@ -251,7 +247,8 @@ module Database
             sql += "ENGINE=MERGE UNION=(#{opts[:union].join(',')}) INSERT_METHOD=NO"
             sql
         end
-
+        
+        ## TODO
         def self.for_monitor_stats monitor
             sql = "CREATE TABLE IF NOT EXISTS #{monitor.table_stats}"
             sql += "(#{App.database.timestamp} INT UNSIGNED UNIQUE DEFAULT 0, "

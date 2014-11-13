@@ -69,6 +69,19 @@ module  App
             end
             [name+"_IN",name+"_OUT"]
         end
+        # return ALL the columns for the records table
+        # with the corresponding sql statement
+        def stats_columns
+            h = { App.database.timestamp => "INT UNSIGNED UNIQUE DEFAULT 0" }
+            h2 = @filter_records.inject({}) do |col,rec|
+                var = column_record(rec)
+                col[var[0]] = "INT DEFAULT 0"
+                col[var[1]] = "INT DEFAULT 0"
+                col
+            end
+            h.merge! h2
+            return h
+        end
 
         # return the switches where this monitor looks up
         def switches

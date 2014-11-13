@@ -88,8 +88,6 @@ def custom_method arr
 end
 
 require './ruby_util'
-
-arr = (0..55).to_a
-RubyUtil::partition arr do |sub|
-    puts "Partition size #{sub.size} : #{sub.inspect}"
-end
+require './config'
+require './database'
+ puts App.logging.inspect

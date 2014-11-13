@@ -168,7 +168,6 @@ module Inserter
             iterate_over files do |switch,id,name|
                 file_path = base_path + "/" + switch + "/" + name
                 file = CDR::File.new(file_path,search: true)
-                file.unzip! if file.zip?
                 records = @decoder.decode file
                 if records.nil?
                     Logger.<<(__FILE__,"WARNING","Found null output for file #{file}")

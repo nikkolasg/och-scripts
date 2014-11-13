@@ -3,7 +3,7 @@
 ## Read the different directories listed in the config.cfg file
 ## check if they exists, mkdir if not
 
-require './config/config'
+require './config'
 
 def exists_or_create dir
 	str =  "Check directory #{dir} ... "

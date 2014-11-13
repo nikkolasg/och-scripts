@@ -153,6 +153,11 @@ module App
         @@fields.each do |f|
             Database.class_eval(App.define_accessor(f))
         end
+        def initialize
+            @output_suffix = "_OUT"
+            @timestamp = "timest"
+        end
+
 
     end
 
@@ -162,9 +167,10 @@ module App
         @@fields.each do |f|
             Logging.class_eval(App.define_accessor(f))
         end
-
+        
+        ## since we expect a hash, ruby automatically 
+        #merge the different arguments together
         def levels (args)
-
             if !instance_variable_defined?(:@log_level)
                 Logging.class_eval(App.define_accessor("log_level"))
                 @log_level = {}
@@ -184,6 +190,10 @@ module App
             Directories.class_eval(App.define_accessor(f))
         end
 
+        def initialize
+            @output_suffix = "_out"
+            @database_dump = "dump"
+        end
         def data(param=nil)
             if !param
                 @data

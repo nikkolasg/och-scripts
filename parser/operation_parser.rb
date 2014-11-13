@@ -2,13 +2,14 @@
 #Class that will handle the parsing 
 #of all common operation 
 #i.e get, insert and process
-
+module Parser
 class OperationParser
     @usage = "Type can be all, flow , or backlog. If all, all flows will be operated on.
         With flow, you can specify which flow you wanna get in subject
         With backlog, you can either specifiy a folder in subject, or send a list of fill path names of files via stdin"
-
+    
     @actions = [:get,:insert,:process ]
+    KEYWORDS = @actions
     require './parser/helper'
     
     class << self 
@@ -19,10 +20,11 @@ class OperationParser
     # theses will be the main action taken by monitor
     # so no need to specify "monitor operation get|insert" etc
     # so there's no check on "operation" key word, and we 
-    # directly take the action from argv
+    # directly take the action from argv (from the opts since it has been removed)
     def self.parse argv, opts = {}
-        action = argv.shift.downcase.to_sym
-        (Logger.<<(__FILE__,"ERROR","Opertion: action unknown. Abort"); abort;) unless OperationParser.actions.include? action
+
+        action = opts[:argv].shift.downcase.to_sym
+        (Logger.<<(__FILE__,"ERROR","Operation: action unknown (#{action}). Abort"); abort;) unless OperationParser.actions.include? action
 
         OperationParser.send(action,argv, opts)
     end
@@ -92,4 +94,5 @@ class OperationParser
         end
         str
     end
+end
 end

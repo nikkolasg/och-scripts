@@ -1,7 +1,32 @@
 module Database
 
     class TableUtil
-       
+        
+       def self.list_tables db = nil
+          db = db || Mysql.default 
+          arr = []
+          db.connect do
+              arr = db.con.list_tables
+          end
+          return arr
+       end
+       def self.list_fields table,db = nil
+           return [] unless table
+           db = db || Mysql.default
+           arr = []
+           db.connect do 
+               arr = db.query("SELECT * FROM #{table} LIMIT 1").fetch_fields
+           end
+           return arr.map {|f| f.name }
+       end
+              
+        def self.add_field table,name, type
+            sql = "ALTER TABLE #{table} ADD COLUMN #{name} #{type}"
+            db = Mysql.default
+            db.connect do 
+                db.query(sql)
+            end
+        end
         def self.rename_table old_name,new_name
             sql = "RENAME TABLE #{old_name} TO #{new_name}"
             db = Mysql.default

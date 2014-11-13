@@ -20,7 +20,6 @@ module Stats
         end 
 
         def initialize
-            @monitors_filters_done = Hash.new {|h,k| h[k] = {} }
             ## definition see GenericStats
             @monitors_stats = Hash.new do |hash,key|
                 dir = { input: 0 , output: 0 }
@@ -167,7 +166,6 @@ module Stats
             counter = 0
             @num_rows = @files.size
             @files.each do |file,switch|
-                file.unzip! if file.zip?
                 json = decoder.decode file
                 json.each do |name,hash|
                     fields = {}
@@ -201,22 +199,13 @@ module Stats
         end
 
         def allowed? fields,row
+            
             # check if all filters return true !
             @current.filters.each do |field,block|
-                # check if we have results cached
-                if @monitors_filters_done[@current.name].key? field 
-                    # this filter let pass , so we check next on
-                    if @monitors_filters_done[@current.name][field] == true
-                        next
-                    else # this filter does not pass so directly say no !
-                        return false
-                    end
-                end
-
-                # caching results
-                out = block.call(record[field])
-                @monitors_filters_done[@current.name][field] = out
-
+                ind = fields[field] ## check if field exists
+                return false unless ind # otherwise filter out
+                #field is a hash with index as vlue
+                out = block.call(row[ind])
                 if out == true
                     next
                 else
@@ -224,11 +213,9 @@ module Stats
                 end
             end
             return true
-
-
         end
-
     end
+
     class FlowBacklogStats < BacklogStats
         def initialize flow,opts
             @flow = flow

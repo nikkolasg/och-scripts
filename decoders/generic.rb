@@ -27,6 +27,14 @@ module Decoder
             Logger.<<(__FILE__,"ERROR","Decoder::decode File does not exists #{file.full_path}")
             abort
         end
+        if file.zip?
+            res =file.unzip!
+            unless res
+                Logger.<<(__FILE__,"ERROR","Decoder:: unzip file error #{file.name}")
+                return false
+            end
+        end
+        return true
     end
 
     ## execute the given command and sends back the results

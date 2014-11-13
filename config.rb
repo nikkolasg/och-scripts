@@ -20,6 +20,13 @@ App.config do
         protocol :sftp
     end
 
+    host "emm_zurich" do 
+        address "10.23.11.20"
+        login "mmsuper"
+        password "mediation"
+        protocol :sftp
+    end
+
     # all stuff relative to the directories in the application
     directories do
         ## base directory of the app
@@ -32,7 +39,7 @@ App.config do
         backup "backup"
         output_suffix "_out" ## append suffix for output flow direction
 
-        database_dump "database/" # table schema file will be dumped here
+        database_dump "dump" # table schema file will be dumped here
                                   # format column_name: SQL TYPE
     end
 
@@ -43,14 +50,13 @@ App.config do
 
         records_fields_file "MSS_records_fields.db" 
         
-        test_file "test/NOKIA_LSMSS10_20140915221135_0723.DAT"
         
         # which fields represents the best the time to sort the file on
         time_field_records "charging_start_time" 
 
         source "emm_output" do 
             direction :output
-            host "emm_crissier"
+            host "emm_zurich"
             base_dir "/var/opt/mediation/MMStorage/ARCHIVAL/DIST/MSS/QVANTEL"
             switch *%w(LSMSS10 LSMSS11 LSMSS30 LSMSS31 ZHMSS20 ZHMSS21 FLMSS01)
             #switch "LSMSS10"
@@ -63,12 +69,11 @@ App.config do
 
         source "emm_input" do
             direction :input
-            host "emm_crissier"
+            host "emm_zurich"
             base_dir "/var/opt/mediation/MMStorage/ARCHIVAL/RAW/MSS"
             switch "LSMSS31","ZHMSS20","ZHMSS21","LSMSS10","LSMSS11","LSMSS30","FLMSS01"
             #switch "LSMSS10"
             decoder :NKM15Decoder
-
             options subfolders: true, 
                     min_date: "today" 
         end
@@ -84,14 +89,10 @@ App.config do
             output "emm_output"
             time_interval 1.hours
             filter_where :called_number_ton do |f|
-               res = f == "05"
-               puts "called_number_ton #{f} => #{res}"
-               res
+               f.chomp == "05"
             end
             filter_where :called_number do |f|
-               res = !f.start_with?("41")
-               puts "called_number #{f} => #{res}"
-               res
+               !f.chomp.start_with?("41")
             end 
         end
         

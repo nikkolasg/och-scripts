@@ -25,36 +25,36 @@ module Parser
             mon = argv.shift.upcase
             (Logger.<<(__FILE__,"ERROR","Operation: monitor does not exists.Abort.");abort;) unless (mon = App.monitors(mon))
             return [:monitor,mon]
+        when :source
+            (Logger.<<(__FILE__,"ERROR","Operation: source not specified ! Abort."); abort) unless argv.size > 0
+            name = argv.shift
+            source = App.flows.inject([]) do |col,flow|
+                s = flow.sources(name)
+                col << s if s
+            end.first
+            (Logger.<<(__FILE__,"ERROR","Operation: source does not exists! Abort.");abort) unless source
+            return [:source,source]
         when :backlog
             # return the rest because so many possiblites
             return [:backlog,argv]
+        else
+            Logger.<<(__FILE__,"ERROR","Subject parsing error : #{argv.inspect}")
+            raise "Parsing error"
         end
     end
 
     # utility method to get DRY code
     def take_actions (argv,hash)
         type,sub = parse_subject argv
-
+    
         case type
         when :all
             return unless hash[:flow]
             App.flows.each do |flow|
                 hash[:flow].call(flow)
             end
-        when :flow
-            return unless hash[:flow]
-            hash[:flow].call(sub) 
-        when :cdr
-            return unless hash[:cdr]
-            hash[:cdr].call(sub) 
-        when :records
-            return unless hash[:records]
-            hash[:records].call(sub) 
-        when :monitor 
-            return unless hash[:monitor]
-            hash[:monitor].call(sub)
-        when :backlog
-            hash[:backlog].call(sub) 
+        else
+            hash[type].call(sub) if hash[type]
         end
     end
 

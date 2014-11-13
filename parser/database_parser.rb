@@ -1,8 +1,8 @@
 require_relative '../logger'
-
+module Parser
 class DatabaseParser
     require './database'
-
+    KEYWORDS = [:database]
     @actions = [:setup,:reset,:delete,:rotate,:dump]
 
     require  './parser/helper'         
@@ -24,7 +24,7 @@ class DatabaseParser
     def self.setup argv, opts 
         ah = {}
         ah[:flow] = Proc.new do |flow|
-            Database::TableCreator.for flow do
+            Database::TableCreator.for(flow) do
                 cdr opts[:dir]
                 records opts[:dir]
                 monitor :all do
@@ -35,13 +35,13 @@ class DatabaseParser
             end
         end
         ah[:cdr] = Proc.new do |flow|
-            Database::TableCreator.for flow { cdr opts[:dir] }
+            Database::TableCreator.for(flow) { cdr opts[:dir] }
         end
         ah[:records]= Proc.new do |flow|
-            Database::TableCreator.for flow { records opts[:dir] }
+            Database::TableCreator.for(flow) { records opts[:dir] }
         end
         ah[:monitor] = Proc.new do |mon|
-            Database::TableCreator.for mon.flow do
+            Database::TableCreator.for(mon.flow) do
                 monitor mon.name do
                     table_stats
                     table_records opts[:dir]
@@ -146,22 +146,19 @@ class DatabaseParser
     end
 
     def self.dump argv,opts
-        (Logger.<<(__FILE__,"ERROR","No flow specified to setup : dump action . Abort."); abort) unless argv.size > 0
-        flow = argv.shift.upcase.to_sym
-        (Logger.<<(__FILE__,"ERROR","Flow unknown to setup : dump action. Abort."); abort;) unless App.flow(flow)
-        flow = App.flow(flow)
-        test_file = CDR::File.new(flow.test_file)
-
-        require './cdr'
-
-        opts = { flow: flow.name, allowed: flow.records_allowed }  
-        json = test_file.decode test_file, opts
-        file_name = App.directories.database_dump + "#{flow.name}_records_fields.db"
-        CDR::dump_table_file json, file_name
-
-        Logger.<<(__FILE__,"INFO","Dumped database file to #{file_name}")
+        ah = {}
+        ah[:source] = Proc.new do |source|
+            file = source.test_file
+            decoder = source.decoder
+            out = App.directories.database_dump + "/" 
+            out += "#{source.flow.name}_#{source.name}.dump"
+            require './dump'
+            MysqlDumper::dump decoder,[file],file: out
+        end  
+        take_actions argv,ah
     end
 
 
 
+    end
 end
