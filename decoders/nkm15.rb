@@ -8,19 +8,25 @@ module Decoder
     class NKM15Decoder
         require 'open3'
         include Decoder
+        require_relative '../debugger'
 
-        DECODER = "decoding/newpmud.pl -NKM15RAW -F "
-
+        DECODER = Conf::directories.app + "/decoding/newpmud.pl -NKM15RAW -F "
+        DEFAULT_SEP = ":"
+        TEST_FILE = "nkm15_test"
+        DUMP_FILE = "nkm15_dump"
+        
         def initialize(opts={})
             @opts = opts
-            @records_allowed = []
-            @fields_allowed = []
+            @separator = opts[:separator] || DEFAULT_SEP
         end
+        
+        ## decode a file and output a json =)
         def decode file,opts={}
             check file
             str = DECODER
-            str += " --allowed=#{@records_allowed.join(',')} " unless @records_allowed.empty?
-            str += file.full_path
+            # not for now .. maybe find solution to avoid decoding all before 
+            ##str += " --allowed=#{@records_allowed.join(',')} " unless @records_allowed.empty?
+            str += "\"#{file.full_path}\""
             puts "Command : #{str}" if opts[:v]
             out = exec_cmd(str) 
             out2json(out)
@@ -41,20 +47,28 @@ module Decoder
                 ## no record selected yet, so there should be the definition of one 
                 if rec == nil
                     fields = line.split(":")
-                    name = fields.shift # first value is the name of the record flow
-                    fields,indexes = filter(fields) unless @fields_allowed.empty?
+                    name = fields.shift
+                    fields = Hash[fields.each_with_index.map { |v,i| [v.downcase.to_sym,i] }]
+                    fields = @filter.filter_fields(fields) if @filter
                     rec =  { fields: fields, values: []} 
                     json[name] = rec
                     next
                 end
-                # finally , the rest is pur data !
+                # finally , the rest is pur data ! only do not take the name
+                # 'cause we dont use it
                 values = line.split(":")
                 # filter values for selected fields
-                values = values.values_at(*indexes) if (!@fields_allowed.empty? && indexes)
-                rec[:values] << values
+                # only insert if filter is OK or no filter, and only insert
+                # for filtered fields  !
+                if !@filter || (@filter && @filter.filter_record(values))
+                    rec[:values] << values
+                end
             end
-            json
+            #json = @mapper.map_json(json) if @mapper
+            Debug::debug_json(json) if @opts[:d]
+            sanitize_json json
         end
+
     end
 
 end

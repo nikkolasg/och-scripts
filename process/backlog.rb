@@ -8,233 +8,220 @@ module Stats
     # only records in a *_BACKLOG table what files it has already processed
     class BacklogStats
         include Stats
-
+        require 'set'
         # subfactory method to differentiate between backlog operations
-        def self.create(type,opts)
-            case type
-            when :monitor
-                return MonitorBacklogStats.new(opts[:monitor],opts)
-            when :flow
-                return FlowBacklogStats.new(opts[:flow],opts)
-            end
-        end 
+        def self.create(opts)
+            opts[:monitor] = opts[:flow].monitors if opts[:flow]
+            BacklogStats.new(opts)
+        end
+    end 
 
-        def initialize
-            ## definition see GenericStats
-            @monitors_stats = Hash.new do |hash,key|
-                dir = { input: 0 , output: 0 }
-                sub_hash = Hash.new { |h,k| h[k] = dir.clone }
-                # monitor => time => type => dir => count
-                hash[key] = Hash.new { |h,k| h[k] = sub_hash.clone }
-            end
-            ## sets the right date for the file_manager
-            @sources.each { |s| s.file_manager.config(@opts) }
-            @files = {}
-        end 
+    def initialize opts
+        @monitors = RubyUtil::arrayize(opts[:monitor])
+        ## sets the right date for the file_manager
+        @files = {}
+        ## current monitor
+        @current = nil
+        @opts = opts
+        @db = Database::Mysql.default
+        str = "Backlog processing  from #{opts[:min_date]} to #{opts[:max_date]} "
+        Logger.<<(__FILE__,"INFO",str)
+        @records_count = 0 ## to keep track of how many records have we analyzed
 
-        ## MAIN Method
-        def compute
+    end 
+
+    ## MAIN Method
+    #    def compute
+    #@db.connect do 
+    #@monitors.each do |mon|
+    #@current = mon
+    #@current.schema.set_db @db
+    #@current.sources.each do |source|
+    #@source = source
+    #@manager = source.file_manager
+    #@manager.config(@opts)
+    #files = get_files2dl
+    #count = 1
+    #@num_rows = files.values.flatten.size
+    ### MAIN PART : decode / analyze / store
+    #compute_files(files) do |folder,file|
+    #Logger.<<(__FILE__,"INFO","(#{count}/#{@num_rows}) Analyzing file #{file.name}")
+    ### Processing part
+    #file.unzip! if file.zip?
+    #json = @source.decoder.decode file
+    #upgrade_folder(folder,json)
+    #analyze_json json
+
+    ### Insertion part
+    #@current.schema.insert_stats @source
+    #@current.reset_stats
+    #@current.schema.backlog_processed_files @source,[file]
+    #count += 1
+    #progression(count)
+    #end
+    #Logger.<<(__FILE__,"INFO","Having processed #{@records_count} records from source #{@source}")
+    #@records_count = 0
+    #end
+
+    #end
+    #end
+    #end
+
+    def compute
+        @sources = @monitors.map { |m| m.sources }.flatten.uniq
+        Logger.<<(__FILE__,"INFO","Will process backlog for monitors #{@monitors.map{ |m| m.name}.join(',')}")
+        path = Conf::directories.store
+        @db.connect do 
+            get_saved_files ## retrieved ALL files already processed in DB
             @sources.each do |source|
-                @source = source
-                @dir = source.direction
                 @manager = source.file_manager
-                str = "Will process files from #{source.name} (#{@source.host}"
-                Logger.<<(__FILE__,"INFO",str)
-                str = "Processing  from #{@manager.min_date_filter} to #{@manager.max_date_filter} "
-                Logger.<<(__FILE__,"INFO",str)
-                compute_source # make the comp for this source
-            end
-        end
-
-        # run for this source only
-        def compute_source
-            @manager.start do 
-                list_files # get remote files
-                filter_files # only keep the new ones
-                if @files.empty?
-                    Logger.<<(__FILE__,"INFO","No file to be analyzed. Either no file " +
-                              "or all files are already in the system!")
-                    return
-                end
-                download_files # download them
-            end
-            make_stats
-            @db = Database::Mysql.default
-            @db.connect do
-                @monitors.each do |m|
-                    @current = m
-                    format_stats 
-                    mark_as_processed
-                end
-            end
-            delete_files
-            @files = {}
-        end
-
-        def delete_files
-            man = App::LocalFileManager.new
-            man.delete_files *@files.keys
-        end
-
-        def mark_as_processed
-            table = @current.table_records_backlog
-            sql = "INSERT INTO #{table} (file_name) VALUES " +
-                @files.keys.map { |f| "('#{f.name}')" }.join(',') +
-                ";"
-            Logger.<<(__FILE__,"DEBUG",sql)
-            @db.query(sql)
-        end
-
-        # get the files from the source
-        # organized by FILE => SWITCH hash
-        def list_files
-            @source.switches.each do |sw|
-                f = @manager.find_files(sw).inject({}) { |col,f| col[f] = sw; col }
-                @files.merge! f
-                Logger.<<(__FILE__,"INFO","Found #{f.keys.size} files from #{sw} on #{@source.name} .")
-            end
-        end
-        ## filter out the files that are contained in the
-        # CDR table for the flow
-        # It will also grab a list of file_name that monitors
-        # have already done in backlog so they dont have to compute
-        # two times for same file
-        def filter_files
-            old_count = @files.size
-            files_name = @files.keys.map { |f| f.name } 
-            table = @flow.table_cdr(@dir)
-            sql = "SELECT * FROM #{table} WHERE file_name IN "
-            sql += RubyUtil::sqlize(files_name) 
-            sql += ";"
-            db = Database::Mysql.default
-            db.connect do 
-                res =  db.query(sql)
-                return unless res
-                res.each_hash do |row|
-                    @files.delete_if do |f,sw|
-                        f.name == row['file_name']
-                    end
-                end
-
-                @processed_files = {}
-                @monitors.each do |m|
-                    sql = "SELECT m.file_name FROM #{m.table_records_backlog} as m " +
-                        " WHERE m.file_name IN "
-                    sql += RubyUtil::sqlize(files_name)
-                    sql += ";"
-                    res = db.query(sql)    
-                    res.each_hash do |row|
-                        @files.delete_if do |f,sw|
-                            f.name == row['file_name']
+                @manager.config(@opts)
+                @source = source
+                files = get_files
+                count = 1
+                @num_rows = files.values.flatten.size
+                ## Actually download each file and yield it
+                compute_files(files) do |folder,file|
+                    str = "(#{count}/#{@num_rows}) Analyzing file #{file.name} ("
+                    @monitors.each do |mon|
+                        @current = mon
+                        @current.schema.set_db @db
+                        next unless mon.sources.include? @source
+                        unless allowed?(file)
+                            str += "#{mon.name}:X "
+                            next
                         end
+                        ## only download the file if needed
+                        @manager.download_files [file],path unless file.downloaded?
+                        file.unzip! if file.zip?
+                        json ||= @source.decoder.decode file
+                        str += "#{mon.name}:O "
+                        analyze_json json
+                        @current.schema.insert_stats @source
+                        @current.reset_stats
+                        @current.schema.backlog_processed_files @source,[file]
                     end
+                    Logger.<<(__FILE__,"INFO",str+")")
+                    count += 1
+                    progression(count)
+                    json = nil
                 end
+                progression(0,reset:true) 
+                Logger.<<(__FILE__,"INFO","Having processed #{@records_count} records from source #{@source}")
+                @records_count = 0
             end
-            # LOCAL filtering
-            @files_dl = @files.clone
-            man = App::LocalFileManager.new
-            @source.switches.each do |sw|
-                entries = man.ls (App.directories.store + "/" + sw)
-                str = "Filtering entries for #{sw} ..."
-                count = @files_dl.size
-                @files_dl.keys.delete_if do |f|
-                    res = entries.include?(f.cname)
-                    res
-                end
-                #Logger.<<(__FILE__,"DEBUG",str + " #{count - @files_dl.size} deleted")
-            end
-
-            Logger.<<(__FILE__,"INFO","Filtering, #{old_count} => #{@files_dl.keys.size} left.")
-        end
-
-
-        ## Then download the files on the machine
-        def download_files
-            sw = @files_dl.inject(Hash.new { |h,k| h[k] = [] } ) do |col,(f,sw)|
-                col[sw] << f
-                col
-            end
-            sw.each do |switch,files|
-                npath = App.directories.store + "/" + switch
-                @manager.download_files files,npath
-            end
-        end
-        # And now, we compute the stats
-        # decode => analyse => store
-        def make_stats
-            decoder = @source.decoder
-            counter = 0
-            @num_rows = @files.size
-            @files.each do |file,switch|
-                json = decoder.decode file
-                json.each do |name,hash|
-                    fields = {}
-                    ## transform into hash TYPE => index in arr
-                    hash[:fields].each_with_index do |field,index|
-                        fields[field.to_sym] = index
-                    end
-                    hash[:values].each do |row|
-
-                        @monitors.each do |m|
-                            @current = m
-                            ## reject if this record does not come from 
-                            #the right place for this monitor
-                            next unless @current.switches.include? switch
-                            next if @current.filters_records unless @current.filter_records.include? name
-                            next unless allowed? fields,row
-                            time = get_time_from_row fields,row
-                            formatted_time = get_formatted_time time
-                            @monitors_stats[@current.name][formatted_time][name][@dir] += 1
-                        end
-                    end
-                end
-                progression counter
-                counter += 1
-            end
-        end
-
-        def get_time_from_row fields,row
-            field_time = @flow.time_field_records.downcase.to_sym
-            row[fields[field_time]]
-        end
-
-        def allowed? fields,row
-            
-            # check if all filters return true !
-            @current.filters.each do |field,block|
-                ind = fields[field] ## check if field exists
-                return false unless ind # otherwise filter out
-                #field is a hash with index as vlue
-                out = block.call(row[ind])
-                if out == true
-                    next
-                else
-                    return false
-                end
-            end
-            return true
         end
     end
 
-    class FlowBacklogStats < BacklogStats
-        def initialize flow,opts
-            @flow = flow
-            @sources = @flow.sources 
-            @monitors = @flow.monitors
-            @opts = opts
-            super()
+
+    def analyze_json json
+        json.each do |name,hash|
+            fields = hash[:fields]
+            values = hash[:values]
+            fields = @current.filter.filter_fields(fields) if @current.filter
+            values.each do |record|
+                @records_count += 1
+                next if (@current.filter && !@current.filter.filter_record(record))
+                analyze_record(fields,record) 
+            end
         end
     end
 
-    class MonitorBacklogStats < BacklogStats
-        def initialize monitor,opts
-            @monitors = RubyUtil::arrayize monitor
-            @sources = monitor.sources
-            @flow = monitor.flow
-            @opts = opts
-            super()
+    ## In the case of normal processing, the "folder" field is automatically
+    #retrieved from the db. Here it is NOT in the JSON output of the decoder
+    #This methods adds the folder field to the fields & values of this hash
+    def upgrade_folder folder,json
+        json.each do |name,hash|
+            hash[:fields][:folder] = hash[:values].first.size 
+            hash[:values].map! { |row| row << folder }
         end
 
     end
 
+    def analyze_record fields,record
+        record_time = get_time_from_record fields,record 
+        formatted_time = get_formatted_time record_time
+        @current.stats.analyze formatted_time,fields,record
+    end
+
+    # run for this source only
+    # Will retrieve files found on the source that corresponds to the 
+    # search criterias (date =)
+    def get_files
+        files = []
+        @manager.start do 
+            files = list_files # get remote files
+            if files.empty?
+                Logger.<<(__FILE__,"INFO","No file to be analyzed. Either no file " +
+                          "or all files are already in the system!")
+                return
+            end
+        end
+        return files
+    end
+
+    ## Main method that will download , decode , and analyze
+    #  ONE file at A TIME
+    def compute_files files
+        @manager.start do 
+            files.each do |folder,files|
+                next if files.empty?
+                files.each do |file|
+                    yield folder,file
+                    Conf::LocalFileManager.new.delete_files(file) if file.downloaded?
+                end
+            end
+        end 
+    end
+
+    private
+
+    def get_time_from_record fields,record
+        time_field = @current.flow.time_field_records
+        record[fields[time_field]]
+    end
+
+    # organized by FILE => SWITCH hash
+    def list_files
+        files = {}
+        @source.folders.each do |sw|
+            h = Hash.new { |h,k| h[k] = [] }
+            f = @manager.find_files(sw).inject(h) { |col,f| col[sw] << f; col }
+            files.merge! f
+            Logger.<<(__FILE__,"INFO","Found #{f[sw].size} files from #{sw} on #{@source.name} .")
+        end
+        files
+    end
+
+    ## Actually retrieve all saved files for all monitors for all sources
+    ## store it
+    def get_saved_files
+        ## MONITOR => SOURCES => FILES (hash Filename => true) (for speed)
+        @files2rm = Hash.new { |h,k| h[k] = {} }
+        @monitors.each do |mon|
+            mon.sources.each do |source|
+                f2rm = mon.schema.backlog_saved_files source
+                @files2rm[mon.name][source.name] = f2rm.inject(Set.new) { |col,f| col << f; col}
+            end
+        end
+    end
+
+    ## Will filter files for a source & a monitor (@source / @current)
+    def allowed? file
+        f2rm = @files2rm[@current.name][@source.name]
+        v = f2rm.include?(file) ? false : true ## if file not preset (i.e.nil)
+        return v
+        # return true, if preset, ret false
+    end
+
+    # def filter_files files
+    #f2rm = @current.schema.backlog_saved_files @source
+    #files.each do |folder,files_list|
+    #ocount = files_list.size
+    #files_list = files_list - f2rm
+    #files[folder] = files_list
+    #Logger.<<(__FILE__,"INFO","Filtering on #{folder} : #{ocount} => #{files_list.size}")
+    #end
+    #return files
+    #end
 end

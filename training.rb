@@ -3,10 +3,20 @@
 #
 #
 module IncludeModule
-    attr_accessor :module_value
-    def mod
-        puts "Module Method Mixin"
+
+    def define_module_function value = nil
+        if value
+            @@value = value
+            puts "Module Function Writer here !"
+        else
+            puts "Module Function Reader here !"
+            return @@value
+        end
     end
+    module_function :define_module_function
+    
+   
+
     class ModuleClass
         include IncludeModule
     end 
@@ -40,6 +50,7 @@ class Test < SuperTest
     class << self
         include IncludeModule
     end
+    TEST_CONSTANT = "This is a constant from TEST CLASS"
 
 end
 class Test2 < SuperTest
@@ -70,7 +81,6 @@ t2 = Test2.new "test2"
 t.delete "1","2"
 t2.reset "1","2"
 t.delete ("?") { block_method }
-Test.mod
 t3 = Test.custom_class_method "custom value in initoliaze"
 puts t3.value
 cn = :ModuleClass
@@ -88,6 +98,19 @@ def custom_method arr
 end
 
 require './ruby_util'
-require './config'
-require './database'
- puts App.logging.inspect
+Test.instance_eval do
+    var = :va
+    var = "@#{var}".to_sym
+    define_method :foo do |param = nil|
+    if param
+        instance_variable_set(var,param)
+    else
+        puts instance_variable_get(var)
+    end
+end
+end
+ttt = Test.new
+ttt.foo "foo"
+ttt.foo
+
+puts Test::const_get("TEST_CONSTANT")

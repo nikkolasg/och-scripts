@@ -1,4 +1,19 @@
 module RubyUtil
+      
+
+    def self.max coll
+        coll.inject(0) { |col,value| value > col ? value : col }
+    end
+
+    ## Find the common subset of all sets / array given
+    def self.commom_subset *lists
+        return [] if lists.size == 0
+        return lists.first if lists.size == 1
+        sub = lists.shift
+        lists.each do |list|
+            sub = sub & list
+        end
+    end
 
     # Upper limit on number of elements
     # to when to partition a task
@@ -26,15 +41,26 @@ module RubyUtil
             yield sub
         end
     end
-
-    def self.symbolize hash
-        hash.inject({}) do |new,(k,v)|
+    
+    ## Can symbolize keys of a Hash, or every elements of an Array
+    # Can apply a preprocessing step on the element with :send opts,
+    # it will call the method on each element
+    def self.symbolize coll,opts = {}
+        if coll.is_a?(Hash)
+            return coll.inject({}) do |new,(k,v)|
+            nk = k
+            nk = k.send(opts[:send]) if opts[:send]
+            nk = nk.to_sym
             if v.is_a?(Hash)
-                new[k.to_sym] = RubyUtil::symbolize(v)
+                new[nk] = RubyUtil::symbolize(v)
             else
-                new[k.to_sym] = v
+                new[nk] = v
+                new[nk] = v.to_sym if opts[:values]
             end
             new
+        end 
+        elsif coll.is_a?(Array)
+            return coll.map { |c| opts[:send] ? c.send(opts[:send]).to_sym : c.to_sym }
         end
     end
     def self.arrayize value
@@ -53,7 +79,7 @@ module RubyUtil
     end
 
     def self.require_folder folder
-        Dir["#{folder}/*.rb"].each { |f| require "./#{f}" }
+        Dir["#{folder}/*.rb"].each { |f| require_relative "#{f}" }
     end
 
 

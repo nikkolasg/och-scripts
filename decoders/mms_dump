@@ -1,0 +1,8 @@
+a_number:CHAR(10) DEFAULT ''
+a_imsi:CHAR(15) DEFAULT ''
+b_number:VARCHAR(33) DEFAULT ''
+b_imsi:VARCHAR(15) DEFAULT ''
+message_size:CHAR(6) DEFAULT ''
+action:CHAR(1) DEFAULT ''
+entry_date:CHAR(14) DEFAULT ''
+message_id:CHAR(22) DEFAULT ''

@@ -1,0 +1,6 @@
+time:CHAR(14) DEFAULT ''
+reference_id:CHAR(28) DEFAULT ''
+a_number:CHAR(10) DEFAULT ''
+a_imsi:CHAR(15) DEFAULT ''
+b_number:CHAR(17) DEFAULT ''
+b_imsi:CHAR(15) DEFAULT ''

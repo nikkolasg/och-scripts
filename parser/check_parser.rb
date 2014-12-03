@@ -31,7 +31,7 @@ module Parser
         # check if everything is present in the db regarding the configuration file
         # i.e. tables, columnns etc
         def db argv,opts
-            require './database'
+            require_relative '../database'
             db = Database::Mysql.default
             db_info = {}
             db.connect do
@@ -40,39 +40,42 @@ module Parser
                     col
                 end
             end
-            App.flows.each do |flow|
-                Util::starts_for(:both) do |dir|
+            Conf::flows.each do |flow|
+                flow.sources.each do |source|
                     ## CHECK CDR
-                    unless check_table db_info,flow.table_cdr(dir)
-                        DatabaseParser::parse(["setup" ,"cdr","#{flow.name}"],{dir: dir})
+                    unless check_table db_info,source.schema.table_files
+                        DatabaseParser::parse(["setup" ,"files","#{source.name}"])
                     end
-                    CheckParser::WELL.call("db:cdr #{flow.name}")
+                    CheckParser::WELL.call("db:files #{source.name}")
                     ## CHECK RECORDS
-                    unless check_table db_info,flow.table_records(dir),flow.records_fields
-                        DatabaseParser::parse(["setup","records", "#{flow.name}"],{dir: dir})
+                    unless check_table db_info,source.schema.table_records,source.records_fields
+                        DatabaseParser::parse(["setup","records", "#{source.name}"],{dir: dir})
                     end
-                    CheckParser::WELL.call("db:records(#{dir}) #{flow.name}")
+                    CheckParser::WELL.call("db:records #{source.name}")
+                end
 
-                    ## MONITOR SECTION
-                    flow.monitors.each do |mon|
-                        cmd = ["setup", "monitor","#{mon.name}"]
-                        dir_ = { dir: dir }
-                        ## CHECK STATS
-                        unless check_table db_info,mon.table_stats,mon.stats_columns
-                            DatabaseParser::parse(cmd,dir_)
-                        end
-                        CheckParser::WELL.call("db:monitor:stats #{mon.name}")
+                ## MONITOR SECTION
+                flow.monitors.each do |mon|
+                    schema = mon.schema
+                    cmd = ["setup", "monitor","#{mon.name}"]
+                    ## CHECK STATS
+                    fields = schema.stats_columns.inject({}) {|col,f| col[f] = "INT DEFAULT 0"; col }
+                    unless check_table db_info,schema.table_stats,fields
+                        DatabaseParser::parse(cmd)
+                    end
+                    CheckParser::WELL.call("db:monitor:stats #{mon.name}")
 
+                    flow.sources.each do |source|
                         ## CHECK BACKLOG
-                        unless check_table db_info, mon.table_records_backlog
-                            DatabaseParser::parse(cmd,dir_)
+                        unless check_table db_info, schema.table_records(source,backlog:true)
+                            DatabaseParser::parse(cmd)
                         end
                         CheckParser::WELL.call("db:monitor:records:backlog #{mon.name}")
                         ## CHECK MON_RECORDS
-                        unless check_table db_info,mon.table_records(dir)
-                            DatabaseParser::parse(cmd,dir_)
+                        unless check_table db_info,schema.table_records(source)
+                            DatabaseParser::parse(cmd)
                         end
-                        CheckParser::WELL.call("db:monitor:records(#{dir}) #{mon.name}")
+                        CheckParser::WELL.call("db:monitor:records #{mon.name}")
                     end
                 end
             end
@@ -96,7 +99,7 @@ module Parser
         ###### CONFIG SECTION ######
         ############################
         def check_directories
-            d = App.directories
+            d = Conf::directories
             [:app,:data,:tmp,:store,:backup].each do |f|
                 unless d.respond_to? f
                     Logger.<<(__FILE__,"ERROR","DIrectories section missing #{f} field. Abort")
@@ -111,7 +114,7 @@ module Parser
                 Logger.<<(__FILE__,"ERROR","Database section missing #{field} field. Abort.")
                 abort
             end
-            db = App.database
+            db = Conf::database
             [:host,:name,:login,:password].each do |f|
                 err.call(f) unless db.respond_to?(f)
             end
@@ -122,7 +125,7 @@ module Parser
                 Logger.<<(__FILE__,"ERROR","Logging section missing #{field} field. Abort.")
                 abort
             end
-            lg = App.logging
+            lg = Conf::logging
             [:log_dir,:level_log,:level_email,:level_sms,:log_level].each do |f|
                 err.call(f) unless lg.respond_to?(f)
             end
@@ -133,15 +136,11 @@ module Parser
             CheckParser::WELL.call("config:logging")
         end
         def check_flow flow
-            [:records_allowed,:time_field_records].each do |f|
+            [:time_field_records,:filter].each do |f|
                 unless flow.respond_to?(f)
                     Logger.<<(__FILE__,"ERROR","Flow section #{flow.name} missing #{f} field.Abort")
                     abort
                 end
-            end
-            unless flow.respond_to?(:records_fields) || flow.respond_to?(:records_fields_file)
-                Logger.<<(__FILE__,"ERROR","Flow section #{flow.name} missing records fields section (or records_fields_file!). Abort.")
-                abort
             end
             flow.sources.each do |s|
                 check_source s
@@ -152,7 +151,7 @@ module Parser
             CheckParser::WELL.call("config:flow #{flow.name}")
         end
         def check_source source
-            [:direction,:host,:base_dir,:switches,:decoder].each do |f|
+            [:host,:base_dir,:folders,:decoder].each do |f|
                 unless source.respond_to?(f)
                     Logger.<<(__FILE__,"ERROR","Source section #{source.name} missing #{f} field. Abort.")
                     abort
@@ -167,14 +166,14 @@ module Parser
             CheckParser::WELL.call("config:flow:source #{source.name}")
         end
         def check_monitor mon
-            [:input,:output,:time_interval].each do |f|
-                unless f
+            [:sources,:time_interval].each do |f|
+                unless mon.send(f)
                     Logger.<<(__FILE__,"ERROR","Monitor section #{mon.name} missing #{f} field.Abort.")
                     abort
                 end
             end
-            unless mon.filter_records.size > 0
-                Logger.<<(__FILE__,"ERROR","Monitor section #{mon.name} has no records_fields associated.Abort.")
+            unless mon.send(:stats)
+                Logger.<<(__FILE__,"ERROR","Monitor section #{mon.name} has no stats associated.Abort.")
                 abort
             end
             CheckParser::WELL.call("config:flow:monitor #{mon.name}")
@@ -209,7 +208,7 @@ module Parser
             end
             return true
         rescue => e
-            Logger.<<(__FILE__,"ERROR","DUring DB fields_ok? operation #{table}")
+            Logger.<<(__FILE__,"ERROR","DUring DB fields_ok? operation #{table} . #{e}")
             return false
         end
 

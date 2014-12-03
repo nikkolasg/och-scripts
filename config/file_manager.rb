@@ -1,11 +1,11 @@
-module App
-    require './cdr'
-    require './ruby_util'
+module Conf
+    require_relative '../cdr'
+    require_relative '../ruby_util'
     ## class that will handle all operations for files
     # on remote/local host for the GET operations and others
     class FileManager
         # name that can be found with -name option of FIND GNU util
-        FILE_REGEXP = '.*\.DAT\.gz|.*\.DAT|.*\.dat|.*\.DAT\.GZ|.*\.dat\.gz|.*\.dat\.GZ'
+        FILE_REGEXP = '.gz|.*\.DAT\.gz|.*\.DAT|.*\.dat|.*\.DAT\.GZ|.*\.dat\.gz|.*\.dat\.GZ'
         # regex taht can be used with -regextype posix-basic -regex of Find GNU util
         #                     YEAR    MONTH   DAY
         FOLDER_REGEXP = %(.*/[0-9]{4}[0-9]{2}[0-9]{2})
@@ -43,9 +43,9 @@ module App
             @host = source.host
             @file_regexp = FILE_REGEXP
             @folder_regexp = FOLDER_REGEXP
-            @subfolders = false
+            @subfolders = true
             self.send(:min_date=, TODAY)
-
+            self.send(:min_date=, TODAY)
             @started = false # boolean to know if operations have started or not
             @v = opts[:v]
         end
@@ -91,7 +91,7 @@ module App
 
         # expect a array of CDR::Files, 
         # and a string representing the destination folder
-        def download_files files,dest
+        def download_files files,dest,opts = {}
             unless @started
                 Logger.<<(__FILE__,"ERROR","FileManager is not started yet !")
                 abort
@@ -99,7 +99,7 @@ module App
             str = "Will download #{files.size} files to #{dest} ... "
             download_all_files files,dest
             str += " Done !"
-            Logger.<<(__FILE__,"INFO",str)
+            Logger.<<(__FILE__,"INFO",str) if opts[:v]
         end
 
         protected 
@@ -237,7 +237,7 @@ module App
                 RubyUtil::partition files do |sub|
                     dl = []
                     sub.each do |file|
-                        dest_file = dest + "/" + file.cname
+                        dest_file = "#{dest}/#{file.cname}"
                         dl << sftp.download(file.full_path,dest_file)  
                     end
                     dl.each { |d| d.wait }
@@ -274,30 +274,41 @@ module App
         end
 
         # does what the name suggests !
-        def ls dir
-            cmd = "ls #{dir}"
+        def ls dir,regex = ""
+            cmd = regex.empty? ? "ls #{dir}" : "ls #{File.join(dir,regex)}"
             exec_cmd(cmd) 
+        end
+
+        def delete_dir dir
+            cmd = "rm -rf #{dir}"
+            exec_cmd(cmd)
+        end
+
+        def rename_dir dir,ndir
+            cmd = "mv #{dir}  #{ndir}"
+            exec_cmd(cmd)
         end
 
         # download all FILES object into the dest path
         # update the files path !!
         def download_all_files files,dest
+            return if files.empty?
             cmd = "mv -t #{dest} "
-            cmd += files.map { |f| f.full_path }.join(' ')
+            cmd += files.map { |f| "\"#{f.full_path}\"" }.join(' ')
             exec_cmd(cmd) 
             # update files object !
             files.map! { |f| f.path = dest; f }
         end
         alias :move_files :download_all_files
 
-
-
+        ## Delete all files from the directory name
         def delete_files_from dir
             Dir[dir+"/*"].each do |file|
-                delete_file CDR::File.new(file,search: true)
+                File::delete(file)
             end 
         end
-
+    
+        ## Delete CDR::File object
         def delete_files *files
             files.each do |file|
                 unless File.exists? file.full_path
@@ -309,6 +320,39 @@ module App
                     Logger.<<(__FILE__,"ERROR","LocalFileManager trouble for deleting file #{file}")
                     abort
                 end
+            end
+        end
+
+        ## Delete the backup  & store for this source !!
+        def delete_source_files source
+            dir = Conf::directories
+            base = File.join(dir.data)
+            source.folders.each do |fold|
+                url = File.join(base,dir.store,source.name.to_s,fold)
+                delete_files_from url
+                url = File.join(base,dir.backup,source.name.to_s,fold)
+                delete_files_from url
+            end
+        end
+
+        def restore_source_files source
+            dir = Conf::directories
+            base = File.join(dir.data)
+            source.folders.each do |fold|
+                url = File.join(dir.backup,source.name.to_s,fold)
+                files = ls(url).map { |f| CDR::File.new(url+"/"+f,search: true)}
+                nurl = File.join(dir.store,source.name.to_s,fold)
+                download_all_files(files,nurl) unless files.empty?
+            end
+        end
+
+        def rename_source_files source,nname
+            dir = Conf::directories
+            base = dir.data
+            [:tmp,:store,:backup].each do |fold|
+                ourl = File.join(dir.send(fold),source.name.to_s)
+                nurl = File.join(dir.send(fold),nname)
+                rename_dir ourl,nurl
             end
         end
     end

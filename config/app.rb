@@ -1,23 +1,21 @@
 ## DSL definition for the configuration file
-# module App contains all the definitions
+# module Conf contains all the definitions
 # and sub classes for each parts of the config
 # like Directories, Logging, Flow, Source etc etc
 # after writing the config, simply do
-# App.app_name
+# Conf.app_name
 # App.flow(:MSS)
 # App.flow(:MSS).table_cdr
 # App.flow(:MSS).sources(:input).each do |source|
 #   source.host
 #end
 #etc
-require './ruby_util'
-module App
-    ## MODULE    
-    extend self
-    @@fields = [ :app_name,:app_version,:hosts]
-    @@fields.each do |f|
-        instance_eval("def #{f}(param=nil); param.nil? ? @#{f} : (@#{f} = param);end")
-    end
+require_relative '../ruby_util'
+module Conf
+
+    module_function 
+
+    require_relative 'filter'
 
     def define_accessor f
         "def #{f}(param=nil); param.nil? ? @#{f} : (@#{f} = param);end"
@@ -28,16 +26,49 @@ module App
                 if param == :input
                     return @#{f}
                 elsif param == :output
-                    return @#{f} + App.database.output_suffix
+                    return @#{f} + Conf.database.output_suffix
                 end
             end
             @#{f}
          end"
     end
 
-    RubyUtil::require_folder("config")
+    def logging &block
+        if block_given?
+            @logging = Logging.new
+            @logging.instance_eval(&block)
+        else
+            @logging
+        end
+    end
+
+    def database &block
+        if block_given?
+            @database = Database.new
+            @database.instance_eval(&block)
+        else
+            @database
+        end
+    end
+
+    def directories &block
+        if block_given?
+            @directories = Directories.new
+            @directories.instance_eval(&block)
+        else 
+            @directories
+        end
+    end
+
+    def app name , &block
+        instance_eval(define_accessor("app"))
+        @app = App.new(name)
+        @app.instance_eval(&block)
+    end
+
 
     def flow name_, &block
+        require_relative 'flow'
         name = name_.upcase.to_sym
         # the "search flow function" is called here
         return find_flow(name) if !block_given?
@@ -47,7 +78,7 @@ module App
             instance_eval(define_accessor("flows"))
             @flows = []
         end
-        flow = App::Flow.new name
+        flow = Flow.new name
         @flows << flow
         flow.instance_eval(&block)
     end 
@@ -56,23 +87,6 @@ module App
         @flows
     end
 
-    def logging &block
-        attr_accessor :logging
-        @logging = App::Logging.new
-        @logging.instance_eval(&block)
-    end
-
-    def database &block
-        attr_accessor :database
-        @database = App::Database.new
-        @database.instance_eval(&block)
-    end
-
-    def directories &block
-        attr_accessor :directories
-        @directories = App::Directories.new
-        @directories.instance_eval(&block)
-    end
 
     # find a particular monitor
     def monitors name 
@@ -88,7 +102,7 @@ module App
         @hosts ||= []
         if block_given?
             ## affectation
-            h = App::Host.new
+            h = Host.new
             h.name name
             h.instance_eval(&block)
             @hosts << h
@@ -97,18 +111,18 @@ module App
         end
     end
 
-    def config &block
+    def make &block
         str = "Parsing config file ..."
         begin
             instance_eval(&block) 
         rescue => e
             str << "Error ! #{e.message}\n#{e.backtrace.join("\n")}"
-            $stderr.puts str #Logger. is not ready yet 'cause uses the App.config
+            $stderr.puts str #Logger. is not ready yet 'cause uses the Conf.config
             abort
         end
         str << " Ok :) "
-        require './logger'
-        Logger.<<(__FILE__,"INFO","#{App.app_name} (v. #{App.app_version}) starting")
+        require_relative '../logger'
+        Logger.<<(__FILE__,"INFO","#{@app.name} (v. #{@app.version}) starting")
         Logger.<<(__FILE__,"INFO",str)
     end
 
@@ -123,18 +137,41 @@ module App
         to_s
     end
 
+end
+#########################################
+#subclasses for each categories of the config
+#Flow, Source, Log, Directories, Database ...
+#########################################
 
+module Conf
 
-    #########################################
-    #subclasses for each categories of the config
-    #Flow, Source, Log, Directories, Database ...
-    #########################################
+    class App  
+
+        @@fields = [ :name,:version, :author]
+        @@fields.each do |f|
+            App.class_eval("def #{f}(param=nil); param.nil? ? @#{f} : (@#{f} = param);end")
+        end
+
+        def initialize name
+            @name = name
+            @contributers = []
+        end
+
+        def contributers *args
+            if args.size > 0
+                @contributers += args
+            else
+                @contributers
+            end
+        end
+    end
 
 
     class Host
+        include Conf
         @@fields = [:name,:address,:login,:password,:protocol]
         @@fields.each do |f|
-            Host.class_eval(App.define_accessor(f))
+            Host.class_eval(Conf.define_accessor(f))
         end
         def protocol(param = nil)
             if param 
@@ -148,10 +185,10 @@ module App
         end
     end
     class Database 
-
+        include Conf
         @@fields = [:host,:name,:login,:password,:timestamp,:output_suffix]
         @@fields.each do |f|
-            Database.class_eval(App.define_accessor(f))
+            Database.class_eval(Conf.define_accessor(f))
         end
         def initialize
             @output_suffix = "_OUT"
@@ -162,17 +199,17 @@ module App
     end
 
     class Logging
-
+        include Conf
         @@fields = [:log_dir,:stdout,:level_log,:level_email,:level_sms ]
         @@fields.each do |f|
-            Logging.class_eval(App.define_accessor(f))
+            Logging.class_eval(Conf.define_accessor(f))
         end
-        
+
         ## since we expect a hash, ruby automatically 
         #merge the different arguments together
         def levels (args)
             if !instance_variable_defined?(:@log_level)
-                Logging.class_eval(App.define_accessor("log_level"))
+                Logging.class_eval(Conf.define_accessor("log_level"))
                 @log_level = {}
             end
             args.each do |k,v|
@@ -185,9 +222,20 @@ module App
     #  to directly transform relative path
     #  into full path
     class Directories
-
+        include Conf
         [:app,:output_suffix,:database_dump].each do |f|
-            Directories.class_eval(App.define_accessor(f))
+            Directories.class_eval(Conf.define_accessor(f))
+        end
+        # same but more meta programming style ;)
+        [:store,:tmp,:backup].each do |f|
+            define_method f do | param = nil |
+                var = "@#{f}".to_sym
+                if param 
+                    instance_variable_set(var,param)
+            else
+                return @data + "/" + instance_variable_get(var) 
+            end
+            end
         end
 
         def initialize
@@ -199,38 +247,6 @@ module App
                 @data
             else ## affectation
                 @data = @app + "/" + param
-            end
-        end
-        ## accesor and affectation at the same time
-        #if specified a direction => add suffix
-        #if specified other => affectation
-        #else return value
-        def tmp(param=nil)
-            ret = dir @tmp,param
-            ret.nil? ? (@tmp = @data + "/" + param) : ret
-        end
-
-        def store(param=nil)
-            ret = dir @store,param
-            ret.nil? ? (@store = @data+"/"+param) : ret
-        end
-
-        def backup(param=nil)
-            ret = dir @backup,param
-            ret.nil? ? (@backup = @data + "/" + param) : ret
-        end
-
-        private 
-        # if we wants access, return the right value
-        # if we want affectation, return nil
-        # so calling method know what to do
-        def dir field,param
-            if param == :output || param == :out
-                field + output_suffix
-            elsif [:input,:in].include?(param) || !param
-                field
-            else
-                nil
             end
         end
     end

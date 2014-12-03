@@ -14,21 +14,31 @@ module Parser
         when :all
             return [:all,nil]
 
-        when :flow,:cdr,:records
+        when :flow
             (Logger.<<(__FILE__,"ERROR","Operation: no flow given ! Abort."); abort;) unless argv.size > 0
             flow_name = argv.shift
-            flow = App.flow(flow_name)
+            flow = Conf::flow(flow_name)
             (Logger.<<(__FILE__,"ERROR","Operation: flow unknown(#{flow_name}). Abort."); abort;) unless flow
             return [sub, flow]
+        when :source,:files,:records
+            (Logger.<<(__FILE__,"ERROR","Operation: No source given! Abort."); abort;) unless argv.size > 0
+            source = argv.shift
+            s = nil
+            Conf::flows.each do |flow|
+                s = flow.sources(source)
+                break if s
+            end
+            (Logger.<<(__FILE__,"ERROR","Operation: No source found for this name #{source} ... Abort."); abort;) unless s
+            return [sub,s]
         when :monitor
             (Logger.<<(__FILE__,"ERROR","Operation: no monitor given ! Abort."); abort;) unless argv.size > 0
             mon = argv.shift.upcase
-            (Logger.<<(__FILE__,"ERROR","Operation: monitor does not exists.Abort.");abort;) unless (mon = App.monitors(mon))
+            (Logger.<<(__FILE__,"ERROR","Operation: monitor does not exists.Abort.");abort;) unless (mon = Conf::monitors(mon))
             return [:monitor,mon]
         when :source
             (Logger.<<(__FILE__,"ERROR","Operation: source not specified ! Abort."); abort) unless argv.size > 0
             name = argv.shift
-            source = App.flows.inject([]) do |col,flow|
+            source = Conf::flows.inject([]) do |col,flow|
                 s = flow.sources(name)
                 col << s if s
             end.first
@@ -37,6 +47,9 @@ module Parser
         when :backlog
             # return the rest because so many possiblites
             return [:backlog,argv]
+        when :backup ## the files that are saved
+             (Logger.<<(__FILE__,"ERROR","Operation: source not specified ! Abort."); abort) unless argv.size > 0
+             return [:backup,argv]
         else
             Logger.<<(__FILE__,"ERROR","Subject parsing error : #{argv.inspect}")
             raise "Parsing error"
@@ -50,7 +63,7 @@ module Parser
         case type
         when :all
             return unless hash[:flow]
-            App.flows.each do |flow|
+            Conf::flows.each do |flow|
                 hash[:flow].call(flow)
             end
         else

@@ -1,28 +1,14 @@
 #!/usr/bin/ruby
 # Monitor is the wrapper layer of all operations
-# possible. 
-# it can 
-# GET a flow, a specific flow, or files in a folder
-# INSERT flow, flow or files
-# PROCESS flow, flow, files 
-# RUN flow,flow or files
 # TEST ... todo
 require 'optparse'
-require './config'
+require_relative 'config'
 
-# direction by default is both
 $opts = {  }
 opt_parse = OptionParser.new do |opt|
     opt.banner = "monitor.rb OPERATION SUBJECT [OPTIONS]"
     opt.on("-v","--verbose","verbose output") do |v|
         $opts[:v] = true
-    end
-    opt.on("--direction DIR","For BOTH options (all,flow), a direction can be appended : input or output or both. By default it is both.
-                                It specifies from which direction you want to process a flow. ") do |d|
-        $opts[:dir] = d.downcase.to_sym
-    end
-    opt.on("--monitor MONITOR","If you are doing a monitoring operation, you can specify which monitors you'd like (regarding the flow)") do |d|
-        $opts[:monitor] = d
     end
     opt.on("--take NUMBER","If you want to take only certain number of records for each switch ,you can specifiy here") do |t|
         $opts[:take] = t.to_i
@@ -33,21 +19,23 @@ opt_parse = OptionParser.new do |opt|
     opt.on("--max-date DATE","If you want to select files that are only less recent than the date. FORMAT specified by the GNU `date` command.") do |d|
         $opts[:max_date] = d
     end
+    opt.on("-u","--union","For processing, you want to take the union table of the sources you are processing on. By default it is NOT enabled.") do |d|
+        $opts[:union] = true
+    end
+    opt.on("-d","--debug","IF you want debugging capabilities (mostly on decoder for now).") do |d|
+        $opts[:d] = true
+    end
 end
 
-def defaults
-    $opts[:dir] = :both
-    # $opts[:monitor] = all  !! NO monitor by default
-end
-defaults
 opt_parse.parse!
 
-def main2 args,opts
+def main args,opts
     argv = args.clone
     opt = opts.clone
     opt[:argv] = argv.clone ## so parser can still get the full line if needed
-    RubyUtil::require_folder("parser")
-    #Dir["parser/*"].each { |f| require "./#{f}" }
+    Dir[File::dirname(__FILE__) + "/parser/*.rb"].each do |f|
+        require_relative "parser/#{File::basename(f)}" 
+    end
     
     word = argv.shift.downcase.to_sym
     
@@ -60,6 +48,6 @@ def main2 args,opts
     Logger.<<(__FILE__,"INFO","Closing monitoring tool ...")
 end
 
-main2 ARGV,$opts
+main ARGV,$opts
 
 

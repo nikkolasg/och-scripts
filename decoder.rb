@@ -1,2 +1,4 @@
 # simply a wrapper to include all of the decoders tools
-Dir["decoders/*.rb"].each { |f| require "./#{f}" }
+Dir[File::dirname(__FILE__) + "/decoders/*.rb"].each do |f|
+    require_relative "decoders/#{File::basename(f)}" 
+end

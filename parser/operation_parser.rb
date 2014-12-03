@@ -7,10 +7,10 @@ class OperationParser
     @usage = "Type can be all, flow , or backlog. If all, all flows will be operated on.
         With flow, you can specify which flow you wanna get in subject
         With backlog, you can either specifiy a folder in subject, or send a list of fill path names of files via stdin"
-    
-    @actions = [:get,:insert,:process ]
+    ## RUN action is the three actions combined (get/insert/process) in a row
+    @actions = [:get,:insert,:process,:run ]
     KEYWORDS = @actions
-    require './parser/helper'
+    require_relative 'helper'
     
     class << self 
         attr_accessor :actions 
@@ -29,11 +29,18 @@ class OperationParser
         OperationParser.send(action,argv, opts)
     end
 
+    def self.run argv,opts
+        OperationParser.get argv.dup,opts
+        OperationParser.insert argv.dup,opts
+        OperationParser.process argv.dup,opts
+    end
     def self.get argv,opts
-        require './get/getter'
+        require_relative '../get/getter'
         ah = {}
         ah[:flow] = Proc.new { |flow|  Getter.create(flow.name,opts).get }
-
+        ah[:source] = Proc.new { |source| op = opts.clone; 
+                                 op[:source] = source;
+                                 Getter.create(source.flow.name,op).get }
         take_actions(argv,ah)
     end
 
@@ -43,12 +50,16 @@ class OperationParser
     end
 
     def self.insert argv,opts
-        require './insert/inserter'
-    
-        flow_action = Proc.new { |flow| 
+        require_relative '../insert/inserter'
+        h = {}
+        h[:flow] = Proc.new { |flow| 
             Inserter.create(flow.name,opts).insert }
+        h[:source] = Proc.new { |source| 
+            op = opts.clone
+            op[:source] = RubyUtil::arrayize(source)
+            Inserter.create(source.flow.name,op).insert }
 
-        take_actions argv,{ flow: flow_action }
+        take_actions argv,h
     end
 
     def self.insert_usage
@@ -57,7 +68,7 @@ class OperationParser
     end
 
     def self.process argv,opts
-        require './process/processer'
+        require_relative '../process/processer'
         flow_action = Proc.new { |flow| 
             opts[:flow] = flow
             Stats::create(:generic,opts).compute }

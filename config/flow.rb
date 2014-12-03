@@ -1,51 +1,12 @@
-module App
+module Conf
 
     class Flow
-        [ :name,:decoder,:test_file,:time_field_records,:table_records_union,:table_cdr_union].each do |f|
-            Flow.class_eval(App.define_accessor(f))
+        include Conf
+        require_relative 'source'
+        require_relative 'monitor'
+        [ :name].each do |f|
+            Flow.class_eval(Conf.define_accessor(f))
         end
-        ## create custom accessor when the direction is supplied
-        # u can call it like this
-        # flow.table_cdr(:input) ==> CDR_MSS
-        # flow.table_cdr         ==> CDR_MSS (input is default)
-        # flow.table_cdr(:output)==> CDR_MSS_OUT
-        # flow.table_cdr "CDR_MSS" ==> affectation !
-        [ :table_cdr,:table_records ].each do |f|
-            str = "def #{f}(param=nil)
-                    if param
-                        if :input == param
-                            return @#{f}
-                        elsif :output == param
-                            return @#{f} + App.database.output_suffix
-                        else 
-                            @#{f} = param.upcase
-                            @#{f}_union = @#{f} + '_UNION'
-                        end
-                    end
-                    @#{f} 
-               end"
-                            Flow.class_eval(str)
-        end 
-        Flow.class_eval(App.define_inout_reader(:table_records_union))
-        ## Create custom access
-        #   when specified cdr_fields_file , it will
-        #   trigger the reading of the file 
-        #   and put the fields into cdr_fields !!
-        [:cdr_fields,:records_fields].each do |f|
-            str = "def #{f.to_s + "_file"}(param=nil)
-                        if param
-                            @#{f.to_s + "_file"} = param
-                            @#{f} = parse_fields_file(param)
-                        else
-                            @#{f.to_s + "_file"}
-                        end
-                   end"
-                            ## define the fields attributes
-                            Flow.class_eval(App.define_accessor(f))
-                            Flow.class_eval(str)
-        end
-
-
 
         def initialize name
             @name = name
@@ -56,8 +17,7 @@ module App
             @table_cdr = "CDR_" + name.to_s
         end
         def source  name, &block
-            newSource = Source.new(self)
-            newSource.name (name.downcase.to_sym)
+            newSource = Conf::Source.new(name.downcase.to_sym,self)
             @sources << newSource
             newSource.instance_eval(&block)
         end
@@ -77,6 +37,14 @@ module App
             end
         end
 
+        def time_field_records param = nil
+            if param
+                @time_field_records = param.downcase.to_sym
+            else
+                @time_field_records
+            end
+        end
+
         ## return all the switches for this flow
         #  
         def switches
@@ -93,8 +61,7 @@ module App
         end
 
         def monitor name, &block
-            m = Monitor.new self
-            m.name name.downcase.to_sym
+            m = Conf::Monitor.new self,name.downcase.to_sym
             @monitors << m
             m.instance_eval(&block)
         end
@@ -108,24 +75,6 @@ module App
             end
         end
 
-
-        private
-
-        # read the fields, and create custom accessor for it
-        # file must be in format
-        # column_name:SQL TYPE
-        # output format is a Hash
-        # key => column_name
-        # value => sql type
-        def parse_fields_file file
-            hash = {}
-            File.read(file).split("\n").each do |line|
-                field,sql = line.split ':'
-                hash[field] = sql
-            end
-            hash
-        end
     end
-
 
 end

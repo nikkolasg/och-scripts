@@ -1,0 +1,11 @@
+# usual fetching / decoding / processing
+2-57/15 1-23 * * * /home/ngailly/scripts/monitoring.rb run flow mss >> /home/ngailly/scripts/log/out
+
+# midnight :
+# Take what's left on sources
+# Rotate the tables
+2 0 * * * /home/ngailly/scripts/monitoring.rb run flow mss >> /home/ngailly/scripts/log/out
+# rotate
+8 0 * * * /home/ngailly/scripts/monitoring.rb database rotate flow mss >> /home/ngailly/scripts/log/out
+# continue normal until 1 am
+10-57/15 0 * * * /home/ngailly/scripts/monitoring.rb run flow mss >> /home/ngailly/scripts/log/out

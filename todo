@@ -18,14 +18,19 @@ CDR STATS => 5000-5500 records / cdr
              ==> 750000-1,100000 records / day
 
 TODO
-    - FILTER MONITOR NOT WORKING !!! check allow? 
     - make compressed the rotated tables ASK JAN 
-        => rotation like Jan cron job, midnight make today + yesterday => rotate
     - replace records_fields_file :dump  to automatically dump a file
-    - check rotator table so it can rotate the stats itself
-
+    
+MODIF ==> 
+    - setup --mock /check /fix --mock
+    - change --> date time => timestamp
+    
+     
 
 CHECK LIST : create a monitor with unknown source
 
-
-ton => international ==> called_number != start_with(041)
+WHEN NEW SOURCE :
+    database dump source #
+    database setup source #
+    directories setup
+    and on rails =)

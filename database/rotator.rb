@@ -17,78 +17,40 @@ module Database
     class << TableRotator
         # do the actual rotation
         def rotate type,subject, opts = {}
-            unless [:cdr,:records,:monitor].include? type
+            unless [:source,:monitor].include? type.to_sym
                 Logger.<<(__FILE__,"ERROR","TableRotator rotation subject unknown #{subject} :(. Abort.")
                 abort
             end
-
-            self.send("rotate_#{type}".to_sym,subject,opts)
+            self.send(type,subject,opts)
         end
 
         # rotate records table by days 
         # Will move the current table to a new one
         # with suffix of yesterday date
-        # i.e. RECORDS_MSS_20141027
+        # i.e. RECORDS_EMM_INPUT_20141027
         # and also it delete and create a new MERGE
         # table containing all previous tables
-        def records flow,opts
-            Util::starts_for(opts[:dir]) do |dir|
-                cmd = "#{Util::date(YESTERDAY)}"
-                yesterday = `#{cmd}`
+        def source source,opts
+            schema = source.schema
+                yesterday = "#{Util::date(TableRotator::YESTERDAY)}"
                 # MOVE the table 
-                table_name = flow.table_records(dir)
+                table_name = schema.table_records
                 new_name = table_name + "_" + yesterday
                 TableUtil::rename_table table_name, new_name
                 TableUtil::compress_table new_name 
                 # re create the table
-                sql = SqlGenerator.for_records(flow.table_records(dir),
-                                               flow.records_fields)
+                sql = SqlGenerator.for_records(schema.table_records,
+                                               source.records_fields)
                 # reCREATE the MERGE 
-                TableUtil::delete_table flow.table_records_union(dir)
+                TableUtil::delete_table schema.table_records_union
                 tables = TableUtil::search_tables table_name
-                sql_ = SqlGenerator.for_records_union(flow.table_records_union(dir),
-                                                     flow.records_fields,
+                sql_ = SqlGenerator.for_records_union(schema.table_records_union,
+                                                     source.records_fields,
                                                      union: tables )
                 db = Mysql.default
                 db.connect { db.query(sql); db.query(sql_) }
-            end
         end
 
-        def cdr flow,opts
-            Util::starts_for(opts[:dir]) do |dir|
-                ts = get_timestamp opts
-                oldt = flow.table_cdr(dir)
-                new_table = get_new_name oldt,ts
-                # transfer old data to archive table
-                move_and_delete oldt,new_table,ts
-                # delete adn recreate table union
-                table =  flow.table_cdr_union(dir)
-                union_t = TableUtil::search_tables oldt
-                sql = SqlGenerator.for_cdr_union table,union: union_t
-                db = Mysql.default
-                db.connect do
-                    db.query(sql)
-                end
-            end
-        end
-        def monitor monitor,opts
-            Util::starts_for(opts[:dir]) do |dir|
-                ts = get_timestamp opts
-                oldt = monitor.table_records(dir)
-                newt = get_new_name oldt,ts
-                
-                move_and_delete oldt,new_table,ts
-                
-                table = monitor.table_records_union(dir)
-                union_t = TableUtil::search_tables oldt
-                sql = SqlGenerator.for_monitors_records_union table,union: union_t
-                db = Mysql.default
-                db.connect do 
-                    db.query(sql)
-                end     
-            end
-        end
-                
         private
         # return the new name formed based on the original name + ts
         def get_new_name table,timestamp
@@ -98,7 +60,7 @@ module Database
         # make the transfer of the old and new table
         def move_and_delete oldt,newt,timestamp
             ins = "INSERT INTO #{newt} SELECT * FROM #{oldt} " +
-                  " WHERE #{App.database.timestamp} < #{timestamp}";
+                  " WHERE #{Conf::database.timestamp} < #{timestamp}";
             del = "DELETE FROM #{oldt} WHERE " +
                     " #{App.database.timestamp} < #{timestamp}"
             db = Mysql.default
@@ -107,12 +69,6 @@ module Database
                 db.query(del)
             end
             TableUtil::compress_table newt
-        end
-        def cdr_table flow,dir
-            flow.table_cdr(dir)
-        end
-        def monitor_records_table mon,dir
-            mon.table_records(dir)
         end
         def get_timestamp opts
             year = opts[:year]

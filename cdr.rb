@@ -1,24 +1,12 @@
 #!/usr/bin/ruby
 #
-#MODULE DECODER
-# got one decode method per flow
-# OUTPUT
-# filename : {
-#       k1 : v1,
-#       k2 : v2,
-#       ...
-# }
-# MAYBE switch to a more metaprogramming approach
-# where you specify whhat you want to do at launch time
-# like 
-# decoder :MSS do
-#   cmd "newpmud.pl ....."
-#   res.map { |k,v| ... }
+#just a module to wrap a custom File obj
+#used trhoughout the tool
 #end
 module CDR
-    require './config'
+    require_relative'config'
     require 'open3'
-    require './util'
+    require_relative 'util'
     # helper class to facilitate the 
     # different format of cdr, and compressed or not ,
     # stored in subfolder ( ==> cname) etc.
@@ -28,7 +16,9 @@ module CDR
         attr_accessor :name,:cname,:full_path
 
         def initialize(name,opts = {})
-            if opts[:search] ## local search when we only know the generic name
+            if opts[:nosearch]
+                @name = remove_ext(name) ## only record the name and do nothing else
+            elsif opts[:search] ## local search when we only know the generic name
                             ## from the db
                 find_itself name
             else
@@ -37,9 +27,11 @@ module CDR
                 @cname = ::File::basename(name)
                 @full_path = @path + "/" + @cname
             end
-            @flow = Util::flow name, return: :class
+            @downloaded = false
         end
-
+        def downloaded?
+            @downloaded
+        end
         # custom writer so it updates relative attributes also
         def path= param 
             @path = param
@@ -50,18 +42,19 @@ module CDR
         end
 
         def ==(other)
-            return true if @cname == other.cname && @path == other.path
+            return true if @name == other.name
             return false
         end
         alias :eql? :== 
+
         def hash
-            @cname.hash + @path.hash
+            @name.hash
         end
 
         # return true if the file is a zipped file
         def zip?
-            find_itself unless @cname
-            if @cname.end_with?(".GZ") || @cname.end_with?(".gz")
+            find_itself unless @full_path
+            if @full_path.end_with?(".GZ") || @full_path.end_with?(".gz")
                 return true
             end
             false
@@ -70,7 +63,7 @@ module CDR
         ## compress the file and change inner variables
         def zip!
             find_itself unless @full_path
-            cmd = "gzip -f #{@full_path}"
+            cmd = "gzip -f \"#{@full_path}\""
             out,err,s = Open3.capture3(cmd)
             unless s.success?
                 Logger.<<(__FILE__,"ERROR","CDR::File could not zip itself (#{@cname}). #{err}.Abort.");
@@ -84,9 +77,10 @@ module CDR
             "CDR::File #{@name} (exists = #{::File.exists?(@path + "/" +@cname)}) Compressed : #{zip?}"
         end
         def unzip!
-            cmd = "gunzip -f #{@full_path}"
-            unless system(cmd)
-                Logger.<<(__FILE__,"ERROR","CDR::File uncompress error ...")
+            cmd = "gunzip -f \"#{@full_path}\""
+            out,err,s = Open3.capture3(cmd)
+            unless s.success?
+                Logger.<<(__FILE__,"ERROR","CDR::File uncompress error ...#{err}")
                 return false
             end
             @cname = @name

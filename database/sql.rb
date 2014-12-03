@@ -1,5 +1,6 @@
 module Database
-    require './logger'	
+    require_relative '../logger'	
+    require_relative '../config'
     require 'set'
     require 'mysql'
     class Mysql::Result
@@ -18,16 +19,17 @@ module Database
         CONNECTION_TRY = 5
         attr_reader :con
         @@default_db = nil   
-        def self.default
-            db = App.database
-            Mysql.new(db.host,db.name,db.login,db.password)
+        def self.default opts = {}
+            db = Conf.database
+            Mysql.new(db.host,db.name,db.login,db.password,opts)
         end
-        def initialize(h,db,login,pass)
+        def initialize(h,db,login,pass,opts = {})
             @host = h
             @db = db
             @login = login
             @pass = pass
             @con = nil
+            @opts = opts
         end
 
         def connect_
@@ -53,21 +55,21 @@ module Database
                 if @con ## if we already are connected
                     yield
                 else
-                i = 0
-                connected = false
-                while (i < CONNECTION_TRY && !connected) do 
-                    connected = connect_
-                    i = i + 1
-                end
-                unless connected
-                    Logger.<<(__FILE__,"ERROR","Can not connect to DB ..Abort.")
-                    abort
-                end
-                Logger.<<(__FILE__,"INFO","Logged into #{@db} at #{@name}@#{@host}")
-                yield
-                @con.close if @con
-                @con = nil
-                Logger.<<(__FILE__,"INFO","Logged OUT from  #{@db} at #{@name}@#{@host}")
+                    i = 0
+                    connected = false
+                    while (i < CONNECTION_TRY && !connected) do 
+                        connected = connect_
+                        i = i + 1
+                    end
+                    unless connected
+                        Logger.<<(__FILE__,"ERROR","Can not connect to DB ..Abort.")
+                        abort
+                    end
+                    Logger.<<(__FILE__,"INFO","Logged into #{@db} at #{@name}@#{@host}") if @opts[:v]
+                    yield
+                    @con.close if @con
+                    @con = nil
+                    Logger.<<(__FILE__,"INFO","Logged OUT from  #{@db} at #{@name}@#{@host}") if @opts[:v]
                 end
             end
         end
@@ -219,13 +221,18 @@ module Database
             sql
         end
 
-        def self.for_cdr table_name
+        def self.for_files table_name
+            length = 40
+            print "PLease, specify length of cdr file name (enter to default 40) : "
+            v = STDIN.gets.chomp
+            length = v.empty? ? length : v.to_i
             sql = "CREATE TABLE IF NOT EXISTS 
             #{table_name}( 
                 file_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-                file_name CHAR(40) NOT NULL UNIQUE, 
+                file_name VARCHAR(#{length}) NOT NULL UNIQUE, 
                 processed BOOLEAN DEFAULT 0,
-            #{App.database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                folder VARCHAR(10) DEFAULT '',
+            #{Conf::database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             INDEX(processed),
             INDEX(file_name),
             PRIMARY KEY(file_id)) "
@@ -233,13 +240,14 @@ module Database
             sql
         end
 
-        def self.for_cdr_union table_name,opts
+        def self.for_files_union table_name,opts
             sql = "CREATE TABLE IF NOT EXISTS 
             #{table_name}( 
                 file_id INT NOT NULL UNSIGNED AUTO_INCREMENT,
                 file_name CHAR(40) NOT NULL , 
                 processed BOOLEAN DEFAULT 0,
-            #{App.database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                folder VARCHAR(10) DEFAULT '',
+            #{Conf::database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             INDEX(processed),
             INDEX(file_id),
             INDEX(file_name)
@@ -247,45 +255,41 @@ module Database
             sql += "ENGINE=MERGE UNION=(#{opts[:union].join(',')}) INSERT_METHOD=NO"
             sql
         end
-        
+
         ## TODO
-        def self.for_monitor_stats monitor
-            sql = "CREATE TABLE IF NOT EXISTS #{monitor.table_stats}"
-            sql += "(#{App.database.timestamp} INT UNSIGNED UNIQUE DEFAULT 0, "
-            maps = monitor.filter_records.map do |rec|
-                [ monitor.column_record(rec,:input) + " INT DEFAULT 0 ",
-                  monitor.column_record(rec,:output) + " INT DEFAULT 0" ]
-            end.flatten(1).join(',')
-            sql += maps
-            sql += ", PRIMARY KEY (#{App.database.timestamp}))"
+        def self.for_monitor_stats table_name,columns
+            sql = "CREATE TABLE IF NOT EXISTS #{table_name}"
+            sql += "(#{Conf::database.timestamp} INT UNSIGNED UNIQUE DEFAULT 0, "
+            sql += columns.map {|c| "#{c} INT UNSIGNED DEFAULT 0" }.join(',')
+            sql += ", PRIMARY KEY (#{Conf::database.timestamp})) ENGINE=MYISAM"
             sql
         end
         def self.for_monitor_union
             raise "No monitor MERGE table implemented yet."
         end
 
-        def self.for_monitor_records table_name
+        def self.for_monitor_source table_name
             sql =  "CREATE TABLE IF NOT EXISTS #{table_name} (" +
                 " file_id INT UNSIGNED NOT NULL," +
-                " #{App.database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
+                " #{Conf::database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
                 " PRIMARY KEY (file_id))" 
             sql += " ENGINE=MYISAM"
             sql
 
         end
-        def self.for_monitor_records_backlog table_name
+        def self.for_monitor_source_backlog table_name
             sql = "CREATE TABLE IF NOT EXISTS #{table_name} (" +
                 " file_id INT UNSIGNED NOT NULL AUTO_INCREMENT, " +
                 " file_name VARCHAR(40) UNIQUE, " +
                 " PRIMARY KEY (file_id)) " +
                 " ENGINE=MYISAM "
-                sql
+            sql
         end
 
         def self.for_monitor_records_union table_name,opts
             sql =  "CREATE TABLE IF NOT EXISTS #{table_name} (" +
                 " file_id INT UNSIGNED NOT NULL,"+
-                " #{App.database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP," +
+                " #{Conf::database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP," +
                 " INDEX(file_id)) " 
             sql += "ENGINE=MERGE UNION=(#{opts[:union].join(',')} INSERT_METHOD=NO"
             sql

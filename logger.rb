@@ -3,8 +3,8 @@
 class Logger
 
 	
-    require './config'
-    @@log = App.logging
+    require_relative 'config'
+    @@log = Conf.logging
 	def self.<<(script,level,msg)
         script = File.basename(script)
 		log =  "#{Time.now.strftime("%d/%m/%y %H:%M")} #{script} : #{msg}" 
@@ -12,7 +12,7 @@ class Logger
            code = @@log.log_level.key(level)
            puts "#{level}\t #{log}" if code unless @@log.level_log > code
         end
-		cmd = "do_alert.pl \"#{level}\" \"#{log}\""
+		cmd = Conf::directories.app + "/do_alert.pl \"#{level}\" \"#{log}\""
 		`#{cmd}`
 	end
 end

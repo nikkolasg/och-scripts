@@ -1,3 +1,5 @@
 #only require the specific class from this module
-require './util'
-Dir["database/*.rb"].each { |f| require "./#{f}" }
+require_relative 'util'
+Dir[File::dirname(__FILE__) + "/database/*.rb"].each do |f| 
+    require_relative "database/#{File::basename(f)}" 
+end

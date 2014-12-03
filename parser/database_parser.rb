@@ -1,11 +1,11 @@
 require_relative '../logger'
 module Parser
 class DatabaseParser
-    require './database'
+    require_relative '../database'
     KEYWORDS = [:database]
-    @actions = [:setup,:reset,:delete,:rotate,:dump]
+    @actions = [:setup,:reset,:delete,:rotate,:dump,:rename]
 
-    require  './parser/helper'         
+    require_relative  'helper'         
     class << self
         attr_accessor :actions
         include Parser
@@ -24,30 +24,28 @@ class DatabaseParser
     def self.setup argv, opts 
         ah = {}
         ah[:flow] = Proc.new do |flow|
-            Database::TableCreator.for(flow) do
-                cdr opts[:dir]
-                records opts[:dir]
-                monitor :all do
-                    table_stats
-                    table_records opts[:dir]
-                    table_records_backlog
-                end
+            flow.sources.each do |source|
+                source.schema.create :files
+                source.schema.create :records
+            end
+            flow.monitors.each do  |mon|
+                mon.schema.create :stats
+                mon.schema.create :files
             end
         end
-        ah[:cdr] = Proc.new do |flow|
-            Database::TableCreator.for(flow) { cdr opts[:dir] }
+        ah[:source] = Proc.new do |source|
+            source.schema.create :files
+            source.schema.create :records
         end
-        ah[:records]= Proc.new do |flow|
-            Database::TableCreator.for(flow) { records opts[:dir] }
+        ah[:files] = Proc.new do |source|
+            source.schema.create :files
+        end
+        ah[:records]= Proc.new do |source|
+            source.schema.create :records
         end
         ah[:monitor] = Proc.new do |mon|
-            Database::TableCreator.for(mon.flow) do
-                monitor mon.name do
-                    table_stats
-                    table_records opts[:dir]
-                    table_records_backlog
-                end
-            end
+            mon.schema.create :stats
+            mon.schema.create :files
         end
         take_actions argv,ah
     end
@@ -55,35 +53,35 @@ class DatabaseParser
     # flush the tables 
     def self.reset argv, opts
         ah = {}
+        fm = Conf::LocalFileManager.new
         ah[:flow] = Proc.new do |flow|
-            Database::TableReset.for flow do 
-                cdr opts[:dir]
-                records opts[:dir]
-                monitor :all do 
-                    table_stats
-                    table_records opts[:dir]
-                    table_records_backlog
-                end
+            flow.sources.each do |source|
+                source.schema.reset :files
+                source.schema.reset :records
+                fm.delete_source_files source
+            end
+            flow.monitors.each do |mon|
+                    mon.schema.reset :stats
+                    mon.schema.reset :files
             end
         end
-        ah[:cdr] = Proc.new do |flow|
-            Database::TableReset.for(flow) { cdr opts[:dir] }
+        ah[:files] = Proc.new do |source|
+            source.schema.reset :files
+            fm.delete_source_files source
         end
-        ah[:record]= Proc.new do |flow|
-            Database::TableReset.for(flow) do
-                cdr opts[:dir] 
-                records opts[:dir]
-            end
+        ah[:records]= Proc.new do |source|
+            source.schema.reset :records
+            fm.restore_source_files source
         end
 
+        ah[:source] = Proc.new do |source|
+            source.schema.reset :files
+            source.schema.reset :records
+            fm.delete_source_files source
+        end
         ah[:monitor]= Proc.new do |mon|
-            Database::TableReset.for mon.flow do
-                monitor mon.name do 
-                    table_stats 
-                    table_records opts[:dir]
-                    table_records_backlog
-                end
-            end
+            mon.schema.reset :stats
+            mon.schema.reset :files
         end
         take_actions argv,ah
     end
@@ -94,70 +92,85 @@ class DatabaseParser
             Logger.<<(__FILE__,"INFO","Deleted operation terminated for #{subject.name} => #{tables.join(',')}")
         end
         ahash = {}
+        fm = Conf::LocalFileManager.new
         ahash[:flow] = Proc.new do |flow|
-            Database::TableDelete.for flow do 
-                records opts[:dir]
-                records_union opts[:dir]
-                monitor :all  do
-                    table_stats
-                    table_records opts[:dir]
-                    table_records_backlog
+                flow.sources.each do |source|
+                    source.schema.delete :files
+                    source.schema.delete :records
+                    fm.delete_source_files source
                 end
-                cdr opts[:dir]
-            end
-            print.call(flow,[:records,:table_stats,:table_records,:cdr])
+                flow.monitors.each do |monitor|
+                    monitor.schema.delete :stats
+                    monitor.schema.delete :files
+                end
         end
-        ahash[:cdr] = Proc.new do |flow|
-            Database::TableDelete.for(flow) { cdr opts[:dir] }
+        ahash[:source] = Proc.new do |source|
+            source.schema.delete :files
+            source.schema.delete :records
+            fm.delete_source_files source
         end
-        ahash[:records] = Proc.new do |flow|
-            Database::TableDelete.for(flow) { records opts[:dir] }
+        ahash[:files] = Proc.new do |source|
+            source.schema.delete :files
+            fm.delete_source_files source
         end
+        ahash[:records] = Proc.new do |source|
+            source.schema.delete :records
+            fm.restore_source_files source
+        end
+
         ahash[:monitor] = Proc.new do |mon|
-            Database::TableDelete.for mon.flow do 
-                monitor mon.name do
-                    table_stats 
-                    table_records opts[:dir]
-                    table_records_backlog
-                end
-            end
+            mon.schema.delete :stats
+            mon.schema.delete :files
         end
+
         take_actions argv,ahash
     end
 
     # rotate the tables if necessary  
     def self.rotate argv, opts
         ah = {}
+
+        ah[:source] = Proc.new do |source|
+            Database::TableRotator.source source,opts
+        end
         ah[:flow] = Proc.new do |flow|
-            flow.monitors.each {|m| Database::TableRotator.monitors(m,opts) }
-            Database::TableRotator.records flow,opts
-            Database::TableRotator.cdr flow,opts
-        end
-        ah[:cdr] = Proc.new do |flow|
-            Database::TableRotator.cdr flow,opts
-        end
-        ah[:records] = Proc.new do |flow|
-            Database::TableRotator.records flow,opts
-        end
-        ah[:monitor] = Proc.new do |monitor|
-            Database::TableRotator.monitor monitor,opts
+            flow.sources.each do |source|
+                ah[:source].call(source)
+            end
         end
         take_actions argv,ah
     end
 
     def self.dump argv,opts
+        Logger.<<(__FILE__,"INFO","Database: Dump operation in progress ...")
         ah = {}
         ah[:source] = Proc.new do |source|
-            file = source.test_file
             decoder = source.decoder
-            out = App.directories.database_dump + "/" 
-            out += "#{source.flow.name}_#{source.name}.dump"
-            require './dump'
-            MysqlDumper::dump decoder,[file],file: out
+            ::File.delete(decoder.dump_file) if ::File.exists?(decoder.dump_file)
+            f = decoder.fields
+            Logger.<<(__FILE__,"INFO","Database: Dump have dumped #{f.size} fields into #{decoder.dump_file}")
         end  
         take_actions argv,ah
     end
 
+    def self.rename argv,opts
+        h = {}
+        h[:source] = Proc.new do |source|
+            nname = argv.shift
+            fm = Conf::LocalFileManager.new
+           ## table 
+            source.schema.rename nname 
+            source.flow.monitors.each { |m| m.schema.rename_source source,nname if m.sources.include?(source)}
+            ## find & renames dirs
+            fm.rename_source_files source,nname
+            ## rename in config files
+            conf_files = fm.ls Conf::directories.app, "config*.rb"
+            cmd = "sed -i 's/#{source.name}/#{nname}/' #{conf_files.join(' ')}"
+            fm.exec_cmd(cmd)
+            Logger.<<(__FILE__,"INFO","Changed name of source into config files ..")
+        end     
+        take_actions argv,h
+    end
 
 
     end

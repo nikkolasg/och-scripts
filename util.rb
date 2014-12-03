@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 
-require './config'
-require './ruby_util'
+require_relative 'config'
+require_relative 'ruby_util'
 module Util
     SEC_IN_MIN = 60
   

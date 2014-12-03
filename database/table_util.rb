@@ -17,7 +17,7 @@ module Database
            db.connect do 
                arr = db.query("SELECT * FROM #{table} LIMIT 1").fetch_fields
            end
-           return arr.map {|f| f.name }
+           return arr.map {|f| f.name.to_sym }
        end
               
         def self.add_field table,name, type
@@ -78,8 +78,6 @@ module Database
 
         # return an array of table names  associated with this prefix 
         def self.search_tables prefix_name
-            direction = prefix_name.include?(App.database.output_suffix.to_s) ?
-                :output : :input 
             sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES " +
                 "  WHERE TABLE_NAME REGEXP '^#{prefix_name}(_[0-9]{8})?$';" 
             db = Mysql.default
@@ -90,16 +88,7 @@ module Database
                     names << row['TABLE_NAME']
                 end
             end
-            ## FILTER names according to direction 
-            names.select do |name|
-                res = name.include? App.database.output_suffix
-                if direction == :input
-                    !res
-                elsif direction == :output
-                    res
-                end
-            end
+            names
         end 
-
     end
 end
