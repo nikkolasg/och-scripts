@@ -9,18 +9,26 @@ module Stats
         end
     end
 
-    # format the time according to the monitor specification
+    #def get_formatted_time record_time
+
+        #interval = @current.time_interval
+
+        ## compute the "bin number" from the Epoch, 
+        ## i.e. the smallest integer m such taht the time falls into 
+        ## [m, m+ interval]
+        ## return the date from it
+        #y,m,d,h,mn,sec = Util::decompose record_time 
+        #puts y,m,d,h,mn,sec , " FROM #{record_time}"
+        #time_mn = Time.at(Time.utc(y,m,d,h,mn)).to_i / Util::SEC_IN_MIN
+        #minimum = time_mn - (time_mn % interval) 
+        #formatted_time = Time.at(minimum * Util::SEC_IN_MIN).to_i
+    #end
+
+    # format to the monitor interval endpoints
     def get_formatted_time record_time
-
         interval = @current.time_interval
-
-        # compute the "bin number" from the Epoch, 
-        # i.e. the smallest integer m such taht the time falls into 
-        # [m, m+ interval]
-        # return the date from it
-        y,m,d,h,mn,sec = Util::decompose record_time 
-        time_mn = Time.at(Time.utc(y,m,d,h,mn)).to_i / Util::SEC_IN_MIN
-        minimum = time_mn - (time_mn % interval) 
+        time_mn = record_time.to_i / Util::SEC_IN_MIN
+        minimum = time_mn - (time_mn % interval)
         formatted_time = Time.at(minimum * Util::SEC_IN_MIN).to_i
     end
 

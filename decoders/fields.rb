@@ -14,7 +14,7 @@ module Decoder
         ## TODO
         SMS_RECORDS = { "S" => 1 }
         fields = RubyUtil::symbolize([ "record_type",
-                                       "time",
+                                       "submit_date",
                                        "reference_id",
                                        "a_number",
                                        "a_imsi",

@@ -28,6 +28,13 @@ Conf.make do
         password "mediation"
         protocol :sftp
     end
+    
+    host "ubu15" do
+        address "ubu15"
+        login "ngailly"
+        password "garnerozebest"
+        protocol :sftp
+    end
 
     logging do 
         stdout true
@@ -106,7 +113,7 @@ Conf.make do
             # You have to specify the classs name and the file containing
             # the class must be place in mapper/ folder.
             # The class itelf must be declared  within the Mapper:: module
-            mapper :IdentityMapper ## default one, let everything as it is
+            mapper :Nkm15Mapper ## default one, let everything as it is
             ## The class that will handle all the transactions in the database,
             #handle its own schema ! =) default is GenericSchema,
             #one table for cdr, one for records.
@@ -119,6 +126,7 @@ Conf.make do
             base_dir "/var/opt/mediation/MMStorage/ARCHIVAL/RAW/MSS"
             folders *%w(LSMSS31 ZHMSS20 ZHMSS21 LSMSS10 LSMSS11 LSMSS30 FLMSS01)
             decoder :NKM15Decoder
+            mapper :Nkm15Mapper
             # Options for the file_manager of this source so it knows where 
             # to search for the files. Here are the defaults. 
             # Look at file_manager.rb for more infos.
@@ -134,13 +142,13 @@ Conf.make do
 
     flow "MMS" do 
     
-        time_field_records :entry_date
+        time_field_records :submit_date
 
         filter do
             ## only take Send or Receive CDR
             field (:action) { |x| ["S","R"].include?(x) }
             fields :message_class_size,:message_type,:action_final_state
-            fields :message_size,:message_id,:owner,:entry_date
+            fields :message_size,:message_id,:owner,:submit_date
             fields :final_state_date,:recipient_types
             fields :handset_type,:operator_id,:transaction_id,:original_sender
             fields :a_imsi,:b_imsi,:a_number,:b_number,:a_mail,:b_mail
@@ -151,7 +159,7 @@ Conf.make do
             base_dir "/var/opt/mediation/MMStorage/ARCHIVAL/RAW/MMSC"
             folders "COMVS11","COMVS12"
             decoder :TALDecoder
-            mapper :MmsInMapper
+            mapper :TalMapper
             file_manager_options file_regexp: nil
         end
         source "mms_out" do
@@ -169,10 +177,10 @@ Conf.make do
 
     flow "SMS" do
        
-       time_field_records :time
+      time_field_records :submit_date
       filter do
-          field :reference_id,:mmsc_id,:a_imsi,:b_imsi
-          fields_file "MMS_records_field.db"
+          field :reference_id,:mmsc_id,:a_imsi,:b_imsi,:tariff_class,:vmsc_number,:sid, :submit_date
+          fields_file "SMS_records_field.db"
       end 
 
         source "sms_in" do
@@ -188,10 +196,18 @@ Conf.make do
             host "emm_crissier"
             base_dir "/var/opt/mediation/MMStorage/ARCHIVAL/DIST/SMSC"
             folders "QVANTEL" ## no folders by switch -_-"
-            decoder :CSVDecoder, type: :SMS
+            decoder :CSVDecoder, type: :SMS, separator: ";"
+            mapper :SmsMapper
             
         end
-         
+        
+        eval(IO.read(File::dirname(__FILE__) + "/config_monitor_sms.rb"),binding)
+
+    end
+
+    flow "data" do
+
+
     end
 
 end

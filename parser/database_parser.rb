@@ -146,6 +146,7 @@ class DatabaseParser
         ah = {}
         ah[:source] = Proc.new do |source|
             decoder = source.decoder
+            decoder.opts.merge! opts
             ::File.delete(decoder.dump_file) if ::File.exists?(decoder.dump_file)
             f = decoder.fields
             Logger.<<(__FILE__,"INFO","Database: Dump have dumped #{f.size} fields into #{decoder.dump_file}")

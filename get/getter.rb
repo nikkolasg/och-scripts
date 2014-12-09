@@ -8,8 +8,9 @@ module Getter
     require 'open3'
     require 'json'
     def self.create type, info = nil
-        c = @@getters[type]
         info[:flow] = type
+        return GenericFlowGetter.new(info)
+        c = @@getters[type]
         if c
             c.new(info)
         else
@@ -24,7 +25,7 @@ module Getter
 
     # responsible for handling the flows get operations
     class GenericFlowGetter
-        Conf::flows.each { |f| Getter.register_getter f.name,self }
+        ##Conf::flows.each { |f| Getter.register_getter f.name,self }
         include Getter
 
         def initialize(infos)

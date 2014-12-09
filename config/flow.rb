@@ -39,7 +39,7 @@ module Conf
 
         def time_field_records param = nil
             if param
-                @time_field_records = param.downcase.to_sym
+                @time_field_records = (Util::TIME_PREFIX + param.downcase.to_s).to_sym
             else
                 @time_field_records
             end

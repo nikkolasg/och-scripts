@@ -49,7 +49,6 @@ module Decoder
                     fields = line.split(":")
                     name = fields.shift
                     fields = Hash[fields.each_with_index.map { |v,i| [v.downcase.to_sym,i] }]
-                    fields = @filter.filter_fields(fields) if @filter
                     rec =  { fields: fields, values: []} 
                     json[name] = rec
                     next
@@ -57,14 +56,10 @@ module Decoder
                 # finally , the rest is pur data ! only do not take the name
                 # 'cause we dont use it
                 values = line.split(":")
-                # filter values for selected fields
-                # only insert if filter is OK or no filter, and only insert
-                # for filtered fields  !
-                if !@filter || (@filter && @filter.filter_record(values))
-                    rec[:values] << values
-                end
+                rec[:values] << values
             end
-            #json = @mapper.map_json(json) if @mapper
+            json = @mapper.map_json(json) if @mapper
+            json = @filter.filter_json(json) if @filter
             Debug::debug_json(json) if @opts[:d]
             sanitize_json json
         end

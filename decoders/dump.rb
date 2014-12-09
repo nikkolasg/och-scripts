@@ -5,6 +5,7 @@
 # can write the dump in a file specified
 module MysqlDumper
     require_relative '../cdr'
+    require_relative '../mappers/generic'
     MAX_DEV = 2
     module_function
 
@@ -49,6 +50,12 @@ module MysqlDumper
     # if this field is shared amongst every records or not
     # and the values for this field
     def analyze shared,field,values
+        if field.to_s.start_with?(Util::TIME_PREFIX) ## TIME STAMP !
+            v = "INT UNSIGNED DEFAULT 0"
+            Logger.<<(__FILE__,"INFO","DUMP FIELD : #{field} => #{v}")
+            return v
+        end 
+        ## analyze otherwise
         size_values = values.map { |c| c.size }
         mean = mean(size_values)
         max = max(size_values)

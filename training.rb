@@ -114,3 +114,5 @@ ttt.foo "foo"
 ttt.foo
 
 puts Test::const_get("TEST_CONSTANT")
+str = "i am \\\\'a string"
+puts RubyUtil::escape(str)

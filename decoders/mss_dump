@@ -12,9 +12,6 @@ calling_subs_first_ci:VARCHAR(4) DEFAULT ''
 calling_subs_last_ex_id:VARCHAR(11) DEFAULT ''
 calling_subs_last_ci:VARCHAR(4) DEFAULT ''
 out_circuit_group:VARCHAR(4) DEFAULT ''
-in_channel_allocated_time:CHAR(14) DEFAULT ''
-charging_start_time:CHAR(14) DEFAULT ''
-charging_end_time:CHAR(14) DEFAULT ''
 orig_mcz_duration_ten_ms:VARCHAR(6) DEFAULT ''
 cause_for_termination:CHAR(4) DEFAULT ''
 orig_mcz_tariff_class:VARCHAR(6) DEFAULT ''
@@ -24,7 +21,10 @@ called_msrn:VARCHAR(14) DEFAULT ''
 calling_number_ton:CHAR(1) DEFAULT ''
 orig_dialling_class:CHAR(4) DEFAULT ''
 routing_category:CHAR(10) DEFAULT ''
-call_reference_time:VARCHAR(14) DEFAULT ''
+ts_in_channel_allocated_time:INT UNSIGNED DEFAULT 0
+ts_charging_start_time:INT UNSIGNED DEFAULT 0
+ts_charging_end_time:INT UNSIGNED DEFAULT 0
+ts_call_reference_time:INT UNSIGNED DEFAULT 0
 cause_for_forwarding:CHAR(1) DEFAULT ''
 forwarding_imsi:VARCHAR(2) DEFAULT ''
 forwarding_number:VARCHAR(11) DEFAULT ''

@@ -112,7 +112,7 @@ module Database
                             TableUtil::reset_table @table_records if type == :records
                             TableUtil::reset_table @table_records_union if type == :records
                             sql = "UPDATE #{@table_files} SET processed = 0 WHERE file_id IN (#{RubyUtil::sqlize(ids,:no_parenthesis => true, :no_quotes => true)})"
-                            @db.query(sql)
+                            @db.query(sql) unless ids.empty?
                         end
                         Logger.<<(__FILE__,"INFO","Reset #{type} tables for #{@source.name}")
                     end

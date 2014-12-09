@@ -88,7 +88,7 @@ module Conf
         #  for mms decoder, we have already that pair present
         #  so it's faster this way
         def filter_pair field, value
-            v = @filters[field]
+            v = get_value(field)
             return false unless v
             return true unless v.is_a?(Proc)
             return v.call(value)
@@ -99,13 +99,20 @@ module Conf
         def filter_fields fields
             @filtered_fields = []
             fields.keep_if do |field,index|
-                v = @filters[field]
+                v = get_value(field)
                 @filtered_fields << [field,index] if v
                 v
             end
             return fields
         end
 
+        ## Retreive the value associated with this field
+        # IF ANY =)
+        # Also, manage the Timestamp fields that are prefixed or not
+        def get_value field
+            f = field.to_s.sub(Util::TIME_PREFIX,"")
+            return @filters[f.to_sym]
+        end
         # filter out a record from the JSON output decoder
         # based on the filtering fields it has recorded
         # IF no corresponding fields are found, reject the record
@@ -114,8 +121,7 @@ module Conf
             allowed = true 
             found = false
             @filtered_fields.each do |field,index|
-                v = @filters[field]
-                next unless v ## shouldnt happen though
+                next unless ( v = get_value(field))
                 ## if its not a proc it's a true value so no need to apply
                 found ||= true
                 allowed &= evaluate(v,record[index])
@@ -131,8 +137,7 @@ module Conf
             found = nil
             allowed = true
             row.each do |field,value|
-                v = @filters[field]
-                next unless v
+                next unless (v = get_value(field))
                 found ||= true
                 allowed &= evaluate(v,value)
                 return false unless allowed

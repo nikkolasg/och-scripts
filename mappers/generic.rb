@@ -14,11 +14,48 @@ module Mapper
 
     # does nothing, simply output the same
     class GenericMapper
-
         def initialize opts = {}
             @opts = opts
         end
-           
+
+
+        ## transform the litterals time values i
+        # into integer timestamp =)
+        # fields is expected to be an array
+        # of index
+        # select only time related time !
+        # row is a row in the json
+        def transform_time_values row,*fields 
+            fields.each do |i|
+                next unless i ## workaround, same mapper used for different format
+                              ## thens ome fields may not exists
+                v = row[i]
+                values = Util::decompose(v).compact
+                if values.compact.empty? 
+                    row[i] = 0
+                else
+                    begin
+                    row[i] = Time.utc(*values).to_i     
+                    rescue => e
+                        puts values.inspect
+                        puts e
+                        abort
+                    end
+                end
+            end
+            return true
+        end
+        ## rename the time fields in the array "fields"
+        # and return a hash to be used with renamed field
+        # Key : old field name 
+        # Value : new field name ==> "ts_" + old_field
+        def map_time_fields fields
+            fields.inject({}) do |col,field|
+                nfield = Util::TIME_PREFIX + field.to_s
+                col[field] = nfield.to_sym
+                col
+            end
+        end
         ## Pass an hash of fields (fields => index)
         ## AND a hash of NEW FIELDS (old field name => new field name)
         def rename_fields fields, newfields
@@ -31,11 +68,14 @@ module Mapper
         end
 
     end
-    
+
     Dir[File::dirname(__FILE__) + "/*.rb"].each do |f|
         require_relative "#{f}"
     end
-        # TODO 
+
+
+
+    # TODO 
     class ProceraMapper
 
         # return a new array of fields mapped for the 

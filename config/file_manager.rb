@@ -293,9 +293,11 @@ module Conf
         # update the files path !!
         def download_all_files files,dest
             return if files.empty?
-            cmd = "mv -t #{dest} "
-            cmd += files.map { |f| "\"#{f.full_path}\"" }.join(' ')
-            exec_cmd(cmd) 
+            RubyUtil::partition files do |sub|
+                cmd = "mv -t #{dest} "
+                cmd += sub.map { |f| "\"#{f.full_path}\"" }.join(' ')
+                exec_cmd(cmd) 
+            end
             # update files object !
             files.map! { |f| f.path = dest; f }
         end

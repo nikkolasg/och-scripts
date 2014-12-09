@@ -4,7 +4,7 @@ require_relative 'config'
 require_relative 'ruby_util'
 module Util
     SEC_IN_MIN = 60
-  
+    TIME_PREFIX = "ts_" 
     DATE_FORMAT = "%Y%m%d"
    
     def self.date cuando,opts = {}

@@ -46,10 +46,10 @@ module Decoder
                 fields = json[name][:fields]
                 json[name][:values] << record
             end
-            json = @mapper.map_json(json) if @mapper
-            json = @filter.filter_json(json) if @filter
-            Debug::debug_json json if @opts[:d]
             sanitize_json json
+            json = @mapper.map_json(json) if @mapper
+            Debug::debug_json json if @opts[:d]
+            json = @filter.filter_json(json) if @filter
         rescue => e
             Logger.<<(__FILE__,"ERROR","Error CSV Decoding file #{file.full_path}: #{e.message}")
             raise e

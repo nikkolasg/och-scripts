@@ -118,10 +118,8 @@ module Stats
         json.each do |name,hash|
             fields = hash[:fields]
             values = hash[:values]
-            fields = @current.filter.filter_fields(fields) if @current.filter
             values.each do |record|
                 @records_count += 1
-                next if (@current.filter && !@current.filter.filter_record(record))
                 analyze_record(fields,record) 
             end
         end

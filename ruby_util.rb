@@ -70,8 +70,16 @@ module RubyUtil
             [ value ]
         end
     end
+    def self.escape value
+        esc = lambda {|x| x.gsub(/\\|'/) { |c| "\\#{c}" } }
+        if value.is_a?(String)
+            esc.call(value)
+        elsif value.is_a?(Array)
+            value.map { |v| esc.call(v) }
+        end
+    end
     def self.quotify list
-        list.map { |l| "'#{l}'"}
+        list.map { |l| "'#{self.escape(l)}'"}
     end
     def self.sqlize list,opts = {}
         str = opts[:no_quote] ? list : RubyUtil::quotify(list)

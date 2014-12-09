@@ -37,7 +37,9 @@ class OperationParser
     def self.get argv,opts
         require_relative '../get/getter'
         ah = {}
-        ah[:flow] = Proc.new { |flow|  Getter.create(flow.name,opts).get }
+        ah[:flow] = Proc.new { |flow| op = opts.clone;
+                              op[:flow] = flow.name;
+                              Getter.create(flow.name,opts).get }
         ah[:source] = Proc.new { |source| op = opts.clone; 
                                  op[:source] = source;
                                  Getter.create(source.flow.name,op).get }

@@ -27,9 +27,9 @@ module Decoder
                     json["SMS"][:values] << row.map { |v| v.nil? ? '' : v }
                 end
             end
-            Debug::debug_json json if @opts[:d]
             json = @mapper.map_json(json) if @mapper
             json = @filter.filter_json(json) if @filter
+            Debug::debug_json json if @opts[:d]
             sanitize_json(json) 
         end
     end

@@ -8,12 +8,14 @@ module Conf
         @@fields.each do |f|
             Source.class_eval(Conf.define_accessor(f))
         end
-
+        require_relative '../get/getter'
         def initialize name,flow= nil
             @flow = flow 
             @name = name
             @folders = []
             @schema = ::Database::Schema::Source::GenericSchema.new self
+            
+            @kgetter = Getter::GenericFlowGetter 
         end
 
         ## accessor for the schema used by this source

@@ -4,5 +4,5 @@ b_number:VARCHAR(33) DEFAULT ''
 b_imsi:VARCHAR(15) DEFAULT ''
 message_size:CHAR(6) DEFAULT ''
 action:CHAR(1) DEFAULT ''
-entry_date:CHAR(14) DEFAULT ''
 message_id:CHAR(22) DEFAULT ''
+ts_submit_date:INT UNSIGNED DEFAULT 0
