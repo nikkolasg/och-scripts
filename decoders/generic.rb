@@ -36,13 +36,14 @@ module Decoder
     ## Return fields hash 
     # key : field name
     # value : sql
+    # # WARNING : DO NOT DECLARE @fields VARIABLE IN ANY DECODER
+    # otherwise the dumping wont take place since assign it one time
     def fields
         ## First time we have to create the dump file (i.e. the fields + sql)
         if !File.exists?(dump_file)
             Logger.<<(__FILE__,"INFO", "DECODER:GENERIC will decode & dump #{test_file}")
             @fields ||= MysqlDumper::dump self,[test_file],file: dump_file
         else # otehrwise directly read the dump file !
-            puts "#{dump_file} exists ..."
             @fields ||= MysqlDumper::read_dump_file dump_file
         end
         return @fields

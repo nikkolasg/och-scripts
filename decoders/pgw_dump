@@ -1,0 +1,9 @@
+a_number:CHAR(11) DEFAULT ''
+a_imsi:CHAR(15) DEFAULT ''
+duration:CHAR(5) DEFAULT ''
+ap_name:CHAR(14) DEFAULT ''
+rating_category:CHAR(1) DEFAULT ''
+sgsn_owner:CHAR(1) DEFAULT ''
+vol_uplink:CHAR(9) DEFAULT ''
+vol_downlink:CHAR(9) DEFAULT ''
+ts_start_time:INT UNSIGNED DEFAULT 0

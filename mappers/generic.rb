@@ -21,7 +21,7 @@ module Mapper
 
         ## transform the litterals time values i
         # into integer timestamp =)
-        # fields is expected to be an array
+        # fields is expected to be vars args
         # of index
         # select only time related time !
         # row is a row in the json
@@ -31,7 +31,7 @@ module Mapper
                               ## thens ome fields may not exists
                 v = row[i]
                 values = Util::decompose(v).compact
-                if values.compact.empty? 
+                if values.empty? 
                     row[i] = 0
                 else
                     begin

@@ -78,7 +78,7 @@ module Stats
                     @current.reset_stats
                     @current.schema.processed_files source, @processed_ids.to_a
                     @processed_ids = Set.new
-                    Logger.<<(__FILE__,"INFO","Analyzed & Accepted #{@total} records for #{source.name}")
+                    Logger.<<(__FILE__,"INFO","Analyzed & Accepted #{@total}/#{counter} records for #{source.name}")
                     @total = 0
                     @num_rows = 0
                     progression(0,reset: true)

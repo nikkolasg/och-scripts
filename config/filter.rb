@@ -95,7 +95,7 @@ module Conf
         end
 
         ## Filter out some fields, and registers the good
-        #one. To call BEFORE filter_row,so it knows the fields to keep
+        #one. To call BEFORE filter_record,so it knows the fields to keep
         def filter_fields fields
             @filtered_fields = []
             fields.keep_if do |field,index|

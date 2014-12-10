@@ -260,7 +260,7 @@ module Database
         def self.for_monitor_stats table_name,columns
             sql = "CREATE TABLE IF NOT EXISTS #{table_name}"
             sql += "(#{Conf::database.timestamp} INT UNSIGNED UNIQUE DEFAULT 0, "
-            sql += columns.map {|c| "#{c} INT UNSIGNED DEFAULT 0" }.join(',')
+            sql += columns.map {|c| "#{c} BIGINT UNSIGNED DEFAULT 0" }.join(',')
             sql += ", PRIMARY KEY (#{Conf::database.timestamp})) ENGINE=MYISAM"
             sql
         end

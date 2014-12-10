@@ -7,32 +7,13 @@ module Getter
     require_relative '../cdr'
     require 'open3'
     require 'json'
-    def self.create type, info = nil
-        info[:flow] = type
-        return GenericFlowGetter.new(info)
-        c = @@getters[type]
-        if c
-            c.new(info)
-        else
-            raise "Bad getter type #{type} ."
-        end
-    end
-
-    @@getters = {}
-    def self.register_getter type,name
-        @@getters[type] = name
-    end
 
     # responsible for handling the flows get operations
-    class GenericFlowGetter
-        ##Conf::flows.each { |f| Getter.register_getter f.name,self }
+    class GenericSourceGetter
         include Getter
 
-        def initialize(infos)
-            @flow = Conf::flow(infos[:flow])
-            @flow_name = infos[:flow]
-            @sources = infos[:source] ? RubyUtil::arrayize(infos[:source]) : @flow.sources
-            @current_source = nil
+        def initialize(source,infos)
+            @current_source = source
             @v = infos[:v]
             @take = infos[:take] || nil
             @files = {}
@@ -41,21 +22,18 @@ module Getter
 
         def get
             Logger.<<(__FILE__,"INFO", "Starting GET operations in #{self.class.name}.." )
-            @sources.each do |source|
-                @current_source = source
-                get_remote_files
-                count = filter
-                if count == 0
-                    Logger.<<(__FILE__,"INFO","Filter out finished. Nothing to download!")
-                else
-                    Logger.<<(__FILE__,"INFO","Filtering on remote files done ... will download #{count} files. ")
-                    download_files
-                    Logger.<<(__FILE__,"INFO","Files downloaded & moved into right folders ...")
-                    @current_source.schema.insert_files @files
-                    Logger.<<(__FILE__,"INFO","Files registered into the system ! ")
-                end
-                @files = {}
+            get_remote_files
+            count = filter
+            if count == 0
+                Logger.<<(__FILE__,"INFO","Filter out finished. Nothing to download!")
+            else
+                Logger.<<(__FILE__,"INFO","Filtering on remote files done ... will download #{count} files. ")
+                download_files
+                Logger.<<(__FILE__,"INFO","Files downloaded & moved into right folders ...")
+                @current_source.schema.insert_files @files
+                Logger.<<(__FILE__,"INFO","Files registered into the system ! ")
             end
+            @files = {}
             Logger.<<(__FILE__,"INFO","GET Operation finished !")
         end
 

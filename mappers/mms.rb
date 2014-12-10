@@ -50,7 +50,9 @@ module Mapper
             end
             return fields
         end
-
+    
+        ## transform the number (a_number b_number ) weird fields
+        #into distint number / mail components
         def transform_numbers_row fields,row
             re = /(\+?\d*)?(\/TYPE=PLMN@?)?([a-z0-9\._-]*)@?([a-z0-9\._-]*)?/i
             @numbers.each do |f,arr|

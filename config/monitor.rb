@@ -49,6 +49,7 @@ module  Conf
                 raise "Unknown source #{sname} in monitor #{name}!" unless s
             end
         end
+        alias :source :sources
         
                
         def reset_stats

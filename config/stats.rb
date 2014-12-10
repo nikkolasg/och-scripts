@@ -135,14 +135,16 @@ module Conf
     end
 
     class SumField < ActionField
-
         def initialize col
             super(col)
         end
 
         def save formatted_time,arr
             # add it to the sum
-            arr.each { |n| @value[formmatted_time] += Integer(n) rescue return }
+            arr.each do |n| 
+                i = Integer(n) rescue return
+                @value[formatted_time] += i;
+            end
         end
     end
 end

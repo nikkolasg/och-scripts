@@ -75,7 +75,9 @@ module RubyUtil
         if value.is_a?(String)
             esc.call(value)
         elsif value.is_a?(Array)
-            value.map { |v| esc.call(v) }
+            value.map { |v| self.escape(v) }
+        else
+            value
         end
     end
     def self.quotify list

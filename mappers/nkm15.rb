@@ -15,10 +15,10 @@ module Mapper
         def map_json json
             json.each do |name,hash|
                 fields = hash[:fields]
-                hash[:values].each do |row|
-                   transform_time_values row,*fields.values_at(*@timefields)
-                end
                 hash[:fields] = rename_fields fields,@fields2change 
+                hash[:values].each do |row|
+                   transform_time_values row,*hash[:fields].values_at(*@fields2change.values)
+                end
             end
 
         end

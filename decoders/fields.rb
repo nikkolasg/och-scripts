@@ -11,7 +11,17 @@ module Decoder
             raise "FIELDS decoder : type #{type} not corresponding to anything ..." unless (f && r)
             return [f,r]
         end
-        ## TODO
+
+        PGW_FIELDS = RubyUtil::symbolize( %w(   a_number
+                                                a_imsi
+                                                start_time
+                                                duration
+                                                ap_name
+                                                rating_category
+                                                sgsn_owner
+                                                vol_uplink
+                                                vol_downlink ) )
+
         SMS_RECORDS = { "S" => 1 }
         fields = RubyUtil::symbolize([ "record_type",
                                        "submit_date",

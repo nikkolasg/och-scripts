@@ -9,13 +9,15 @@ module Conf
             Source.class_eval(Conf.define_accessor(f))
         end
         require_relative '../get/getter'
+        require_relative '../insert/inserter'
         def initialize name,flow= nil
             @flow = flow 
             @name = name
             @folders = []
             @schema = ::Database::Schema::Source::GenericSchema.new self
-            
-            @kgetter = Getter::GenericFlowGetter 
+            ## generic one 
+            @kgetter = Getter::GenericSourceGetter 
+            @kinserter = Inserter::GenericSourceInserter
         end
 
         ## accessor for the schema used by this source
@@ -93,7 +95,32 @@ module Conf
                 @file_manager.instance_variable_set(a,opts[attr])
             end
         end
+        
+        def getter kname
+            kname = kname.to_sym
+            unless Getter::const_defined?(kname)
+                raise "Source #{self.name}: No getter found by this name.Abort"
+            end
+            @kgetter = Getter::const_get(kname)
+        end
 
+        def get opts = {}
+            @getter = @kgetter.new(self,opts)
+            @getter.get
+        end
+
+        def inserter kname
+            kname = kname.to_sym
+            unless Inserter::const_defined?(kname)
+                raise "Source #{self.name}: No Inserter found by this name.Abort"
+            end
+            @kinserter = Inserter::const_get(kname)
+        end
+
+        def insert opts = {}
+             @inserter = @kinserter.new(self,opts)
+             @inserter.insert
+        end
 
         def ==(other)
             other.name == self.name

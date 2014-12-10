@@ -5,4 +5,5 @@ b_number:CHAR(17) DEFAULT ''
 b_imsi:CHAR(15) DEFAULT ''
 tariff_class:CHAR(1) DEFAULT ''
 status:CHAR(1) DEFAULT ''
-vmsc_number:CHAR(15) DEFAULT ''
+calling_vmsc_no_number:CHAR(15) DEFAULT ''
+ts_submit_date:INT UNSIGNED DEFAULT 0

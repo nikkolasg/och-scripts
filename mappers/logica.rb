@@ -78,7 +78,7 @@ module Mapper
 
         def initialize opts = {}
             super(opts)
-            @fields2change = { record_type: :status , :vmsc_addr => :vmsc_number}
+            @fields2change = { record_type: :status , :vmsc_addr => :calling_vmsc_no_number}
             @fields2change.merge! map_time_fields([:submit_date])
         end
 
@@ -86,11 +86,11 @@ module Mapper
             json.each do |name,hash|
                 fields = hash[:fields]
                 values = hash[:values]
-                fields = rename_fields fields,@fields2change 
                 values.each do |row|
                     transform_time_values row,fields[:submit_date]
-                    transform_status row,fields[:status] 
+                    transform_status row,fields[:record_type] 
                 end
+                fields = rename_fields fields,@fields2change 
             end
             json
         end 

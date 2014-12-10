@@ -37,12 +37,14 @@ class OperationParser
     def self.get argv,opts
         require_relative '../get/getter'
         ah = {}
-        ah[:flow] = Proc.new { |flow| op = opts.clone;
-                              op[:flow] = flow.name;
-                              Getter.create(flow.name,opts).get }
-        ah[:source] = Proc.new { |source| op = opts.clone; 
-                                 op[:source] = source;
-                                 Getter.create(source.flow.name,op).get }
+        ah[:flow] = Proc.new { |flow|
+                               flow.sources.each do |source|
+                                source.get(opts); 
+                               end
+                            }
+        ah[:source] = Proc.new { |source| 
+                                 source.get(opts)
+                                }
         take_actions(argv,ah)
     end
 
@@ -55,12 +57,13 @@ class OperationParser
         require_relative '../insert/inserter'
         h = {}
         h[:flow] = Proc.new { |flow| 
-            Inserter.create(flow.name,opts).insert }
+            flow.sources.each do |source|
+                source.insert opts
+            end
+        }
         h[:source] = Proc.new { |source| 
-            op = opts.clone
-            op[:source] = RubyUtil::arrayize(source)
-            Inserter.create(source.flow.name,op).insert }
-
+            source.insert opts
+        }
         take_actions argv,h
     end
 

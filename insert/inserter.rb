@@ -6,26 +6,6 @@ require_relative '../database'
 require_relative '../cdr'
 module Inserter
 
-    @@inserters = {}
-    def self.create flow,infos
-        infos[:flow] = flow
-        c = @@inserters[flow]
-        if c
-            c.new(infos)
-        else
-            if App.flows.any? { |f| f.name == flow}
-                c = @@inserters[:generic]
-                c.new(infos)
-            else
-                raise "Bad inserter flow!"
-            end
-        end
-    end
-
-    def self.register_inserter flow,name
-        @@inserters[flow] = name
-    end
-
     # just make a nice printing to the log
     def log_file_summary file,records
         str = "Decoded : #{file.name} ("
@@ -47,34 +27,25 @@ module Inserter
 
     ## generic class that handles the insertion of flow
     # for both direction
-    # TO USE FOR FLOW ! because it fetch the list of files to take 
+    # TO USE FOR SOURCE ! because it fetch the list of files to take 
     # from the db. Uss FilesInserter to test with files
-    class GenericFlowInserter
+    class GenericSourceInserter
         require_relative '../debugger'
-        Conf::flows.each do |flow|
-            Inserter.register_inserter flow.name,self
-        end
-        # register others flow !
         include Inserter
-        def initialize(infos)
+
+        def initialize(source,infos)
             @v = infos[:v]
-            @flow_name = infos[:flow]
-            @flow = Conf::flow(@flow_name)
-            @sources = infos[:source] || @flow.sources
+            @curr_source = source
+            @curr_schema = source.schema
             @db = Database::Mysql.default
-            @curr_source = nil
             @opts = infos
+            @curr_source.decoder.opts.merge! @opts
         end
 
         def insert
             @db.connect do 
-                @sources.each do |source|
-                    @curr_source = source
-                    @curr_schema = source.schema
-                    @curr_schema.set_db @db
-                    @curr_source.decoder.opts.merge! @opts
-                    insert_ 
-                end
+                @curr_schema.set_db @db
+                insert_ 
             end
         end
         # insertion method for a specific source
