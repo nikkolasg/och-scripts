@@ -61,6 +61,8 @@ module RubyUtil
         end 
         elsif coll.is_a?(Array)
             return coll.map { |c| opts[:send] ? c.send(opts[:send]).to_sym : c.to_sym }
+        elsif coll.is_a?(String)
+            return coll.to_sym
         end
     end
     def self.arrayize value
@@ -98,8 +100,13 @@ end
 # if not, different namespace will be created
 class Fixnum
     MIN_IN_HOURS = 60
+    HOURS_IN_DAY = 24
+    def day
+        hours * HOURS_IN_DAY
+    end
+
     def hours
-        self * MIN_IN_HOURS
+        minutes * MIN_IN_HOURS
     end
     alias :hour :hours
 
@@ -107,5 +114,44 @@ class Fixnum
         self
     end
     alias :minute :minutes
+end
+
+require 'singleton'
+class SignalHandler
+    include Singleton
+
+    @@count = 0
+    MAX_TRY = 5
+    def initialize 
+        @breaker = false
+        @blocks = []
+    end
+
+    def self.ensure_block &block
+        @blocks = [] unless @blocks
+        @blocks << block
+    end
+
+    def self.enable
+        trap("INT") do
+            @breaker = true
+            yield if block_given?
+            exit if @debug
+            exit if @@count > MAX_TRY
+            @@count += 1
+        end
+    end
+
+    def self.debug
+        @debug = true
+    end
+
+    def self.check
+        if @breaker
+            yield if block_given?
+            @blocks.each { |b| b.call }
+            exit
+        end
+    end
 end
 

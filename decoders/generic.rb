@@ -80,19 +80,10 @@ module Decoder
         end
         return out
     end
-
-    # filtering method where you give your list of fields
-    # and it sends back the filtered list of fields + indexes
-    # where to find them in the raw data (index 4,6,18,20 ...) 
-    def filter fields
-        new_fields = []
-        indexes = []
-        fields.each_with_index do |value,index|
-            next unless @fields_allowed.include? value
-            new_fields << value
-            indexes << index
-        end
-        return new_fields,indexes
+   
+   ## Return the number of line in the file 
+    def file_number_line file
+        %x{wc -l #{file.full_path}}.to_i
     end
 
     def self.json_stats json
@@ -118,5 +109,13 @@ module Decoder
     end
 
 
+    class NullDecoder
+        include Decoder
+        def initialize infos
+            @opts = infos
+        end
+        def decode
+        end
+    end
 
 end

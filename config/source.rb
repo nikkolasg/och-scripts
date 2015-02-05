@@ -1,19 +1,19 @@
 module Conf
 
     class Source
-        require_relative '../database/source_schema'
+        require_relative '../database'
         require_relative 'file_manager'
         include Conf ## mixin
-        @@fields =[ :name, :host, :base_dir ,:decoder,:flow,:file_manager]
+        @@fields =[ :name, :host, :base_dir ,:decoder,:flow,:file_manager,:filters,:file_length]
         @@fields.each do |f|
             Source.class_eval(Conf.define_accessor(f))
         end
-        require_relative '../get/getter'
-        require_relative '../insert/inserter'
+        require_relative '../get'
+        require_relative '../insert'
         def initialize name,flow= nil
             @flow = flow 
             @name = name
-            @folders = []
+            @folders = [""]
             @schema = ::Database::Schema::Source::GenericSchema.new self
             ## generic one 
             @kgetter = Getter::GenericSourceGetter 
@@ -21,9 +21,9 @@ module Conf
         end
 
         ## accessor for the schema used by this source
-        def schema klass_name = nil
+        def schema klass_name = nil,opts = {}
             if klass_name
-                @schema = ::Database::Schema::Source::create(klass_name,self) 
+                @schema = ::Database::Schema::Source::create(klass_name,self,opts) 
             else 
                 return @schema
             end
@@ -34,10 +34,13 @@ module Conf
             if args.size == 0
                 return @folders
             else
+                ## We are putting an entry in it so delete the "empty default" one
+                @folders = [] if @folders.first.empty?
                 @folders = @folders +  args
             end
         end
-            
+        alias :folder :folders
+
         ## Defines a host, and when defined,
         #defines the filemanager on it !
         def host name = nil
@@ -49,6 +52,13 @@ module Conf
             end
         end
 
+        ## Ugly yes... Workaroud to set the filter 
+        #of the decoder . Since we specify the filter after the decoder
+        # we need to link thoses two ..
+        #
+        def apply_filter 
+            @decoder.filter = @filter || @flow.filter
+        end
         # instantiate a given decoder and set 
         # some values like fields to filter etc.
         # klass_name must be a string or symbol, with
@@ -61,8 +71,8 @@ module Conf
             require_relative '../decoder'
             ## setter method
             @decoder = Decoder::create(klass_name,opts)
-            # setup the filter if exists
-            @decoder.filter = @flow.filter if @flow.filter
+            # setup the filter of the source if exists or the flow
+            @decoder.filter = @filter || @flow.filter
             opts.keys.each do |attr|
                 next unless @decoder.respond_to?(attr.to_sym)
                 @decoder.instance_variable_set("@#{attr}",opts[attr])
@@ -95,7 +105,7 @@ module Conf
                 @file_manager.instance_variable_set(a,opts[attr])
             end
         end
-        
+
         def getter kname
             kname = kname.to_sym
             unless Getter::const_defined?(kname)
@@ -109,23 +119,30 @@ module Conf
             @getter.get
         end
 
-        def inserter kname
+        def inserter kname, opts = {}
             kname = kname.to_sym
             unless Inserter::const_defined?(kname)
-                raise "Source #{self.name}: No Inserter found by this name.Abort"
+                raise "Source #{self.name}: No Inserter found by this name(#{kname}).Abort"
             end
             @kinserter = Inserter::const_get(kname)
         end
 
         def insert opts = {}
-             @inserter = @kinserter.new(self,opts)
-             @inserter.insert
+            @inserter = @kinserter.new(self,opts)
+            @inserter.insert
         end
 
         def ==(other)
             other.name == self.name
         end
         alias :eql? :==
+
+
+        def set_options opts =  {}
+            @file_manager.set_options(opts) if @file_manager
+            @schema.set_options(opts) if @schema
+        end
+
     end
 
 end

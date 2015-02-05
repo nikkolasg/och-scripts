@@ -8,6 +8,53 @@ module Getter
     require 'open3'
     require 'json'
 
+
+    ## LIST  the files on the host !
+    def get_remote_files
+        manager = @current_source.file_manager
+        manager.start do 
+            @current_source.folders.each do |folder|
+                @files[folder] = manager.find_files folder
+                @files[folder] = @files[folder].take(@take) if @take
+                Logger.<<(__FILE__,"INFO","Found #{@files[folder].size} files for #{@current_source.base_dir}/#{folder} at #{@current_source.host.address}")
+                SignalHandler.check
+            end
+        end
+    end
+
+    ## filter the files to get
+    # by the db and thoses already downloaded
+    # (sometimes useful to testing multiple times )
+    # return the number of files to download
+    def filter 
+        # get files contained in the list and also in db
+        # ==> files to eliminate
+        count = 0
+        f = @files.values.flatten(1)
+        saved = @current_source.schema.filter_files f
+        @files.keys.each do |folder|
+            files = @files[folder]
+            ocount  = files.size
+            files -= saved
+            ncount = files.size
+            @files[folder] = files
+            Logger.<<(__FILE__,"INFO","Filtering (#{folder}) : #{ocount} => #{ncount}")
+            count += ncount
+        end
+        return count
+    end
+
+    class NullSourceGetter
+        include Getter
+
+        def initialize(source,infos)
+
+        end
+
+        def get
+            Logger.<<(__FILE__,"INFO","Get operation on NULL getter ... Already done !!")
+        end
+    end
     # responsible for handling the flows get operations
     class GenericSourceGetter
         include Getter
@@ -18,10 +65,11 @@ module Getter
             @take = infos[:take] || nil
             @files = {}
             @opts = infos
+            @current_source.set_options(@opts)
         end
 
         def get
-            Logger.<<(__FILE__,"INFO", "Starting GET operations in #{self.class.name}.." )
+            Logger.<<(__FILE__,"INFO", "Starting GET operations in #{self.class.name} for #{@current_source.name}.." )
             get_remote_files
             count = filter
             if count == 0
@@ -45,11 +93,12 @@ module Getter
             manager.start do
                 @current_source.folders.each do |folder|
                     files = @files[folder]
-                    next if files.empty?
+                    next if files.empty? 
                     # download into the TMP directory by folder
                     spath = File.join(path, @current_source.name.to_s,folder)
                     manager.download_files files,spath,v: true
                     move_files folder
+                    SignalHandler.check { Logger.<<(__FILE__,"WARNING","SIGINT Catched. Abort.")}
                 end
             end
         end
@@ -60,40 +109,7 @@ module Getter
             manager.move_files @files[folder],newp
         end
 
-        ## filter the files to get
-        # by the db and thoses already downloaded
-        # (sometimes useful to testing multiple times )
-        # return the number of files to download
-        def filter 
-            # get files contained in the list and also in db
-            # ==> files to eliminate
-            count = 0
-            f = @files.values.flatten(1)
-            saved = @current_source.schema.filter_files f
-            @files.keys.each do |folder|
-                files = @files[folder]
-                ocount  = files.size
-                files -= saved
-                ncount = files.size
-                @files[folder] = files
-                Logger.<<(__FILE__,"INFO","Filtering (#{folder}) : #{ocount} => #{ncount}")
-                count += ncount
-            end
-            return count
-        end
 
-        ## LIST  the files on the host !
-        def get_remote_files
-            manager = @current_source.file_manager
-            manager.config(@opts)
-            manager.start do 
-                @current_source.folders.each do |folder|
-                    @files[folder] = manager.find_files folder
-                    @files[folder] = @files[folder].take(@take) if @take
-                    Logger.<<(__FILE__,"INFO","Found #{@files[folder].size} files for #{@current_source.base_dir}/#{folder} at #{@current_source.host.address}")
-                end
-            end
-        end
     end
 
 end

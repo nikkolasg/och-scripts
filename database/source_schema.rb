@@ -6,6 +6,16 @@ module Database
     module Schema
         require_relative 'sql'
         require_relative '../debugger'
+
+        def set_options opts = {}
+            @opts.merge! opts
+        end
+        ## litlle utility so we can pass an already connected db
+        #to this class instead of reconnecting every time
+        def set_db db
+            @db = db
+        end
+
         ## this module regroups all differents
         #schemas for the sources. It is one schema / source
         # You can specify your own schema class here !
@@ -19,7 +29,7 @@ module Database
         #  - insert_new_records (json)
         #
         module Source 
-            
+
             def self.create klass_name,source, opts = {}
                 if klass_name.is_a?(String)
                     klass_name = klass_name.capitalize.to_sym
@@ -27,21 +37,24 @@ module Database
                 Source::const_get(klass_name).new(source,opts)
             end
             class GenericSchema
+                include Schema
                 attr_reader :table_records,:table_files,:table_records_union
+                attr_reader :opts
                 def initialize source, opts = {}
                     @source = source
                     @table_files = "FILES_#{source.name.upcase}"
                     @table_records = "RECORDS_#{source.name.upcase}"
                     @table_records_union = "RECORDS_#{source.name.upcase}_UNION"
                     @db = Database::Mysql.default
+                    @opts = opts
                 end
-                
+
                 def rename new_name
                     nfiles = "FILES_#{new_name.upcase}"
                     TableUtil::rename_table @table_files,nfiles
                     Logger.<<(__FILE__,"INFO","Renamed files table #{@table_files} to #{nfiles}")
                     @table_files = nfiles
-                    
+
                     nrecords = "RECORDS_#{new_name.upcase}"
                     nrecords_union = "RECORDS_#{new_name.upcase}_UNION"
                     at_records = TableUtil::search_tables(@table_records)
@@ -62,18 +75,15 @@ module Database
                                                          @source.records_fields,
                                                          union: ntables)
                     @db.connect { @db.query(sql) }
-                    
-                end
-                ## litlle utility so we can pass an already connected db
-                #to this class instead of reconnecting every time
-                def set_db db
-                    @db = db
+
                 end
 
+                ## create a table of the specified type
+                #type can be :files, or :records
                 def create type
                     sql = ""
                     @db.connect do 
-                        sql = SqlGenerator.for_files(@table_files) if type == :files
+                        sql = SqlGenerator.for_files(@table_files,@source.file_length) if type == :files
                         if type == :records
                             sql = SqlGenerator.for_records(@table_records,@source.records_fields) 
                             @db.query(sql)
@@ -92,6 +102,7 @@ module Database
                             TableUtil::delete_table @table_records 
                             TableUtil::delete_table @table_records_union 
                             TableUtil::search_tables(@table_records).each do |t|
+
                                 TableUtil::delete_table t
                             end
                         end
@@ -119,6 +130,7 @@ module Database
                 end
 
                 ## select files unprocessed from the files table of this source
+                ## for the GET PART
                 def select_new_files
                     res = []
                     @db.connect do 
@@ -132,6 +144,7 @@ module Database
 
                 ## Modify the files list so to have only unregistered
                 #files in the list (i.e. not present in db):
+                # for the GET PART
                 def filter_files files
                     return files if files.empty?
                     count = files.size
@@ -154,6 +167,7 @@ module Database
                 #can take a hash liek this:
                 #KEY : Folder
                 #VALUE : List of CDR::FILE 
+                #for the GET PART
                 def insert_files files
                     sql = ""
                     if files.is_a?(Array)
@@ -169,26 +183,46 @@ module Database
                         @db.query(sql)
                     end
                 end
-
+                
+                ## Update records in the files table to set them as processed
+                ## INSERT PART
                 def processed_files files_id
                     sql = "UPDATE #{@table_files} SET processed = 1 " +
-                          "WHERE file_id IN (" +
-                          RubyUtil::sqlize(files_id,no_parenthesis: true) +
-                          ");"
+                        "WHERE file_id IN (" +
+                        RubyUtil::sqlize(files_id,no_parenthesis: true) +
+                        ");"
+                    @db.connect do
+                        @db.query(sql)
+                    end
+                    if @opts[:insert_only]
+                        Logger.<<(__FILE__,"INFO","Maked files as inserted in monitors for source #{@source.name}")
+                        @source.flow.monitors.each do |mon|
+                            mon.schema.processed_files(@source,files_id)
+                        end
+                    end
+                end
+
+
+                ## set all the files to be unprocessed
+                def reset_files files_id = nil
+                    sql = "UPDATE #{@table_files} SET processed = 0 " 
+                    sql += "WHERE file_id IN (#{RubyUtil::sqlize(files_id,no_parenthesis: true)})" if files_id
                     @db.connect do
                         @db.query(sql)
                     end
                 end
 
+
                 ## file is the hash return from the files table 
                 #records is the json output of the decoder
+                ## INSERT PART
                 def insert_records file_id, records
-
                     sql = "INSERT INTO #{@table_records} (file_id," 
                     @db.connect do 
                         records.each do |name,hash|
                             fields = hash[:fields]
                             values = hash[:values]
+                            next if values.empty?
                             sql_ = sql + fields.keys.join(',') + ") VALUES "
                             sql_ += values.map do |rec| 
                                 row = [file_id] + rec.values_at(*fields.values)
@@ -199,17 +233,23 @@ module Database
                     end
                 end
 
+                
+
                 ## Select all new records to be analzed for a monitor
                 # You can also specify a Proc which will be called with
                 # a value equal to the number of rows taht will be fetched
                 # Used to see progression 
+                # PROCESS PART
                 def new_records monitor, opts = {}
                     sql = "SELECT " + new_records_select(monitor) +
                         "\nFROM " + new_records_from(monitor,opts) +
                         "\nWHERE " + new_records_where(monitor) +
                         ";"
                     @db.connect do
+                        puts sql if @opts[:d]
                         res = @db.query(sql)
+                        ## sends back the number of rows to the caller 
+                        ## so it can update progression in real time
                         opts[:proc].call(res.num_rows) if opts[:proc]
                         Logger.<<(__FILE__,"INFO","Retrieved #{res.num_rows} records to be analyzed from #{@source.name} ...")
                         res.each_hash do |row|
@@ -219,7 +259,19 @@ module Database
                 end
 
 
-                private 
+                def delete_records_from_fileid fileid
+                    @db.connect do
+                        sql = "DELETE FROM #{@table_records} WHERE file_id "
+                        if fileid.respond_to?(:join)
+                            sql += "IN (#{fileid.join(',')})"
+                        else
+                            sql += " = #{fileid}"
+                        end
+                        @db.query(sql)
+                    end
+                end
+
+                protected 
 
                 ## Theses methods return the portion of the query
                 #to be computed to get the new records to analyze
@@ -229,10 +281,13 @@ module Database
                 # so we can do r.file_id, etc    
                 # needed when JOIN is necessary (to get folder name etc)
                 def new_records_select monitor
-                    time = monitor.flow.time_field_records
+                    time = monitor.time_field || monitor.flow.time_field_records
                     sql = ["r.file_id","r.#{time}"]
                     if monitor.filter ## no necessary filter on a monitor
                         fields = monitor.filter.fields_allowed.dup
+                        ## in case we request the folder attribute,
+                        #we have to get it back from the files table, so 
+                        #prefix it with "f"
                         if (i = fields.index(:folder))
                             fields.delete_at(i)
                             sql << "f.folder"

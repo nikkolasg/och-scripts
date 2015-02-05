@@ -18,12 +18,11 @@ CDR STATS => 5000-5500 records / cdr
              ==> 750000-1,100000 records / day
 
 TODO
-    - make compressed the rotated tables ASK JAN 
     - replace records_fields_file :dump  to automatically dump a file
     
-MODIF ==> 
+    - when folder is empty ==> empty in db ! 
     - setup --mock /check /fix --mock
-    - change --> date time => timestamp
+    - CHECK ROTATION error cron job !!?? table already exists bla bla bla
     
      
 
@@ -34,3 +33,23 @@ WHEN NEW SOURCE :
     database setup source #
     directories setup
     and on rails =)
+
+
+ANOMALY:
+    MOVING AVERAGE : window length = cycle/2  + 1 ==> 7/2 + 1 = 4
+    DISCRETIZATION : divide by bins of 10,100,10000 rates
+
+
+TODOOOOO
+
+5 jours par default
+
+SMS : check Send / Receive dans sms_instats charged 
+XDR : add nb records 
+TAP SMS : charged party => 1 = MO, 2 = MT
+
+ ## STATS procera
+        #nat = 213
+        #roam != 213
+        #!= pgw out , 228 nat, != 228 roaming
+

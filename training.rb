@@ -15,7 +15,7 @@ module IncludeModule
     end
     module_function :define_module_function
     
-   
+     
 
     class ModuleClass
         include IncludeModule
@@ -114,5 +114,37 @@ ttt.foo "foo"
 ttt.foo
 
 puts Test::const_get("TEST_CONSTANT")
-str = "i am \\\\'a string"
-puts RubyUtil::escape(str)
+
+module ValueModule
+    def foo value = nil
+        @bar = "bar module value : #{value}" if value
+        @bar
+    end
+end
+class T1
+    include ValueModule
+    attr_accessor :t2
+end
+class T2
+    include ValueModule
+end
+t1 = T1.new
+t2 = T2.new
+t1.t2 = t2
+t1.foo "t1 value"
+t2.foo "t2 value"
+puts t1.foo
+puts t2.foo
+
+require 'benchmark'
+f = File.join(File.dirname(__FILE__),"big_file")
+File.open(f,"w") do |file|
+    10000.times { file.puts "x" * 10 }
+end
+
+n = 1000
+Benchmark.bm do |rep|
+    rep.report("wc -l") { n.times { %x{ wc -l #{f}}.to_i } }
+    rep.report("foreach") { n.times { File.foreach(f).count } }
+end
+

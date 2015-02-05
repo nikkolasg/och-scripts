@@ -1,6 +1,5 @@
 module Mapper
     ## SMS MAPPER
-    ## Simply concatenate time and date field
     class LogicaMapper < GenericMapper
 
         def initialize opts = {}
@@ -52,7 +51,7 @@ module Mapper
                     t = row[itime].gsub(":","")
                     d = "20"+row[idate].gsub("/","")
                     row[idate] = d+t
-                    transform_time_values row,fields[:submit_date]
+                    transform_time_values row,idate
                     ## BILLID CHANGE ==>
                     ## into tariff_class + sid
                     v = row[i]

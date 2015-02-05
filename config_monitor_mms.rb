@@ -1,4 +1,5 @@
 monitor "mms_instats" do
+    schema :NewGenericSchema
     sources "mms_in"
     time_interval 1.hour
 
@@ -48,6 +49,7 @@ end
 ## GENERAL STATS
 #################
 monitor "mms_stats" do
+    schema :NewGenericSchema
     sources "mms_in","mms_out"
     time_interval 1.hour
 

@@ -11,7 +11,125 @@ module Decoder
             raise "FIELDS decoder : type #{type} not corresponding to anything ..." unless (f && r)
             return [f,r]
         end
+        ## RECORDS : used to describe the different records type inside a file
+        # key : name
+        # value : value to expect to find in the first field of the file
+        # For only files with ONE RECORD TYPE :
+        # create an empty HASH, so that the decoder knows it hash nothing to look for
 
+               TAP_RECORDS = { }
+        TAP_FIELDS = RubyUtil::symbolize( %w( event_type
+                                              sender
+                                              recipient
+                                              file_seq_num
+                                              mm_call_case_num
+                                              start_date
+                                              start_time
+                                              start_utc_offset
+                                              duration
+                                              charged_party
+                                              orig_address
+                                              orig_imsi
+                                              orig_imei
+                                              dest_address
+                                              dest_imsi
+                                              dest_imei
+                                              translated_address
+                                              dialled_digits
+                                              msc_address
+                                              call_identification
+                                              record_id
+                                              first_calling_location
+                                              first_called_location
+                                              partial_indicator
+                                              cause_for_record_closing
+                                              bearer_service_code
+                                              supp_service_code
+                                              action_code
+                                              camel_service_key
+                                              camel_service_level
+                                              camel_default_call_handling_ind
+                                              service_centre_address
+                                              third_party_number
+                                              sms_orig_subscriber
+                                              sms_termi_subscriber
+                                              ggsn_address
+                                              sgsn_plmn_id
+                                              access_point_name_ni
+                                              access_point_name_oi
+                                              pdp_type
+                                              served_pdp_address
+                                              qos_negotiated
+                                              data_incoming
+                                              data_outgoing
+                                              charge_local_curr
+                                              charged_item
+                                              exchange_rate
+                                              call_type_level1_1
+                                              call_type_level2_1
+                                              call_type_level3_1
+                                              charge
+                                              chargeable_unit
+                                              charged_unit
+                                              tax_value
+                                              charged_item_2
+ExchangeRate_2
+CallTypeLevel1_2
+CallTypeLevel2_2
+CallTypeLevel3_2
+Charge_2
+ChargeableUnits_2
+ChargedUnits_2
+TaxValue_2
+charged_item_3
+ExchangeRate_3
+CallTypeLevel1_3
+CallTypeLevel2_3
+CallTypeLevel3_3
+Charge_3
+ChargeableUnits_3
+ChargedUnits_3
+TaxValue_3
+charged_item_4
+ExchangeRate_4
+CallTypeLevel1_4
+CallTypeLevel2_4
+CallTypeLevel3_4
+Charge_4
+ChargeableUnits_4
+ChargedUnits_4
+TaxValue_4
+tap_decimal_places
+exchange_rate_decimal_places
+local_currency))
+
+
+        TAP_DWH_RECORDS = {}
+        TAP_DWH_FIELDS = TAP_FIELDS
+
+
+
+
+        PROCERA_RECORDS = {}
+        ## FIELDS : used to describe the different fields name for the file (in order)
+        PROCERA_FIELDS = RubyUtil::symbolize( %w( a_number
+                                                  handset
+                                                  ip
+                                                  start_time
+                                                  end_time
+                                                  empty_field
+                                                  protocol_category
+                                                  protocol_name
+                                                  ap_name
+                                                  browser
+                                                  os
+                                                  tethered_state
+                                                  vol_uplink
+                                                  vol_downlink
+                                                  total ) )
+
+
+        PGW_RECORDS = {}
         PGW_FIELDS = RubyUtil::symbolize( %w(   a_number
                                                 a_imsi
                                                 start_time
@@ -20,7 +138,8 @@ module Decoder
                                                 rating_category
                                                 sgsn_owner
                                                 vol_uplink
-                                                vol_downlink ) )
+                                                vol_downlink
+                                                mcc_mnc ) )
 
         SMS_RECORDS = { "S" => 1 }
         fields = RubyUtil::symbolize([ "record_type",

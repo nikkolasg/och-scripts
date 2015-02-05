@@ -44,12 +44,20 @@ module Parser
                 flow.sources.each do |source|
                     ## CHECK CDR
                     unless check_table db_info,source.schema.table_files
+                        if opts[:mock]
+                            Logger.<<(__FILE__,"INFO","MOCK : database setup files #{source.name}")
+                        else
                         DatabaseParser::parse(["setup" ,"files","#{source.name}"])
+                        end
                     end
                     CheckParser::WELL.call("db:files #{source.name}")
                     ## CHECK RECORDS
                     unless check_table db_info,source.schema.table_records,source.records_fields
-                        DatabaseParser::parse(["setup","records", "#{source.name}"],{dir: dir})
+                        if opts[:mock]
+                            Logger.<<(__FILE__,"INFO","MOCK : database setup records #{source.name}")
+                        else
+                        DatabaseParser::parse(["setup","records", "#{source.name}"])
+                        end
                     end
                     CheckParser::WELL.call("db:records #{source.name}")
                 end
@@ -61,19 +69,31 @@ module Parser
                     ## CHECK STATS
                     fields = schema.stats_columns.inject({}) {|col,f| col[f] = "INT DEFAULT 0"; col }
                     unless check_table db_info,schema.table_stats,fields
+                        if opts[:mock]
+                            Logger.<<(__FILE__,"INFO","MOCK : #{cmd}")
+                        else
                         DatabaseParser::parse(cmd)
+                        end
                     end
                     CheckParser::WELL.call("db:monitor:stats #{mon.name}")
 
                     flow.sources.each do |source|
                         ## CHECK BACKLOG
                         unless check_table db_info, schema.table_records(source,backlog:true)
+                            if opts[:mock]
+                            Logger.<<(__FILE__,"INFO","MOCK : #{cmd}")
+                            else
                             DatabaseParser::parse(cmd)
+                            end
                         end
                         CheckParser::WELL.call("db:monitor:records:backlog #{mon.name}")
                         ## CHECK MON_RECORDS
                         unless check_table db_info,schema.table_records(source)
+                            if opts[:mock]
+                                Logger.<<(__FILE__,"INFO","MOCK : #{cmd}")
+                            else
                             DatabaseParser::parse(cmd)
+                            end
                         end
                         CheckParser::WELL.call("db:monitor:records #{mon.name}")
                     end
@@ -82,7 +102,11 @@ module Parser
         end
 
         def dir argv,opts
+            if opts[:mock]
+                Logger.<<(__FILE__,"INFO","MOCK : directories setup ")
+            else
             DirectoriesParser::parse(["setup"],opts)
+            end
         end
 
         def config argv,opts

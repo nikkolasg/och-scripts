@@ -169,7 +169,7 @@ module Conf
 
     class Host
         include Conf
-        @@fields = [:name,:address,:login,:password,:protocol]
+        @@fields = [:name,:address,:login,:password,:protocol,:database]
         @@fields.each do |f|
             Host.class_eval(Conf.define_accessor(f))
         end
@@ -186,12 +186,11 @@ module Conf
     end
     class Database 
         include Conf
-        @@fields = [:host,:name,:login,:password,:timestamp,:output_suffix]
+        @@fields = [:host,:name,:login,:password,:timestamp,:data_directory,:index_directory]
         @@fields.each do |f|
             Database.class_eval(Conf.define_accessor(f))
         end
         def initialize
-            @output_suffix = "_OUT"
             @timestamp = "timest"
         end
 

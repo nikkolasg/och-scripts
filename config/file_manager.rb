@@ -5,7 +5,7 @@ module Conf
     # on remote/local host for the GET operations and others
     class FileManager
         # name that can be found with -name option of FIND GNU util
-        FILE_REGEXP = '.gz|.*\.DAT\.gz|.*\.DAT|.*\.dat|.*\.DAT\.GZ|.*\.dat\.gz|.*\.dat\.GZ'
+        FILE_REGEXP = '.*\.gz|.*\.DAT\.gz|.*\.DAT|.*\.dat|.*\.DAT\.GZ|.*\.dat\.gz|.*\.dat\.GZ'
         # regex taht can be used with -regextype posix-basic -regex of Find GNU util
         #                     YEAR    MONTH   DAY
         FOLDER_REGEXP = %(.*/[0-9]{4}[0-9]{2}[0-9]{2})
@@ -48,10 +48,11 @@ module Conf
             self.send(:min_date=, TODAY)
             @started = false # boolean to know if operations have started or not
             @v = opts[:v]
+            @opts = opts
         end
         # in case we want to change some things after being initialized
         # best to go by this method, so every attr is consistent
-        def config(opts = {})
+        def set_options(opts = {})
             self.send(:min_date=,opts[:min_date]) if opts[:min_date]
             self.send(:max_date=,opts[:max_date]) if opts[:max_date]
             @subfolders = opts[:subfolders] if opts[:subfolders]
@@ -74,17 +75,18 @@ module Conf
         #will find all files according to spec (regex,date etc)
         #will automatically handle the transition between subfolder and not
         #return an array of CDR::File
-        def find_files switch
+        def find_files folder
             unless @started
                 Logger.<<(__FILE__,"ERROR","FileManager is not started yet !")
                 abort
             end
             if @subfolders
-                files = sub_listing switch
+                files = sub_listing folder
             else
-                path = @source.base_dir + "/" + switch
+                path = ::File.join(@source.base_dir,folder)
                 files =  files_listing path
             end
+            files = files_filtering files
             files = files.take(@take) if @take
             to_file(files)
         end
@@ -121,14 +123,14 @@ module Conf
         # make a fist attempt at listing the folder,
         # filter them out, and then do the listing for each of them
         def sub_listing switch
-            path = @source.base_dir + "/" + switch
+            path = ::File.join(@source.base_dir,switch)
             folders = folders_listing path
             folders = folders_filtering folders
             files = []
             folders.each do |folder|
                 files += files_listing folder
             end
-            files_filtering files
+            files
         end
 
         ## list all folders corresponding to spec in this path
@@ -143,24 +145,32 @@ module Conf
         end
 
         # filter the files by the spec of this filemanager
-        # ## TODO
         def files_filtering files
-            files 
+            return files unless @file_regexp
+            f = files.select do |file|
+                test_name_by_date file
+            end
+            f
         end
 
         # filter the folders by the spec (mostly date for now)
         def folders_filtering folders
+            return folders unless @folder_regexp
             folders.select do |folder|
-                up_folder = File.basename(folder)
-                ret = Util::decompose up_folder,:day
-                y,m,d,h,mn,sec = ret
-                ret ?  test_date("#{y}#{m}#{d}") : false
+                test_name_by_date folder
             end
         end
 
         # compute the string date specified for this filemanager
         def date_str d
             Util::date(d)
+        end
+
+        def test_name_by_date name
+            f = File.basename(name)
+            ret = Util::decompose f,:day
+            y,m,d = ret
+            ret ? test_date("#{y}#{m}#{d}") : false
         end
 
         # return true of false for a certain date
@@ -170,6 +180,11 @@ module Conf
             res = res && @min_date_filter <= date if @min_date_filter
             res = res && @max_date_filter >= date if @max_date_filter
             res
+        end
+
+        ## use only for signal processing handling (SIGINT)
+        def stop
+            Logger.<<(__FILE__,"INFO","Exiting file manager gracefully ...")
         end
     end
 
@@ -187,12 +202,11 @@ module Conf
 
         def start 
             begin
-                Net::SSH.start(@host.address,@host.login,password:@host.password) do |sf|
-                    @ssh = sf
-                    @started = true
-                    Logger.<<(__FILE__,"INFO","Connected at #{@host.login}@#{@host.address}")
-                    yield
-                end
+                @ssh = Net::SSH.start(@host.address,@host.login,password:@host.password) 
+                @started = true
+                Logger.<<(__FILE__,"INFO","Connected at #{@host.login}@#{@host.address}")
+                yield
+                @ssh.close
             rescue => e
                 Logger.<<(__FILE__,"ERROR",e.message)
                 raise e
@@ -201,6 +215,12 @@ module Conf
             @sftp = nil	
         end
 
+        ## use only for signal handling processing.
+        #
+        def stop
+            @ssh.close if @ssh
+            super.stop
+        end
         # complex command so we can see if any errors occured...
         def exec_cmd cmd
             t = Time.now
@@ -226,7 +246,7 @@ module Conf
             end
             # wait for the command to finish
             @ssh.loop
-            Logger.<<(__FILE__,"DEBUG","SFTP Command executed in #{Time.now - t} sec")
+            Logger.<<(__FILE__,"DEBUG","SFTP Command executed in #{Time.now - t} sec") if @opts[:v]
             results.split
         end
 
@@ -237,13 +257,14 @@ module Conf
                 RubyUtil::partition files do |sub|
                     dl = []
                     sub.each do |file|
-                        dest_file = "#{dest}/#{file.cname}"
+                        dest_file = ::File.join(dest,file.cname)
                         dl << sftp.download(file.full_path,dest_file)  
                     end
                     dl.each { |d| d.wait }
                 end
             end
-            files.map! { |f| f.path = dest; f }
+            files.each { |f| f.path = dest }
+            files
         end
     end
 
@@ -308,8 +329,10 @@ module Conf
             Dir[dir+"/*"].each do |file|
                 File::delete(file)
             end 
+        rescue => e
+            Logger.<<(__FILE__,"WARNING","Files from #{dir} could not be deleted.\n#{e.message}")
         end
-    
+
         ## Delete CDR::File object
         def delete_files *files
             files.each do |file|
@@ -330,22 +353,27 @@ module Conf
             dir = Conf::directories
             base = File.join(dir.data)
             source.folders.each do |fold|
-                url = File.join(base,dir.store,source.name.to_s,fold)
+                url = File.join(dir.store,source.name.to_s,fold)
                 delete_files_from url
-                url = File.join(base,dir.backup,source.name.to_s,fold)
+                url = File.join(dir.backup,source.name.to_s,fold)
                 delete_files_from url
             end
+                Logger.<<(__FILE__,"INFO","Deleted files server & backup for #{source.name.to_s}")
         end
 
+      ##
+       # restore the backup files for this source.
+        # i.e. puts them into the server folder
         def restore_source_files source
             dir = Conf::directories
             base = File.join(dir.data)
             source.folders.each do |fold|
                 url = File.join(dir.backup,source.name.to_s,fold)
-                files = ls(url).map { |f| CDR::File.new(url+"/"+f,search: true)}
+                files = ls(url).map { |f| CDR::File.new(::File.join(url,f),search: true)}
                 nurl = File.join(dir.store,source.name.to_s,fold)
                 download_all_files(files,nurl) unless files.empty?
             end
+            Logger.<<(__FILE__,"INFO","Restored file from backup & server for #{source.name.to_s}")
         end
 
         def rename_source_files source,nname
@@ -373,7 +401,7 @@ module Conf
                 manager.instance_eval do 
                     manager.start do 
                         source.switches.each do |switch|
-                            path = @source.base_dir + "/" + switch
+                            path = File::join(@source.base_dir, switch)
                             folders = folders_listing path
                             FileManager::print_listing folders,"Folder Listing"
                             filtered_folders = folders_filtering folders

@@ -28,9 +28,9 @@ module Mapper
         def transform_time_values row,*fields 
             fields.each do |i|
                 next unless i ## workaround, same mapper used for different format
-                              ## thens ome fields may not exists
+                              ## thens some fields may not exists
                 v = row[i]
-                values = Util::decompose(v).compact
+                values = Util::decompose(v,:sec).compact
                 if values.empty? 
                     row[i] = 0
                 else
@@ -75,20 +75,5 @@ module Mapper
 
 
 
-    # TODO 
-    class ProceraMapper
-
-        # return a new array of fields mapped for the 
-        # application
-        # # MUST BE CALLED BEFORE map_row so it knows the operations 
-        # to do on the row
-        def map_fields fields
-
-        end
-
-        def map_row row
-
-        end
-    end
 
 end

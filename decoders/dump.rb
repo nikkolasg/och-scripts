@@ -67,8 +67,9 @@ module MysqlDumper
             v = ""
             v = STDIN.gets.chomp while v != "y" && v != "n"
             if v == "y" 
-                print "Which maximum size do you want for this field ? (VARCHAR(x)) x = "
-                v = STDIN.gets.chomp while v.to_i == 0
+                v = ""
+                print "Enter the MySql type you want for this field : "
+                v = STDIN.gets.chomp while v.empty?
                 return "VARCHAR(#{v.to_i}) DEFAULT ''"
             else
                 return false

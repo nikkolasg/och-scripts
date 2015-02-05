@@ -25,6 +25,21 @@ module Inserter
     end
 
 
+    ## An Inserter that does nothing ... =)
+    class NullSourceInserter
+        include Inserter
+
+        def initialize source, infos
+
+        end
+
+        def insert
+
+            Logger.<<(__FILE__,"INFO","Insert operation on NULL inserter ... Already Done !!")
+
+        end
+    end
+
     ## generic class that handles the insertion of flow
     # for both direction
     # TO USE FOR SOURCE ! because it fetch the list of files to take 
@@ -56,23 +71,24 @@ module Inserter
             Logger.<<(__FILE__,"INFO","Found #{nfiles.size} files to decode & insert for #{@curr_source.name}...");
             return unless nfiles.size > 0
 
+            SignalHandler.check
             ## Will decode them and insert their records, one by one (file)
-            base_path =  Conf::directories.store + "/" + @curr_source.name.to_s
+            base_path =  ::File.join(Conf::directories.store,@curr_source.name.to_s)
             ids_processed = []
             file_counter = 0
             iterate_over nfiles do |file|
                 file_path = File.join(base_path,file[:folder],file[:file_name])
                 file_ = CDR::File.new(file_path,search: true)
                 records = @curr_source.decoder.decode file_
-                if records.nil?
+                if records.nil? 
                     Logger.<<(__FILE__,"WARNING","Found null output for file #{file}")
-                    next
+                else
+                    @curr_schema.insert_records file[:file_id], records
                 end
-                @curr_schema.insert_records file[:file_id], records
                 @curr_schema.processed_files RubyUtil::arrayize(file[:file_id])
                 backup_file file[:folder],file_
                 str = log_file_summary file_,records
-                Logger.<<(__FILE__,"INFO","(#{file_counter}/#{count}) #{str}")
+                Logger.<<(__FILE__,"INFO","(#{file_counter}/#{count}) #{str}",inline: true)
                 file_counter += 1
             end
             # so only one lookup for table cdr
@@ -88,6 +104,10 @@ module Inserter
         def iterate_over files
             files.each do |file|
                 yield file
+                SignalHandler.check { 
+                    @db.close
+                    Logger.<<(__FILE__,"WARNING","Signal SIGINT received: stopping decoding files ...")
+                }
             end
         end
     end

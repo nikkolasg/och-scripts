@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
 
-require_relative 'config'
 require_relative 'ruby_util'
 module Util
     SEC_IN_MIN = 60
     TIME_PREFIX = "ts_" 
     DATE_FORMAT = "%Y%m%d"
-   
+  
+   ## call the date gnu utility and return its output 
     def self.date cuando,opts = {}
         format = opts[:format] || DATE_FORMAT
         cmd = "date '+#{format}' --date='#{cuando}'"
@@ -69,10 +69,15 @@ module Util
 
     # decompose time field into 
     # year month day etc.. 
+    # we suppose that there must be at least YEARMONTHDAY present
     def self.decompose time_field,granularity = :all
             # Year   Month  Day    Hours  Min    Secs
-       re = /(\d{4})?(\d{2})?(\d{2})?(\d{2})?(\d{2})?(\d{2})?/
-       return unless time_field.match re
+       re = /(\d{4})(\d{2})(\d{2})(\d{2})?(\d{2})?(\d{2})?/
+       #unless time_field.match(re)
+           #puts time_field + "(#{time_field.size},#{time_field.empty? ? "empty" : "nonempty" }) => " + re.inspect
+           #STDIN.gets
+       #end
+       return [] unless time_field.match re
         case granularity
         when :year
             return $1

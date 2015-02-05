@@ -5,10 +5,8 @@ module Conf
         if block_given?
             @filter = Filter.new self
             @filter.instance_eval(&block) if block
-            #Debug::debug_filter_fields_allowed @filter.filters
-        else
-            return @filter
         end
+        return @filter
     end 
     
     # simple filter that does nothing. 
@@ -24,32 +22,43 @@ module Conf
         def filter_row row
             return true
         end
+        def filter_pair field,value
+            return true
+        end
     end
 
     ## class that handles all the filtering in the application
     class Filter
         attr_reader :parent,:filters
 
-        
         def initialize  parent
-            @filters = {}
+            @filters = Hash.new { |h,k| h[k] = [] }
             @parent = parent
             @filtered_fields = []
             set_fields2keep
         end
 
         def fields_allowed
-            @filters.keys
+            @filters.inject([]) { |col,(k,v)| col << k unless v.empty? ; col}
+        end
+
+        ## you can pass another filter and it will merge
+        # the two in one. in case of 2 blocks for one field,
+        # both block will be executed
+        def merge_filter filter
+           filter.filters.each do |name,arr|
+                @filters[name] +=  arr ## adds all  blocksfor this particular field
+           end 
         end
 
         ## set a rule for theses names
         def field *names, &block
             if block
                 raise "Filter can only take a block for one field at a time" unless names.size == 1
-                @filters[names.first.downcase.to_sym] = block
+                @filters[names.first.downcase.to_sym] << block
             else ## only affectation of fields
                 names.each do |name|# simply returns true all time =)
-                    @filters[name.downcase.to_sym] = true
+                    @filters[name.downcase.to_sym] << true
                 end
             end
         end
@@ -72,60 +81,50 @@ module Conf
             json.each do |name,hash|
                 fields = hash[:fields]
                 values = hash[:values]
-                hash[:fields] = filter_fields(fields)
-                hash[:values] = values.inject([]) do |col,record|
-                    v = filter_record record
-                    col << record if v
-                    col
+                hash[:fields] = fields = filter_fields(fields)
+                hash[:values] = values.keep_if do |record|
+                    filter_record fields,record
                 end
             end
         end
 
-
-        ## Filter out a pair Field / Value
+               ## Filter out a pair Field / Value
         #  Its only here for optimization , speed
         #  since we could do fine with the rest but
         #  for mms decoder, we have already that pair present
         #  so it's faster this way
         def filter_pair field, value
-            v = get_value(field)
-            return false unless v
-            return true unless v.is_a?(Proc)
-            return v.call(value)
+            filters = get_filters(field)
+            return false unless v.empty?
+            return evaluate(filters,value)
         end
 
-        ## Filter out some fields, and registers the good
-        #one. To call BEFORE filter_record,so it knows the fields to keep
+        ## Filter out some fields, 
         def filter_fields fields
-            @filtered_fields = []
             fields.keep_if do |field,index|
-                v = get_value(field)
-                @filtered_fields << [field,index] if v
-                v
+                get_filters(field).empty? ? false : true
             end
             return fields
         end
 
-        ## Retreive the value associated with this field
-        # IF ANY =)
-        # Also, manage the Timestamp fields that are prefixed or not
-        def get_value field
-            f = field.to_s.sub(Util::TIME_PREFIX,"")
-            return @filters[f.to_sym]
-        end
-        # filter out a record from the JSON output decoder
-        # based on the filtering fields it has recorded
-        # IF no corresponding fields are found, reject the record
-        def filter_record record
-            return false if @filtered_fields.empty?
+        # filter out fields AND record at same time.
+        # If field is not present in filter, discard the value from the record
+        # and discard the field too.
+        #
+        def filter_record fields,record
+            return false if fields.empty?
             allowed = true 
             found = false
-            @filtered_fields.each do |field,index|
-                next unless ( v = get_value(field))
-                ## if its not a proc it's a true value so no need to apply
+            fields.select! do |field,index|
+                ## if this field is not needed, remove the value from the record
+                if ( filters = get_filters(field)).empty?
+                    #record.delete_at(index)
+                    next false
+                end
                 found ||= true
-                allowed &= evaluate(v,record[index])
+                allowed &= evaluate(filters,record[index])
                 return false unless allowed
+                next true
             end
             return allowed & found
         end
@@ -137,33 +136,47 @@ module Conf
             found = nil
             allowed = true
             row.each do |field,value|
-                next unless (v = get_value(field))
+                next unless (filters = get_filters(field)).empty?
                 found ||= true
-                allowed &= evaluate(v,value)
+                allowed &= evaluate(filters,value)
                 return false unless allowed
             end
             return allowed & found
         end
         
        private
-        
 
-      def evaluate block, value
-            return true unless  block.is_a?(Proc)
-            return block.call(value) if value
-            return false
-      end 
+       ## Retreive the value associated with this field
+       # IF ANY =)
+       # Also, manage the Timestamp fields that are prefixed or not
+       def get_filters field
+           f = field.to_s.start_with?(Util::TIME_PREFIX) ? field.to_s.sub(Util::TIME_PREFIX,"") : field
+           return @filters[f.to_sym]
+       end
 
-      ## Allow some fields to always be taken, accepted
-      #  like the field which gives us the timing ;)
-      #  (instead of putting it in every filter)
-      def set_fields2keep
-        if @parent.is_a?(Flow)
-            self.send(:field,@parent.time_field_records)
-        elsif @parent.is_a?(Monitor)
-            self.send(:field,@parent.flow.time_field_records)
-        end
-      end
+
+       ## evaluate all filters for a given field, for this value
+       # return true if all evaluates to true
+       # otherwise false
+       def evaluate filters,value
+           filters.all? do |f|
+               next f.call(value) if f.is_a?(Proc)
+               ## if no proc, then it is true value
+               next true
+           end  
+       end
+
+
+       ## Allow some fields to always be taken, accepted
+       #  like the field which gives us the timing ;)
+       #  (instead of putting it in every filter)
+       def set_fields2keep
+           if @parent.is_a?(Flow)
+               self.send(:field,@parent.time_field_records)
+           elsif @parent.is_a?(Monitor)
+               self.send(:field,@parent.time_field || @parent.flow.time_field_records)
+           end
+       end
 
     end
 end

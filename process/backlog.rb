@@ -3,9 +3,10 @@ module Stats
 
     ## That class with take a source and will get/decode & process 
     #all its files until a certain date
-    # it does way more work than genericstats, but
-    # it does not store the RECORDS in the database nor the files associated
-    # only records in a *_BACKLOG table what files it has already processed
+    # It does not go by the usual process ==> 
+    # get, decoder & process are done in a one-way fashion, and no storing is used 
+    # except the file_name retrived (to not process duplicate)
+    # the filename are stored into a special table of the monitor
     class BacklogStats
         include Stats
         require 'set'
@@ -30,53 +31,24 @@ module Stats
 
     end 
 
-    ## MAIN Method
-    #    def compute
-    #@db.connect do 
-    #@monitors.each do |mon|
-    #@current = mon
-    #@current.schema.set_db @db
-    #@current.sources.each do |source|
-    #@source = source
-    #@manager = source.file_manager
-    #@manager.config(@opts)
-    #files = get_files2dl
-    #count = 1
-    #@num_rows = files.values.flatten.size
-    ### MAIN PART : decode / analyze / store
-    #compute_files(files) do |folder,file|
-    #Logger.<<(__FILE__,"INFO","(#{count}/#{@num_rows}) Analyzing file #{file.name}")
-    ### Processing part
-    #file.unzip! if file.zip?
-    #json = @source.decoder.decode file
-    #upgrade_folder(folder,json)
-    #analyze_json json
-
-    ### Insertion part
-    #@current.schema.insert_stats @source
-    #@current.reset_stats
-    #@current.schema.backlog_processed_files @source,[file]
-    #count += 1
-    #progression(count)
-    #end
-    #Logger.<<(__FILE__,"INFO","Having processed #{@records_count} records from source #{@source}")
-    #@records_count = 0
-    #end
-
-    #end
-    #end
-    #end
-
+    ##
+    #  MAIN method =)
+    # download, decode , process each file for each source corresponding to the crierions
+    # ##############
     def compute
         @sources = @monitors.map { |m| m.sources }.flatten.uniq
         Logger.<<(__FILE__,"INFO","Will process backlog for monitors #{@monitors.map{ |m| m.name}.join(',')}")
         path = Conf::directories.store
         @db.connect do 
+            SignalHandler.check { Logger.<<(__FILE__,"WARNING","SIGNINT catched .Abort.");@db.close}
+
             get_saved_files ## retrieved ALL files already processed in DB
             @sources.each do |source|
+                SignalHandler.check { Logger.<<(__FILE__,"WARNING","SIGNINT catched .Abort.");@db.close}
+
                 @manager = source.file_manager
-                @manager.config(@opts)
                 @source = source
+                @source.set_options(@opts)
                 files = get_files
                 count = 1
                 @num_rows = files.values.flatten.size
@@ -84,6 +56,7 @@ module Stats
                 compute_files(files) do |folder,file|
                     str = "(#{count}/#{@num_rows}) Analyzing file #{file.name} ("
                     @monitors.each do |mon|
+                        SignalHandler.check { Logger.>>(__FILE__,"WARNING","SIGINT Catched. Abort");@db.close } 
                         @current = mon
                         @current.schema.set_db @db
                         next unless mon.sources.include? @source
@@ -100,11 +73,14 @@ module Stats
                         @current.schema.insert_stats @source
                         @current.reset_stats
                         @current.schema.backlog_processed_files @source,[file]
+                        SignalHandler.check { Logger.<<(__FILE__,"WARNING","SIGNINT catched .Abort.");@db.close}
                     end
                     Logger.<<(__FILE__,"INFO",str+")")
                     count += 1
                     progression(count)
                     json = nil
+                    SignalHandler.check { Logger.<<(__FILE__,"WARNING","SIGNINT catched .Abort.");@db.close}
+
                 end
                 progression(0,reset:true) 
                 Logger.<<(__FILE__,"INFO","Having processed #{@records_count} records from source #{@source}")
@@ -212,14 +188,4 @@ module Stats
         # return true, if preset, ret false
     end
 
-    # def filter_files files
-    #f2rm = @current.schema.backlog_saved_files @source
-    #files.each do |folder,files_list|
-    #ocount = files_list.size
-    #files_list = files_list - f2rm
-    #files[folder] = files_list
-    #Logger.<<(__FILE__,"INFO","Filtering on #{folder} : #{ocount} => #{files_list.size}")
-    #end
-    #return files
-    #end
 end

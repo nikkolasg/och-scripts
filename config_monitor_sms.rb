@@ -1,4 +1,5 @@
 monitor "sms_stats" do
+    schema :NewGenericSchema
     sources "sms_in","sms_out"
     time_interval 1.hour
     nat = Proc.new { |n| n.start_with?("07") || n.start_with?("417") }
@@ -28,6 +29,7 @@ monitor "sms_stats" do
     end
 end
 monitor "sms_instats" do
+    schema :NewGenericSchema
     time_interval 1.hour
     sources "sms_in"
     nat = Proc.new { |n| n.start_with?("07") || n.start_with?("417") }

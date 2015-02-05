@@ -3,7 +3,8 @@ module  Conf
     class Monitor
         include Conf
         require_relative '../database/monitor_schema'
-        [:time_interval,:filters,:flow,:table_stats].each do |f|
+        require_relative '../database/monitor2_schema'
+        [:time_interval,:filters,:flow,:table_stats,:time_field].each do |f|
             Monitor.class_eval(Conf.define_accessor(f))
         end
 
@@ -25,7 +26,6 @@ module  Conf
         def name (param = nil)
             if param
                 @name = param
-                @table_stats = "MON_#{@flow.name}_#{@name.upcase}"
             else
                 return @name
             end
@@ -50,7 +50,12 @@ module  Conf
             end
         end
         alias :source :sources
-        
+      
+       ## you can specify a custom attribute to select for the time here 
+       def time_field field = nil
+          @time_field = field if field
+          @time_field
+       end 
                
         def reset_stats
             @stats.reset

@@ -131,7 +131,7 @@ module Database
                     end
                 end
 
-                                ## Insert the statistics of this monitor
+                ## Insert the statistics of this monitor for this source
                 def insert_stats source 
                     stats = @monitor.stats
                     @db.connect do
@@ -157,6 +157,7 @@ module Database
                     end
                 end
 
+                ## insert into db the name of processed files by the backlog process
                 def backlog_processed_files source,files
                     return if files.empty?
                     sql = "INSERT INTO " +
@@ -169,6 +170,7 @@ module Database
                     end
                 end
 
+                ## return the name of the files stored in the backlog table
                 def backlog_saved_files source
                     l = []
                     @db.connect do 
@@ -179,6 +181,23 @@ module Database
                         end
                     end
                     return l
+                end
+
+
+                ## Delete the entries relative to theses files id for this source
+                #no backlog yet
+                #
+                #not used yet ... todo: implement the date filtering options in schemas
+                def delete_filesid source,files_id
+                    sql = "DELETE FROM #{table_records(source)} WHERE " + 
+                        "file_id IN (#{RubyUtil::sqlize(files_id,no_parenthesis: true)}"
+                    sql_stats = "DELETE FROM #{@table_stats} WHERE " +
+                        "file_id IN (#{RubyUtil::sqlize(files_id,mo_parenthesis: true)}"
+                    @db.connect do 
+                        @db.query(sql_stats)
+                        @db.query(sql)
+                    end
+                    Logger.<<(__FILE__,"INFO","Deleted entries for #{@monitor.name}")
                 end
 
                 private 

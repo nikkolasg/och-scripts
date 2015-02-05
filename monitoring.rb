@@ -10,7 +10,7 @@ opt_parse = OptionParser.new do |opt|
     opt.on("-v","--verbose","verbose output") do |v|
         $opts[:v] = true
     end
-    opt.on("--take NUMBER","If you want to take only certain number of records for each switch ,you can specifiy here") do |t|
+    opt.on("--take NUMBER","If you want to take only certain number of records for each folder ,you can specifiy here. You can use this for debuging,quickly retrieve file, or if you just want a sample") do |t|
         $opts[:take] = t.to_i
     end
     opt.on("--min-date DATE","If you want to select files that are only more recent than the date. FORMAT = ") do |d|
@@ -24,6 +24,16 @@ opt_parse = OptionParser.new do |opt|
     end
     opt.on("-d","--debug","IF you want debugging capabilities (mostly on decoder for now).") do |d|
         $opts[:d] = true
+        SignalHandler.debug
+    end
+    opt.on("--nb-line LINE","You can stop the decoding of a file at a certain line. Can be useful for dumping big file fastly") do |n|
+        $opts[:nb_line] = n.to_i
+    end
+    opt.on("--mock","If you are doing a fix or a setup operation, you can see what the tool would actually be doing, but without doing the operations. Can be useful to see if the operation is really what you want") do |n|
+        $opts[:mock] = true
+    end
+    opt.on("--insert-only","If you only want to insert files and look in the db after, but WITHOUT any processing on theses records (old ones for example), you can specify it here") do |n|
+        $opts[:insert_only] = true
     end
 end
 
@@ -47,7 +57,22 @@ def main args,opts
     
     Logger.<<(__FILE__,"INFO","Closing monitoring tool ...")
 end
+SignalHandler.enable { Logger.<<(__FILE__,"INFO","Signal handler SIGINT enabled.")}
 
-main ARGV,$opts
+# TODO
+def lock 
+    fname = File.join(File.dirname(__FILE__),ARGV.join('-')) + ".LOCK"
+    File.open(fname,File::RDWR|File::CREAT,0644) do |f|
+        unless f.flock( File::LOCK_NB | File::LOCK_EX )
+            Logger.<<(__FILE__,"INFO","Instance already running. Abort.")
+            f.close
+            exit
+        end
+        SignalHandler.ensure_block { f.close }
+        main ARGV,$opts
+    end
+end
+
+lock
 
 

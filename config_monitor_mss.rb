@@ -1,4 +1,5 @@
 monitor "mss_stats" do
+    schema :NewGenericSchema
     ## Numbering plans for national
     fixed = %w(21 22 24 26 27 31 32 33 34 41 43 44 51 52 55 56 58 61 62 71 81 91)
     mobiles = %w(75 76 77 78 79)

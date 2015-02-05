@@ -72,6 +72,7 @@ class DatabaseParser
         ah[:records]= Proc.new do |source|
             source.schema.reset :records
             fm.restore_source_files source
+            source.schema.reset_files 
         end
 
         ah[:source] = Proc.new do |source|
@@ -97,25 +98,27 @@ class DatabaseParser
                 flow.sources.each do |source|
                     source.schema.delete :files
                     source.schema.delete :records
-                    fm.delete_source_files source
+                    #fm.delete_source_files source
                 end
                 flow.monitors.each do |monitor|
                     monitor.schema.delete :stats
                     monitor.schema.delete :files
                 end
         end
+
         ahash[:source] = Proc.new do |source|
             source.schema.delete :files
             source.schema.delete :records
-            fm.delete_source_files source
+            #fm.delete_source_files source
         end
         ahash[:files] = Proc.new do |source|
             source.schema.delete :files
-            fm.delete_source_files source
+            #fm.delete_source_files source
         end
         ahash[:records] = Proc.new do |source|
             source.schema.delete :records
-            fm.restore_source_files source
+            source.schema.reset_files 
+            #fm.restore_source_files source
         end
 
         ahash[:monitor] = Proc.new do |mon|
@@ -130,12 +133,13 @@ class DatabaseParser
     def self.rotate argv, opts
         ah = {}
 
-        ah[:source] = Proc.new do |source|
+        p = Proc.new do |source|
             Database::TableRotator.source source,opts
         end
+        ah[:source] =  p
         ah[:flow] = Proc.new do |flow|
             flow.sources.each do |source|
-                ah[:source].call(source)
+                p.call(source)
             end
         end
         take_actions argv,ah
@@ -146,7 +150,8 @@ class DatabaseParser
         ah = {}
         ah[:source] = Proc.new do |source|
             decoder = source.decoder
-            decoder.opts.merge! opts
+            decoder.opts.merge! opts 
+            decoder.opts[:nb_line] = 10000 unless decoder.opts[:nb_line]
             ::File.delete(decoder.dump_file) if ::File.exists?(decoder.dump_file)
             f = decoder.fields
             Logger.<<(__FILE__,"INFO","Database: Dump have dumped #{f.size} fields into #{decoder.dump_file}")

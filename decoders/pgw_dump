@@ -6,4 +6,5 @@ rating_category:CHAR(1) DEFAULT ''
 sgsn_owner:CHAR(1) DEFAULT ''
 vol_uplink:CHAR(9) DEFAULT ''
 vol_downlink:CHAR(9) DEFAULT ''
+mcc_mnc:CHAR(5) DEFAULT ''
 ts_start_time:INT UNSIGNED DEFAULT 0

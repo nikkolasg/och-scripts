@@ -2,12 +2,12 @@ module Debug
     module_function
     def debug_filter_fields_allowed h
         h.each do |f,v|
-            puts "Field #{f} ==> #{v.class}"
+            puts "Field #{f} ==> #{v.inspect}"
         end
         STDIN.gets
     end
 
- def debug_row fields, row
+    def debug_row fields, row
         h = Hash[fields.zip(row)]
         puts "Fields size : #{fields.size}\tRow size : #{row.size}"
         h.each do |k,v|; puts k.inspect + " => " + v.inspect; end;
@@ -18,8 +18,8 @@ module Debug
             puts type
             nh = Hash.new { |h,k| h[k] = [] }
             h = hash[:fields].inject(nh) do |col,(f,i)|
-                    col["#{f} , #{i}"] = hash[:values].inject([]) { |col,row| col << row[i] ; col }.take(10)
-                    col
+                col["#{f} , #{i}"] = hash[:values].inject([]) { |coll,row| coll << row[i] ; coll }.take(10)
+                col
             end
             h.each { |k,v| puts "#{k} ==> #{v}" ;}
             STDIN.gets

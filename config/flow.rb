@@ -20,6 +20,7 @@ module Conf
             newSource = Conf::Source.new(name.downcase.to_sym,self)
             @sources << newSource
             newSource.instance_eval(&block)
+            newSource.apply_filter
         end
 
         def sources search = nil

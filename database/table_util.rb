@@ -1,7 +1,17 @@
 module Database
 
     class TableUtil
-        
+       
+        def self.table_exists? tableName, db = nil
+            sql = "SHOW TABLES LIKE '#{tableName}'"
+            db = db || Mysql.default
+            arr = []
+            db.connect do 
+               arr = db.query(sql)
+            end
+            arr.num_rows > 0 ? true : false
+        end
+
        def self.list_tables db = nil
           db = db || Mysql.default 
           arr = []

@@ -9,21 +9,6 @@ module Stats
         end
     end
 
-    #def get_formatted_time record_time
-
-        #interval = @current.time_interval
-
-        ## compute the "bin number" from the Epoch, 
-        ## i.e. the smallest integer m such taht the time falls into 
-        ## [m, m+ interval]
-        ## return the date from it
-        #y,m,d,h,mn,sec = Util::decompose record_time 
-        #puts y,m,d,h,mn,sec , " FROM #{record_time}"
-        #time_mn = Time.at(Time.utc(y,m,d,h,mn)).to_i / Util::SEC_IN_MIN
-        #minimum = time_mn - (time_mn % interval) 
-        #formatted_time = Time.at(minimum * Util::SEC_IN_MIN).to_i
-    #end
-
     # format to the monitor interval endpoints
     def get_formatted_time record_time
         interval = @current.time_interval
@@ -41,7 +26,7 @@ module Stats
         return if @steps.empty?
         c,perc = @steps[0] 
         if counter > c
-            Logger.<<(__FILE__,"INFO","Having processed #{perc}%  now ...")
+            Logger.<<(__FILE__,"INFO","Having processed #{perc}%  now ...",inline: true)
             @steps.shift
         end
     end
@@ -59,38 +44,55 @@ module Stats
             @processed_ids = Set.new
             @total = 0 # total number of row accepted
         end
-            
+           
+
+       # main method !! 
         def compute
             counter = 0.0
             counter_proc = Proc.new { |n| @num_rows = n }
             @db = Database::Mysql.default
+            ## process each monitors separatly
             @monitors.each  do |monitor|
                 @current = monitor
+                ## for each source, look what they've got
                 @current.sources.each do |source|
+                    source.set_options @opts
                     h = { proc: counter_proc }
+                    ## if we want to seelect from union or not
                     h[:union] = true if @opts[:union]
+                    ## return a row from the db to be analyzed
                     source.schema.new_records(@current,h) do |row|
                         analyse_row row
                         counter += 1
                         progression(counter)
+                        SignalHandler.check { @db.close; 
+                        Logger.<<(__FILE__,"WARNING","Exit catched. Abort.")
+                        }
                     end
-                    @current.schema.insert_stats source
+                    @db.connect do
+                        @current.schema.set_db @db
+                        ## insert and reset stats
+                        @current.schema.insert_stats source
+                    end
                     @current.reset_stats
                     @current.schema.processed_files source, @processed_ids.to_a
-                    @processed_ids = Set.new
+                    
+
                     Logger.<<(__FILE__,"INFO","Analyzed & Accepted #{@total}/#{counter} records for #{source.name}")
+                    @processed_ids = Set.new
                     @total = 0
                     @num_rows = 0
                     progression(0,reset: true)
+                    SignalHandler.check { @db.close; Logger.<<(__FILE__,"WARNING","SIGINT catched. Abort.") }
                 end
             end
         end
+
         # analyse a single record for a single monitor
         def analyse_row row
             return if @current.filter && !@current.filter.filter_row(row)
             record_time = get_time_from_record row
             time = get_formatted_time record_time
-
             @current.stats.analyze time,row
             ## this id has been processed
             @processed_ids << row[:file_id]
@@ -100,7 +102,7 @@ module Stats
 
         private
         def get_time_from_record record
-            field_time = @flow.time_field_records
+            field_time = @current.time_field || @flow.time_field_records
             record[field_time]
         end
 

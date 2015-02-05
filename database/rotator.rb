@@ -32,23 +32,23 @@ module Database
         # table containing all previous tables
         def source source,opts
             schema = source.schema
-                yesterday = "#{Util::date(TableRotator::YESTERDAY)}"
-                # MOVE the table 
-                table_name = schema.table_records
-                new_name = table_name + "_" + yesterday
-                TableUtil::rename_table table_name, new_name
-                TableUtil::compress_table new_name 
-                # re create the table
-                sql = SqlGenerator.for_records(schema.table_records,
-                                               source.records_fields)
-                # reCREATE the MERGE 
-                TableUtil::delete_table schema.table_records_union
-                tables = TableUtil::search_tables table_name
-                sql_ = SqlGenerator.for_records_union(schema.table_records_union,
-                                                     source.records_fields,
-                                                     union: tables )
-                db = Mysql.default
-                db.connect { db.query(sql); db.query(sql_) }
+            yesterday = "#{Util::date(TableRotator::YESTERDAY)}"
+            # MOVE the table 
+            table_name = schema.table_records
+            new_name = table_name + "_" + yesterday
+            TableUtil::rename_table table_name, new_name
+            TableUtil::compress_table new_name 
+            # re create the table
+            sql = SqlGenerator.for_records(schema.table_records,
+                                           source.records_fields)
+            # reCREATE the MERGE 
+            TableUtil::delete_table schema.table_records_union
+            tables = TableUtil::search_tables table_name
+            sql_ = SqlGenerator.for_records_union(schema.table_records_union,
+                                                  source.records_fields,
+                                                  union: tables )
+            db = Mysql.default
+            db.connect { db.query(sql); db.query(sql_) }
         end
 
         private
@@ -60,9 +60,9 @@ module Database
         # make the transfer of the old and new table
         def move_and_delete oldt,newt,timestamp
             ins = "INSERT INTO #{newt} SELECT * FROM #{oldt} " +
-                  " WHERE #{Conf::database.timestamp} < #{timestamp}";
+                " WHERE #{Conf::database.timestamp} < #{timestamp}";
             del = "DELETE FROM #{oldt} WHERE " +
-                    " #{App.database.timestamp} < #{timestamp}"
+                " #{App.database.timestamp} < #{timestamp}"
             db = Mysql.default
             db.connect do
                 db.query(ins)

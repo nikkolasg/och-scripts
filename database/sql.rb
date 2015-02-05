@@ -17,11 +17,18 @@ module Database
 
     class Mysql
         CONNECTION_TRY = 5
+        RETRY_TIME = 60 * 1
         attr_reader :con
         @@default_db = nil   
         def self.default opts = {}
             db = Conf.database
             Mysql.new(db.host,db.name,db.login,db.password,opts)
+        end
+        def self.send_raw_sql_cmd sql
+            db = Conf.database
+            cmd = "mysql -u #{db.login} -p#{db.password} #{db.name} -e \"#{sql}\""
+            puts cmd
+            system(cmd) ? "Great!" : "Failed:/"
         end
         def initialize(h,db,login,pass,opts = {})
             @host = h
@@ -30,10 +37,13 @@ module Database
             @pass = pass
             @con = nil
             @opts = opts
+            @last_query = Time.now
+            SignalHandler.ensure_block { close }
         end
 
         def connect_
-            @con = ::Mysql.new(@host,@name,@pass,@db) unless @con
+            @con = ::Mysql.new(@host,@login,@pass,@db) 
+            @con.options(::Mysql::OPT_LOCAL_INFILE,true) ## no effects...
             return test_connection
         end
         def test_connection
@@ -53,7 +63,11 @@ module Database
         def connect
             safe_query do 
                 if @con ## if we already are connected
-                    yield
+                    if  block_given? 
+                        yield 
+                    else 
+                        return 
+                    end
                 else
                     i = 0
                     connected = false
@@ -66,7 +80,11 @@ module Database
                         abort
                     end
                     Logger.<<(__FILE__,"INFO","Logged into #{@db} at #{@name}@#{@host}") if @opts[:v]
-                    yield
+                    if block_given?
+                        yield
+                    else
+                        return
+                    end
                     @con.close if @con
                     @con = nil
                     Logger.<<(__FILE__,"INFO","Logged OUT from  #{@db} at #{@name}@#{@host}") if @opts[:v]
@@ -77,10 +95,12 @@ module Database
         def close
             safe_query do
                 @con.close if @con 
+                @con = nil
             end
         end
         def  query(sql_query)
-            #puts "#{@con}"
+            (Logger.<<(__FILE__,"INFO","Reconnection to the db ...");connect_;) if Time.now - @last_query > RETRY_TIME
+            @last_query = Time.now
             @con.query(sql_query)  
         end
 
@@ -99,7 +119,7 @@ module Database
             ret = yield if block_given?
             return ( ret ? ret : true ) # return not nil, otherwise return true
         rescue ::Mysql::Error => e
-            Logger.<<(__FILE__,"ERROR","#{e.errno}, #{e.error}")
+            Logger.<<(__FILE__,"ERROR","#{e.errno} : #{e.error}")
             raise e 
         end
 
@@ -199,6 +219,11 @@ module Database
 
     class SqlGenerator
 
+        DEFAULT_FILE_NAME_LENGTH = 60
+        def self.append_directories sql
+            sql + " DATA DIRECTORY='" + Conf::database.data_directory + "' " +
+                "INDEX DIRECTORY='" + Conf::database.index_directory + "' "
+        end
         def self.for_records table_name,records_fields
             sql =  "CREATE TABLE IF NOT EXISTS #{table_name} (
         id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -207,7 +232,7 @@ module Database
         PRIMARY KEY (id),
         INDEX (file_id)) "
             sql += " ENGINE=MYISAM"
-            sql
+            append_directories(sql)
         end
 
         def self.for_records_union table_name,records_fields,opts
@@ -218,18 +243,16 @@ module Database
         INDEX (id),
         INDEX (file_id)) "
             sql += "ENGINE=MERGE UNION=(#{opts[:union].join(',')}) INSERT_METHOD=NO"
-            sql
+            append_directories(sql)
         end
 
-        def self.for_files table_name
-            length = 40
-            print "PLease, specify length of cdr file name (enter to default 40) : "
-            v = STDIN.gets.chomp
-            length = v.empty? ? length : v.to_i
+        def self.for_files table_name,length = nil
+            flength = length || DEFAULT_FILE_NAME_LENGTH 
+            puts "files filtered => #{f}"
             sql = "CREATE TABLE IF NOT EXISTS 
             #{table_name}( 
                 file_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-                file_name VARCHAR(#{length}) NOT NULL UNIQUE, 
+                file_name VARCHAR(#{flength}) NOT NULL UNIQUE, 
                 processed BOOLEAN DEFAULT 0,
                 folder VARCHAR(10) DEFAULT '',
             #{Conf::database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -237,7 +260,7 @@ module Database
             INDEX(file_name),
             PRIMARY KEY(file_id)) "
             sql += "ENGINE=MYISAM"
-            sql
+            append_directories sql
         end
 
         def self.for_files_union table_name,opts
@@ -253,7 +276,7 @@ module Database
             INDEX(file_name)
                 ) "
             sql += "ENGINE=MERGE UNION=(#{opts[:union].join(',')}) INSERT_METHOD=NO"
-            sql
+            append_directories sql
         end
 
         ## TODO
@@ -262,7 +285,7 @@ module Database
             sql += "(#{Conf::database.timestamp} INT UNSIGNED UNIQUE DEFAULT 0, "
             sql += columns.map {|c| "#{c} BIGINT UNSIGNED DEFAULT 0" }.join(',')
             sql += ", PRIMARY KEY (#{Conf::database.timestamp})) ENGINE=MYISAM"
-            sql
+            append_directories sql
         end
         def self.for_monitor_union
             raise "No monitor MERGE table implemented yet."
@@ -274,7 +297,7 @@ module Database
                 " #{Conf::database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
                 " PRIMARY KEY (file_id))" 
             sql += " ENGINE=MYISAM"
-            sql
+            append_directories sql
 
         end
         def self.for_monitor_source_backlog table_name
@@ -283,7 +306,7 @@ module Database
                 " file_name VARCHAR(40) UNIQUE, " +
                 " PRIMARY KEY (file_id)) " +
                 " ENGINE=MYISAM "
-            sql
+            append_directories sql
         end
 
         def self.for_monitor_records_union table_name,opts
@@ -292,7 +315,7 @@ module Database
                 " #{Conf::database.timestamp} TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP," +
                 " INDEX(file_id)) " 
             sql += "ENGINE=MERGE UNION=(#{opts[:union].join(',')} INSERT_METHOD=NO"
-            sql
+            append_directories sql
         end
     end
 end
