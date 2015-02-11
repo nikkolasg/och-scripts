@@ -43,12 +43,14 @@ module Stats
             ## we only record unique ID, not 1000x 
             @processed_ids = Set.new
             @total = 0 # total number of row accepted
+            @source = opts[:source] || nil
         end
            
 
        # main method !! 
         def compute
             counter = 0.0
+            total_counter = 0
             counter_proc = Proc.new { |n| @num_rows = n }
             @db = Database::Mysql.default
             ## process each monitors separatly
@@ -56,6 +58,7 @@ module Stats
                 @current = monitor
                 ## for each source, look what they've got
                 @current.sources.each do |source|
+                    next if @source && @source != source
                     source.set_options @opts
                     h = { proc: counter_proc }
                     ## if we want to seelect from union or not
@@ -64,10 +67,17 @@ module Stats
                     source.schema.new_records(@current,h) do |row|
                         analyse_row row
                         counter += 1
+                        total_counter +=1
                         progression(counter)
                         SignalHandler.check { @db.close; 
                         Logger.<<(__FILE__,"WARNING","Exit catched. Abort.")
                         }
+                        ## in case we have many many stats ... 
+                        ## cant hold all , we have to let go sometimes !!
+                        if counter > 1000000
+                            @db.connect { @current.schema.insert_stats(source); @current.reset_stats }
+                            counter = 0
+                        end
                     end
                     @db.connect do
                         @current.schema.set_db @db
@@ -78,7 +88,7 @@ module Stats
                     @current.schema.processed_files source, @processed_ids.to_a
                     
 
-                    Logger.<<(__FILE__,"INFO","Analyzed & Accepted #{@total}/#{counter} records for #{source.name}")
+                    Logger.<<(__FILE__,"INFO","Analyzed & Accepted #{@total}/#{total_counter} records for #{source.name}")
                     @processed_ids = Set.new
                     @total = 0
                     @num_rows = 0
@@ -90,7 +100,10 @@ module Stats
 
         # analyse a single record for a single monitor
         def analyse_row row
-            return if @current.filter && !@current.filter.filter_row(row)
+            if @current.filter 
+                res = @current.filter.filter_row(row)
+                return unless res
+            end
             record_time = get_time_from_record row
             time = get_formatted_time record_time
             @current.stats.analyze time,row

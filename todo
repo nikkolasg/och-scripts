@@ -45,8 +45,9 @@ TODOOOOO
 5 jours par default
 
 SMS : check Send / Receive dans sms_instats charged 
-XDR : add nb records 
+      rotated table sms_out ==> process in the weekend
 TAP SMS : charged party => 1 = MO, 2 = MT
+
 
  ## STATS procera
         #nat = 213

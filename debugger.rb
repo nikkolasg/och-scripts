@@ -35,5 +35,9 @@ module Debug
 
     end
 
-
+    def debug_fields_and_record fields,record
+        puts fields.inspect
+        puts record.each_with_index.to_a.inspect
+        STDIN.gets
+    end
 end

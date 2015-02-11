@@ -70,7 +70,7 @@ module MysqlDumper
                 v = ""
                 print "Enter the MySql type you want for this field : "
                 v = STDIN.gets.chomp while v.empty?
-                return "VARCHAR(#{v.to_i}) DEFAULT ''"
+                return v
             else
                 return false
             end

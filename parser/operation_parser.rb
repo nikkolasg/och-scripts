@@ -82,6 +82,14 @@ class OperationParser
             opts[:flow] = monitor.flow
             Stats::create(:generic,opts ).compute
         end
+        source_ = Proc.new do |source|
+            source.flow.monitors.each do |mon|
+                next unless  mon.sources.include?(source)
+                opts[:source] = source
+                opts[:flow] = source.flow
+                Stats::create(:generic,opts).compute 
+            end
+        end
         ## will reprocess the input in "backlog" mode
         backlog_action = Proc.new do |argv_|
             hash = {}
@@ -96,7 +104,7 @@ class OperationParser
             take_actions argv_, hash
         end
 
-        take_actions argv,{ flow: flow_action, monitor: monitor_action,backlog: backlog_action }
+        take_actions argv,{ flow: flow_action, source: source_,monitor: monitor_action,backlog: backlog_action }
     end
 
     

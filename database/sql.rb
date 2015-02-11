@@ -98,6 +98,13 @@ module Database
                 @con = nil
             end
         end
+
+        ## call to make  a prepared statement. 
+        def prepared_stmt sql
+            return @con.prepare(sql) if @con
+        end
+
+        ## call to make an SQL Query
         def  query(sql_query)
             (Logger.<<(__FILE__,"INFO","Reconnection to the db ...");connect_;) if Time.now - @last_query > RETRY_TIME
             @last_query = Time.now
@@ -248,7 +255,6 @@ module Database
 
         def self.for_files table_name,length = nil
             flength = length || DEFAULT_FILE_NAME_LENGTH 
-            puts "files filtered => #{f}"
             sql = "CREATE TABLE IF NOT EXISTS 
             #{table_name}( 
                 file_id INT UNSIGNED NOT NULL AUTO_INCREMENT,

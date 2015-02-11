@@ -13,7 +13,7 @@ monitor "mms_instats" do
     all = [ch,ch2,fl,fl2,swisscom,sunrise]
     stats do
         #################
-        ## RECEIVE stats
+        ## RECEIVE stats ==> Mobile Terminated
         ##################
         ## A NUMBER STATS
         list("r_sender_och",:action,:a_mail) { |a,x| a == "R" && x == ch }
@@ -33,7 +33,7 @@ monitor "mms_instats" do
         # b_mail can be mm.mnc003.mcc228.gprs / 002-295 alos !
 
         ##############
-        # SEND STATS
+        # SEND STATS == Mobile Originated
         # ############
         list("s_rec_och",:action,:b_mail) {|a,x| a == "S" && x == ch }
         list("s_rec_fl",:action,:b_mail) { |a,x| a == "S" && x == fl }

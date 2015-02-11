@@ -18,6 +18,21 @@ monitor "mss_stats" do
         end
     end
 
+    national = Proc.new do |ton,number,&block|
+        res = false
+        if ton == 6
+            res = true & block.call(number)
+        elsif ton == 5
+            if number.start_with?("41")    
+                res = true & block.call(number[2..-1])
+            else 
+                res = false
+            end
+        end
+        res
+    end
+
+
     sources "mss_in","mss_out"
     time_interval 1.hour
 
@@ -28,24 +43,24 @@ monitor "mss_stats" do
     end
     stats do 
         ## NAT
-        list("fixed",:record_type,:called_number) do |rec,n|
-            rec.to_i == 1 && prep.call(n) { |nn| fixed.any? { |x| nn.start_with?(x) } }
+        list("fixed",:record_type,:called_number,:called_number_ton) do |rec,n,ton|
+            rec.to_i == 1 && !ton.empty? && national.call(ton.to_i,n) { |nn|  fixed.any? { |x| nn.start_with?(x) } }
         end
-        list("mobile",:record_type,:called_number) do |rec,n|
-            rec.to_i == 1 && prep.call(n) { |nn| mobiles.any? { |x| nn.start_with?(x) } }
+        list("mobile",:record_type,:called_number,:called_number_ton) do |rec,n,ton|
+            rec.to_i == 1 && !ton.empty? && national.call(ton.to_i,n) { |nn| mobiles.any? { |x| nn.start_with?(x) } }
         end
-        list("vas",:record_type,:called_number) do |rec,n|
-            rec.to_i == 1 && prep.call(n) { |nn| vas.any? { |x| nn.start_with?(x) } }
+        list("vas",:record_type,:called_number,:called_number_ton ) do |rec,n,ton|
+            rec.to_i == 1 && !ton.empty? && national.call(ton.to_i,n)  { |nn| vas.any? { |x| nn.start_with?(x) } }
         end
-        list("specials",:record_type,:called_number) do |rec,n|
-            rec.to_i == 1 && prep.call(n) { |nn| specials.any? { |x| nn.start_with?(x) } }
+        list("specials",:record_type,:called_number,:called_number_ton) do |rec,n,ton|
+            rec.to_i == 1 && !ton.empty? && national.call(ton.to_i,n) { |nn| specials.any? { |x| nn.start_with?(x) } }
         end
         ## INT
         list("int_moc",:record_type,:called_number_ton,:called_number) do |a,b,c|
-            a.to_i == 1 && b.to_i == 5 && !c.start_with?("41")
+            a.to_i == 1 && !b.empty? && b.to_i == 5 && !c.start_with?("41")
         end
         list("int_poc",:record_type,:called_number_ton,:called_number) do |a,b,c|
-            a.to_i == 11 && b.to_i == 5 && !c.start_with?("41")
+            a.to_i == 11 && !b.empty? && b.to_i == 5 && !c.start_with?("41")
         end
         ## TYPES
         list("POC",:record_type) { |x| x.to_i == 11 }

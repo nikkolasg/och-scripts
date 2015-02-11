@@ -137,14 +137,18 @@ puts t1.foo
 puts t2.foo
 
 require 'benchmark'
-f = File.join(File.dirname(__FILE__),"big_file")
-File.open(f,"w") do |file|
-    10000.times { file.puts "x" * 10 }
+Benchmark.bm do |rep|
+    #rep.report("wc -l") { n.times { %x{ wc -l #{f}}.to_i } }
 end
 
-n = 1000
-Benchmark.bm do |rep|
-    rep.report("wc -l") { n.times { %x{ wc -l #{f}}.to_i } }
-    rep.report("foreach") { n.times { File.foreach(f).count } }
+require 'optparse'
+opts = {}
+opt_ = OptionParser.new do |opt|
+    opt.on("-s","--scale SCALING","Scaling factor") do |n|
+        opts[:scale] = n
+    end
 end
+opt_.parse!
+puts "OPTIONS : " + opts.inspect
+
 

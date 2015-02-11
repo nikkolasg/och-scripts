@@ -55,6 +55,8 @@ module Getter
             Logger.<<(__FILE__,"INFO","Get operation on NULL getter ... Already done !!")
         end
     end
+
+    
     # responsible for handling the flows get operations
     class GenericSourceGetter
         include Getter

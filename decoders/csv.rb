@@ -59,9 +59,9 @@ module Decoder
         def finalize_json 
             sanitize_json @json
             @json = @mapper.map_json(@json) if @mapper
-            #Debug::debug_json @json if @opts[:d]
+            Debug::debug_json @json if @opts[:d]
             @json = @filter.filter_json(@json) if @filter
-            #Debug::debug_json @json if @opts[:d]
+            Debug::debug_json @json if @opts[:d]
             @json
         end
 

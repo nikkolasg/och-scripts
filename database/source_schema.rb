@@ -299,7 +299,9 @@ module Database
                 end
 
                 def new_records_from monitor,opts = {}
-                    sql = opts[:union] ? "#{@table_records_union} AS r " : "#{@table_records} AS r "
+                    table = @opts[:table] || (@opts[:union] ? "#{@table_records_union}}" : nil) || "#{@table_records}"
+                    table = table + " AS r "
+                    sql = table
                     if monitor.filter && monitor.filter.fields_allowed.include?(:folder)
                         sql += "LEFT JOIN #{table_files} AS f " +
                             "ON r.file_id = f.file_id "

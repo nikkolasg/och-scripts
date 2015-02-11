@@ -43,6 +43,7 @@ module Decoder
                                               first_called_location
                                               partial_indicator
                                               cause_for_record_closing
+                                              tele_service_code
                                               bearer_service_code
                                               supp_service_code
                                               action_code
@@ -54,6 +55,7 @@ module Decoder
                                               sms_orig_subscriber
                                               sms_termi_subscriber
                                               ggsn_address
+                                              sgsn_address
                                               sgsn_plmn_id
                                               access_point_name_ni
                                               access_point_name_oi
@@ -141,7 +143,7 @@ local_currency))
                                                 vol_downlink
                                                 mcc_mnc ) )
 
-        SMS_RECORDS = { "S" => 1 }
+        SMS_RECORDS = { "S" => 1, "R" => 2 }
         fields = RubyUtil::symbolize([ "record_type",
                                        "submit_date",
                                        "reference_id",

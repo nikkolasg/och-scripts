@@ -22,6 +22,7 @@ module Parser
             dirs = Conf::directories
             meth = method(:exists_or_create)
             exists_or_create dirs.data
+            exists_or_create "locks" ## locks folder containing locks file
             hash = {}
             hash[:source] = Proc.new do |source|
                 [:tmp,:store,:backup].each do |f|
@@ -37,7 +38,7 @@ module Parser
                 meth.call log.log_dir
             end
             hash[:flow] = Proc.new do |flow|
-                flow.source.each do |s|
+                flow.sources.each do |s|
                     hash[:source].call(s)
                 end
             end
@@ -67,7 +68,7 @@ module Parser
             h[:source] = Proc.new do |source|
                 m = Conf::LocalFileManager.new
                 m.delete_source_files  source
-                Logger.<<(__FILE__,"INFO","Deleted files in #{folder} from #{source.name}")
+                Logger.<<(__FILE__,"INFO","Deleted files  from #{source.name}")
             end
             h[:flow] = Proc.new do |flow|
                 flow.sources.each do |s|
@@ -85,8 +86,8 @@ module Parser
                 [:tmp,:store,:backup].each do |d|
                     fold = Conf::directories.send(d) 
                     source.folders.each do |folder|
-                        url = File.join(fold,source.name,folder)
-                        fm.delete_dir(dir)
+                        url = File.join(fold,source.name.to_s,folder)
+                        fm.delete_dir(url)
                     end
                 end
             end

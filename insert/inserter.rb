@@ -20,7 +20,7 @@ module Inserter
     def backup_file folder,file
         @manager ||= Conf::LocalFileManager.new
         newp = File.join(Conf::directories.backup,@curr_source.name.to_s,folder)
-        file.zip!
+        file.zip! unless file.zip?
         @manager.move_files [file],newp
     end
 

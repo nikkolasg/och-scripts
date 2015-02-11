@@ -24,6 +24,7 @@ module Mapper
             @fields2change[:lengthOfMessage] = :message_size
             @fields2change[:origIntlMobileSubId] = :a_imsi
             @fields2change[:intlMobileSubId] = :b_imsi
+            @fields2change[:messageReference] = :reference_id
             @fields2change.merge! map_time_fields([:submit_date])
         end
 
@@ -73,11 +74,14 @@ module Mapper
 
     end
 
+    ## sms out mapper
     class SmsMapper < GenericMapper
 
+        ## basically rename vmsc_addr to calling and create a new entry called vmsc number 
+        #that way both input and ouput are normalized
         def initialize opts = {}
             super(opts)
-            @fields2change = { record_type: :status , :vmsc_addr => :calling_vmsc_no_number}
+            @fields2change = { record_type: :status,vmsc_addr: :calling_vmsc_no_number }
             @fields2change.merge! map_time_fields([:submit_date])
         end
 
@@ -85,20 +89,40 @@ module Mapper
             json.each do |name,hash|
                 fields = hash[:fields]
                 values = hash[:values]
+                icalling = fields[:vmsc_addr]
+                icalled = values.first.length
+                fields[:called_vmsc_no_number] = icalled
+                fields[:a_pid] = icalled + 1
                 values.each do |row|
                     transform_time_values row,fields[:submit_date]
                     transform_status row,fields[:record_type] 
+                    transform_vmsc row,fields
+                    add_pid row,fields
                 end
-                fields = rename_fields fields,@fields2change 
+                rename_fields fields,@fields2change 
             end
             json
         end 
+
         def transform_status  row,index
             v = row[index]
             return  unless v
             v = "S" if v.to_i == 1
             v = "R" if v.to_i == 2
             row[index] = v
+        end
+
+        def transform_vmsc row,fields
+            row << "" ## add called at the end 
+            ## if only it is MT, we place into the vmsc CALLED addr
+            if row[fields[:record_type]] == "R"
+                row[fields[:called_vmsc_no_number]] = row[fields[:vmsc_addr]]
+                row[fields[:vmsc_addr]] = ""
+            end
+        end
+
+        def add_pid row,fields
+            row << "plmn"
         end
 
     end

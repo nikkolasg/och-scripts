@@ -32,8 +32,11 @@ opt_parse = OptionParser.new do |opt|
     opt.on("--mock","If you are doing a fix or a setup operation, you can see what the tool would actually be doing, but without doing the operations. Can be useful to see if the operation is really what you want") do |n|
         $opts[:mock] = true
     end
-    opt.on("--insert-only","If you only want to insert files and look in the db after, but WITHOUT any processing on theses records (old ones for example), you can specify it here") do |n|
+    opt.on("--insert-only","If you only want to insert files and look in the db after, but WITHOUT any processing on theses records (old ones for example), you can specify it here. It will simply marks the files it inserts as already processed in the monitors sections. OPTIONS BETA. NOT TESTED so be aware.") do |n|
         $opts[:insert_only] = true
+    end
+    opt.on("--table TABLE","You want to specify a specific table for a specific source, for example, you want to reprocess the table that you had created 3 weeks ago, like RECORDS_MSS_20150115.") do |n|
+        $opts[:table] = n.chomp.upcase
     end
 end
 
@@ -61,7 +64,8 @@ SignalHandler.enable { Logger.<<(__FILE__,"INFO","Signal handler SIGINT enabled.
 
 # TODO
 def lock 
-    fname = File.join(File.dirname(__FILE__),ARGV.join('-')) + ".LOCK"
+    
+    fname = File.join(File.dirname(__FILE__),"locks",ARGV.join('-')) + ".LOCK"
     File.open(fname,File::RDWR|File::CREAT,0644) do |f|
         unless f.flock( File::LOCK_NB | File::LOCK_EX )
             Logger.<<(__FILE__,"INFO","Instance already running. Abort.")
