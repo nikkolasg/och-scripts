@@ -1,0 +1,10 @@
+a_number:CHAR(11) DEFAULT ''
+ip:CHAR(14) DEFAULT ''
+protocol_category:VARCHAR(27) DEFAULT ''
+protocol_name:VARCHAR(31) DEFAULT ''
+ap_name:CHAR(11) DEFAULT ''
+vol_uplink:CHAR(8) DEFAULT ''
+vol_downlink:CHAR(9) DEFAULT ''
+total:CHAR(9) DEFAULT ''
+ts_start_time:INT UNSIGNED DEFAULT 0
+ts_end_time:INT UNSIGNED DEFAULT 0

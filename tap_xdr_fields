@@ -1,0 +1,31 @@
+XDR
+servicecode
+eventid
+charging date
+carge start time
+UTC TIME OFFSET
+chargeable units
+tariffclass
+charging imsi
+
+TAP
+event_type
+sender
+recipient
+file_seq_number
+startdate/time
+utc_offset
+duration
+orign -> address,imsi
+dest -> addres,imsi
+sms _origin, sms_terming
+sgsn_Address
+data_incom,data_outgoingg
+charge_local_currency
+charged_item1
+exchange_Rate1
+charge1
+chargeunit1
+chargedunit1
+taxvalue1
+locacurrency

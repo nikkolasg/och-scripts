@@ -1,0 +1,28 @@
+            :record_type    => (0..1),
+            :cdp_id         => (3..7),
+            :network_type   => 8,
+            :a_number       => (9..23),
+            :type_of_numb   => 41,
+            :numbering_plan => 42,
+            :called_number  => (43..63),
+            :switch_id      => (88..102),
+            :whole_sale_perc => (108..112),
+            :charging_date  => 114..119,
+            :charge_time    => 120..125,i ## To be null 
+            :utf_offset     => 126,
+            :chargeable_unit    =>  127..132,
+            :data_vol_ref   => 133..138,
+            :retail_charge  => 139..147,
+            :whole_sale_charge  => 148..156,
+            :interconnect_charge    => 157..165,
+            :revenue_share_charge   => 166..174,
+            :tax_rate_code  => 176,
+            :exchange_rate_code => 177,
+            :tariff_class   => 178..183,
+            :mvne_id        => 187..192, =>> entree
+            :mvno_id        => 193..198, #
+            :pop_id         => 199..204,#
+            :charging_imsi  => 205..220,#
+            :switch_name    => 221..227,#
+            :circuit_group  => 228..232#
+
