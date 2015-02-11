@@ -299,7 +299,7 @@ module Database
                 end
 
                 def new_records_from monitor,opts = {}
-                    table = @opts[:table] || (@opts[:union] ? "#{@table_records_union}}" : nil) || "#{@table_records}"
+                    table = @opts[:table] || (@opts[:union] ? "#{@table_records_union}" : nil) || "#{@table_records}"
                     table = table + " AS r "
                     sql = table
                     if monitor.filter && monitor.filter.fields_allowed.include?(:folder)

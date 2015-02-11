@@ -37,32 +37,32 @@ module Database
                 db.query(sql)
             end
         end
-        def self.rename_table old_name,new_name
+        def self.rename_table old_name,new_name,db = nil
             sql = "RENAME TABLE #{old_name} TO #{new_name}"
-            db = Mysql.default
+            db = db || Mysql.default
             db.connect do 
                 db.query(sql)
             end
             Logger.<<(__FILE__,"INFO","Renamed table #{old_name} => #{new_name}")
         end
-        def self.reset_table table
+        def self.reset_table table,db = nil
             sql = "DELETE FROM #{table};"
-            db = Database::Mysql.default
+            db = db || Database::Mysql.default
             db.connect do 
                 db.query(sql)
             end
             Logger.<<(__FILE__,"INFO","Reset table #{table}")
         end
-        def self.delete_table table
+        def self.delete_table table,db = nil
             sql = "DROP TABLE  IF EXISTS #{table};"
-            db = Database::Mysql.default
+            db = db || Database::Mysql.default
             db.connect do 
                 db.query(sql)
             end
             Logger.<<(__FILE__,"INFO","Deleted table #{table}")
         end
 
-        def self.compress_table table
+        def self.compress_table table,db = nil
             puts "TODO"
         end
         def self.change_engine table,engine,opts = {}
@@ -87,10 +87,10 @@ module Database
         end
 
         # return an array of table names  associated with this prefix 
-        def self.search_tables prefix_name
+        def self.search_tables prefix_name,db = nil
             sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES " +
                 "  WHERE TABLE_NAME REGEXP '^#{prefix_name}(_[0-9]{8})?$';" 
-            db = Mysql.default
+            db = db || Mysql.default
             names = []
             db.connect do
                 res = db.query(sql)

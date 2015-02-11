@@ -108,6 +108,7 @@ module Database
         def  query(sql_query)
             (Logger.<<(__FILE__,"INFO","Reconnection to the db ...");connect_;) if Time.now - @last_query > RETRY_TIME
             @last_query = Time.now
+            raise "Database Not connected before querying .. !!" unless @con
             @con.query(sql_query)  
         end
 

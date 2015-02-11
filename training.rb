@@ -151,4 +151,18 @@ end
 opt_.parse!
 puts "OPTIONS : " + opts.inspect
 
-
+require_relative 'config'
+require_relative 'database/sql'
+require_relative 'database/table_util'
+tname = "RECORDS_MSS_IN_UNION"
+fname = "RECORDS_MSS_IN"
+db = Database::Mysql.default
+db.connect do 
+    res = db.query("show create table #{tname}")
+    stmt = res.fetch_row[1]
+    puts stmt
+    puts "MODIFIED : "
+    tnames = Database::TableUtil::search_tables fname,db
+    puts "TABLES NAMES = #{tnames}"
+    puts stmt.gsub(/UNION=\(.*\)/) { |n| "UNION=(" + tnames.map { |nn| "`#{nn}`"}.join(',') + ",`MyRecords`)" }
+end

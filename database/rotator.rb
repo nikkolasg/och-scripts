@@ -30,26 +30,58 @@ module Database
         # i.e. RECORDS_EMM_INPUT_20141027
         # and also it delete and create a new MERGE
         # table containing all previous tables
+        #def source source,opts
+            #schema = source.schema
+            #yesterday = "#{Util::date(TableRotator::YESTERDAY)}"
+            ## MOVE the table 
+            #table_name = schema.table_records
+            #new_name = table_name + "_" + yesterday
+            #TableUtil::rename_table table_name, new_name
+            #TableUtil::compress_table new_name 
+            ## re create the table
+            
+            #sql = SqlGenerator.for_records(schema.table_records,
+                                           #source.records_fields)
+            ## reCREATE the MERGE 
+            #TableUtil::delete_table schema.table_records_union
+            #tables = TableUtil::search_tables table_name
+            #sql_ = SqlGenerator.for_records_union(schema.table_records_union,
+                                                  #source.records_fields,
+                                                  #union: tables )
+            #db = Mysql.default
+            #db.connect do
+                #db.query(sql); 
+                #db.query(sql_) 
+            #end
+        #end
+
         def source source,opts
             schema = source.schema
             yesterday = "#{Util::date(TableRotator::YESTERDAY)}"
-            # MOVE the table 
             table_name = schema.table_records
             new_name = table_name + "_" + yesterday
-            TableUtil::rename_table table_name, new_name
-            TableUtil::compress_table new_name 
-            # re create the table
-            sql = SqlGenerator.for_records(schema.table_records,
-                                           source.records_fields)
-            # reCREATE the MERGE 
-            TableUtil::delete_table schema.table_records_union
-            tables = TableUtil::search_tables table_name
-            sql_ = SqlGenerator.for_records_union(schema.table_records_union,
-                                                  source.records_fields,
-                                                  union: tables )
             db = Mysql.default
-            db.connect { db.query(sql); db.query(sql_) }
+            db.connect do
+                ## take the cschema of the table
+                table_create_stmt = db.query("show create table #{table_name}").fetch_row[1]
+                union_stmt = db.query("show create table #{schema.table_records_union}").fetch_row[1]
+                ## rename the old table
+                TableUtil::rename_table table_name,new_name,db
+                TableUtil::compress_table new_name,db
+                ## re create the table
+                db.query(table_create_stmt)
+                
+                ## re create unions
+                ### tables_union will already contains the new table we have created 2 lines above
+                tables_union = TableUtil::search_tables table_name,db
+                ##update union statement
+                union_stmt.gsub!(/UNION=\(.*\)/) { |n| "UNION=(" + tables_union.map { |nn| "`#{nn}`"}.join(',') + ")" }
+                ##create the union
+                TableUtil::delete_table schema.table_records_union
+                db.query(union_stmt)
+            end
         end
+
 
         private
         # return the new name formed based on the original name + ts
