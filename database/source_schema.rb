@@ -247,13 +247,26 @@ module Database
                         ";"
                     @db.connect do
                         puts sql if @opts[:d]
-                        res = @db.query(sql)
+                        ## special case for union where we might have
+                        # hundreds of millions of record taht can't fit
+                        # into memory
+                        if @opts[:union] 
+                            @db.con.query_with_result = false
+                            @db.query(sql)
+                            res = @db.con.use_result
+                        else
+                            res = @db.query(sql)
+                        end
                         ## sends back the number of rows to the caller 
                         ## so it can update progression in real time
                         opts[:proc].call(res.num_rows) if opts[:proc]
                         Logger.<<(__FILE__,"INFO","Retrieved #{res.num_rows} records to be analyzed from #{@source.name} ...")
                         res.each_hash do |row|
                             yield RubyUtil::symbolize(row)
+                        end
+                        if @opts[:union]
+                            res.free
+                            @db.query_with_result = true
                         end
                     end
                 end

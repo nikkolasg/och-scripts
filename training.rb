@@ -154,15 +154,29 @@ puts "OPTIONS : " + opts.inspect
 require_relative 'config'
 require_relative 'database/sql'
 require_relative 'database/table_util'
-tname = "RECORDS_MSS_IN_UNION"
 fname = "RECORDS_MSS_IN"
 db = Database::Mysql.default
 db.connect do 
-    res = db.query("show create table #{tname}")
-    stmt = res.fetch_row[1]
-    puts stmt
-    puts "MODIFIED : "
-    tnames = Database::TableUtil::search_tables fname,db
-    puts "TABLES NAMES = #{tnames}"
-    puts stmt.gsub(/UNION=\(.*\)/) { |n| "UNION=(" + tnames.map { |nn| "`#{nn}`"}.join(',') + ",`MyRecords`)" }
+    db.con.query_with_result = false
+    db.query("SELECT * from RECORDS_MSS_IN LIMIT 5");
+    res = db.con.use_result
+    i = 0
+    res.each_hash do |row|
+        puts "Num of results (#{res.num_rows}) : " + row['calling_number']
+        i += 1
+        break if i == 10
+    end
+    res.free
+    puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    qwr = false
+    db.con.query_with_result = qwr
+    res =  db.con.query("SELECT * from RECORDS_MSS_IN limit 100");
+    res = db.con.use_result unless qwr
+    i = 0
+    res.each_hash do |row|
+        puts "Num of results (#{res.num_rows}) : " + row['calling_number']
+        i += 1
+        break if i == 10
+    end
+    res.free
 end

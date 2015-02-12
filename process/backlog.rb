@@ -52,7 +52,7 @@ module Stats
                 files = get_files
                 count = 1
                 @num_rows = files.values.flatten.size
-                ## Actually download each file and yield it
+                ## Actually analyze each file and yield it. can be downloaded if wnated
                 compute_files(files) do |folder,file|
                     str = "(#{count}/#{@num_rows}) Analyzing file #{file.name} ("
                     @monitors.each do |mon|
@@ -185,7 +185,6 @@ module Stats
         f2rm = @files2rm[@current.name][@source.name]
         v = f2rm.include?(file) ? false : true ## if file not preset (i.e.nil)
         return v
-        # return true, if preset, ret false
     end
 
 end

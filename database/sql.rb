@@ -18,7 +18,7 @@ module Database
     class Mysql
         CONNECTION_TRY = 5
         RETRY_TIME = 60 * 1
-        attr_reader :con
+        attr_reader :con,:opts
         @@default_db = nil   
         def self.default opts = {}
             db = Conf.database
@@ -127,7 +127,7 @@ module Database
             ret = yield if block_given?
             return ( ret ? ret : true ) # return not nil, otherwise return true
         rescue ::Mysql::Error => e
-            Logger.<<(__FILE__,"ERROR","#{e.errno} : #{e.error}")
+            Logger.<<(__FILE__,"ERROR","#{e.errno} : #{e.error} (#{e})")
             raise e 
         end
 
@@ -307,10 +307,10 @@ module Database
             append_directories sql
 
         end
-        def self.for_monitor_source_backlog table_name
+        def self.for_monitor_source_backlog table_name,file_length = 40
             sql = "CREATE TABLE IF NOT EXISTS #{table_name} (" +
                 " file_id INT UNSIGNED NOT NULL AUTO_INCREMENT, " +
-                " file_name VARCHAR(40) UNIQUE, " +
+                " file_name VARCHAR(#{file_length}) UNIQUE, " +
                 " PRIMARY KEY (file_id)) " +
                 " ENGINE=MYISAM "
             append_directories sql

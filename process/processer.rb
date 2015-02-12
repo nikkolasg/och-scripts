@@ -68,7 +68,7 @@ module Stats
                         analyse_row row
                         counter += 1
                         total_counter +=1
-                        progression(counter)
+                        @opts[:union] ? (Logger.<<(__FILE__,"INFO","Processed #{total_counter} records for now ...",inline: true) if total_counter % 100000 == 0) : progression(counter)
                         SignalHandler.check { @db.close; 
                         Logger.<<(__FILE__,"WARNING","Exit catched. Abort.")
                         }

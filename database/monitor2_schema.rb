@@ -12,6 +12,8 @@ module Database
                     @monitor = monitor
                     @db = Mysql.default
                     @table_stats = "MON_#{@monitor.name.upcase}"
+                    @opts = opts
+                    @opts[:d] = true
                 end
 
 
@@ -27,7 +29,9 @@ module Database
                                 sql= SqlGenerator.for_monitor_source(table_name)
                                 @db.query(sql)
                                 table_name = table_records(source,backlog:true)
-                                sql = SqlGenerator.for_monitor_source_backlog(table_name)
+                                flength = source.file_length
+                                sql = SqlGenerator.for_monitor_source_backlog(table_name,flength)
+                                Logger.<<(__FILE__,"DEBUG",sql) if @opts[:d]
                                 @db.query(sql) 
                                 Logger.<<(__FILE__,"INFO","Setup files table of #{source.name} for #{@monitor.name}")
                             end
@@ -47,6 +51,35 @@ module Database
                         end
                     end
                 end
+               
+                ## insert into db the name of processed files by the backlog process
+                def backlog_processed_files source,files
+                    return if files.empty?
+                    sql = "INSERT INTO " +
+                        "#{table_records(source,backlog: true)} " +
+                        "(file_name) " +
+                        "VALUES " + 
+                        files.map{|f| "('"+f.name+"')" }.join(',')
+                    @db.connect do
+                        @db.query(sql)
+                    end
+                end
+
+
+                ## return the name of the files stored in the backlog table
+                def backlog_saved_files source
+                    l = []
+                    @db.connect do 
+                        sql = "SELECT file_name FROM #{table_records(source,backlog: true)} "
+                        res = @db.query(sql)
+                        res.each_hash do |row|
+                            l << CDR::File.new(row['file_name'])
+                        end
+                    end
+                    return l
+                end
+
+
                 ## return the table name used by this monitor for this source
                 #i.e. the table where the file_id for this source are stored
                 def table_records source,opts = {}

@@ -6,3 +6,4 @@ decoding/*
 config.rb
 log/*
 locks/*
+nohup.out
