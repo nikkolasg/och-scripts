@@ -79,9 +79,7 @@ module Getter
             else
                 Logger.<<(__FILE__,"INFO","Filtering on remote files done ... will download #{count} files. ")
                 download_files
-                Logger.<<(__FILE__,"INFO","Files downloaded & moved into right folders ...")
-                @current_source.schema.insert_files @files
-                Logger.<<(__FILE__,"INFO","Files registered into the system ! ")
+                Logger.<<(__FILE__,"INFO","Files downloaded & moved & registered in the systems ! ...")
             end
             @files = {}
             Logger.<<(__FILE__,"INFO","GET Operation finished !")
@@ -100,6 +98,7 @@ module Getter
                     spath = File.join(path, @current_source.name.to_s,folder)
                     manager.download_files files,spath,v: true
                     move_files folder
+                    @current_source.schema.insert_files files
                     SignalHandler.check { Logger.<<(__FILE__,"WARNING","SIGINT Catched. Abort.")}
                 end
             end

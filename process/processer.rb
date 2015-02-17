@@ -75,7 +75,7 @@ module Stats
                         ## in case we have many many stats ... 
                         ## cant hold all , we have to let go sometimes !!
                         if counter > 1000000
-                            @db.connect { @current.schema.insert_stats(source); @current.reset_stats }
+                            @db.connect { @current.schema.insert_stats(source); @current.reset_stats; @current.schema.processed_files(source,@processed_ids.to_a) }
                             counter = 0
                         end
                     end
