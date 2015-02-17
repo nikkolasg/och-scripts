@@ -78,6 +78,7 @@ module Inserter
             file_counter = 0
             iterate_over nfiles do |file|
                 file_path = File.join(base_path,file[:folder],file[:file_name])
+                puts file_path,file[:folder]
                 file_ = CDR::File.new(file_path,search: true)
                 records = @curr_source.decoder.decode file_
                 if records.nil? 

@@ -187,6 +187,7 @@ module Database
                     return if ids.empty?
                     sql = "INSERT INTO #{table_records(source)} " +
                         "(file_id) VALUES " + ids.map { |i| "(#{i})"}.join(',') 
+                    sql += " ON DUPLICATE KEY UPDATE file_id = file_id;"
                     @db.connect do
                         @db.query(sql)
                     end
