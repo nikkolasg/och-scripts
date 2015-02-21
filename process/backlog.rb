@@ -44,6 +44,7 @@ module Stats
 
             get_saved_files ## retrieved ALL files already processed in DB
             @sources.each do |source|
+                ## Must move get saved_file here so we check on the file GET module has
                 SignalHandler.check { Logger.<<(__FILE__,"WARNING","SIGNINT catched .Abort.");@db.close}
 
                 @manager = source.file_manager
@@ -67,6 +68,7 @@ module Stats
                         ## only download the file if needed
                         @manager.download_files [file],path unless file.downloaded?
                         file.unzip! if file.zip?
+                        ## decode one time only
                         json ||= @source.decoder.decode file
                         str += "#{mon.name}:O "
                         analyze_json json
@@ -170,7 +172,7 @@ module Stats
     ## Actually retrieve all saved files for all monitors for all sources
     ## store it
     def get_saved_files
-        ## MONITOR => SOURCES => FILES (hash Filename => true) (for speed)
+        ## MONITOR => SOURCES => FILES (Set) (for speed)
         @files2rm = Hash.new { |h,k| h[k] = {} }
         @monitors.each do |mon|
             mon.sources.each do |source|
@@ -178,6 +180,12 @@ module Stats
                 @files2rm[mon.name][source.name] = f2rm.inject(Set.new) { |col,f| col << f; col}
             end
         end
+    end
+    
+    ## acutally retrieves the files in backlog + from the source schema ^FILE table
+    ## i.e. the "normal" table
+    def get_source_saved_files
+        @files2rm = Hash.new { |h,k| h[k] = {} }
     end
 
     ## Will filter files for a source & a monitor (@source / @current)

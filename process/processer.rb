@@ -68,16 +68,19 @@ module Stats
                         analyse_row row
                         counter += 1
                         total_counter +=1
-                        @opts[:union] ? (Logger.<<(__FILE__,"INFO","Processed #{total_counter} records for now ...",inline: true) if total_counter % 100000 == 0) : progression(counter)
-                        SignalHandler.check { @db.close; 
-                        Logger.<<(__FILE__,"WARNING","Exit catched. Abort.")
+                        Logger.<<(__FILE__,"INFO","Processed #{total_counter} records for now ...",inline: true) if total_counter % 10000 == 0 #: progression(counter)
+                        SignalHandler.check { 
+                            @db.close; 
+                            Logger.<<(__FILE__,"WARNING","Exit catched. Abort.")
                         }
-                        ## in case we have many many stats ... 
-                        ## cant hold all , we have to let go sometimes !!
-                        if counter > 1000000
-                            @db.connect { @current.schema.insert_stats(source); @current.reset_stats; @current.schema.processed_files(source,@processed_ids.to_a) }
-                            counter = 0
-                        end
+                        ## FIX : schema will reconnect, but it shouldn't 
+                        #as it will mess up with the query still not finished.
+                       # ## in case we have many many stats ... 
+                        ### cant hold all , we have to let go sometimes !!
+                        #if counter > 1000000
+                            #@db.connect { @current.schema.insert_stats(source); @current.reset_stats; @current.schema.processed_files(source,@processed_ids.to_a) }
+                            #counter = 0
+                        #end
                     end
                     @db.connect do
                         @current.schema.set_db @db
@@ -86,7 +89,6 @@ module Stats
                     end
                     @current.reset_stats
                     @current.schema.processed_files source, @processed_ids.to_a
-                    
 
                     Logger.<<(__FILE__,"INFO","Analyzed & Accepted #{@total}/#{total_counter} records for #{source.name}")
                     @processed_ids = Set.new

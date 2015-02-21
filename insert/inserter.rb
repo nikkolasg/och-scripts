@@ -78,8 +78,12 @@ module Inserter
             file_counter = 0
             iterate_over nfiles do |file|
                 file_path = File.join(base_path,file[:folder],file[:file_name])
-                puts file_path,file[:folder]
-                file_ = CDR::File.new(file_path,search: true)
+                begin
+                    file_ = CDR::File.new(file_path,search: true)
+                rescue => e
+                    Logger.<<(__FILE__,"WARNING","File Error : #{e}")
+                    raise e
+                end
                 records = @curr_source.decoder.decode file_
                 if records.nil? 
                     Logger.<<(__FILE__,"WARNING","Found null output for file #{file}")

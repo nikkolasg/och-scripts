@@ -7,13 +7,14 @@ module CDR
     require_relative'config'
     require 'open3'
     require_relative 'util'
+    require 'pry'
     # helper class to facilitate the 
     # different format of cdr, and compressed or not ,
     # stored in subfolder ( ==> cname) etc.
     class File
         ## cname is the "real"  name
         #  name is just the name of the cdr, without any others extensions
-        attr_accessor :name,:cname,:full_path
+        attr_accessor :name,:cname,:full_path,:downloaded
 
         def initialize(name,opts = {})
             if opts[:nosearch]
@@ -100,6 +101,7 @@ module CDR
         # will try to find the value of cname
         # searching in the directory
         def find_itself name_
+            #binding.pry
             @full_path = nil
             path = ::File::dirname(name_)
             name = ::File::basename(name_)
@@ -111,7 +113,8 @@ module CDR
                     break
                 end
             end
-            (Logger.<<(__FILE__,"ERROR","CDR:File cannot find it self ... #{path}/#{name}");abort;) unless @full_path
+            str = "CDR:File cannot find it self ... #{path}/#{name}"
+            (Logger.<<(__FILE__,"ERROR",str);raise str;) unless @full_path
             @cname = ::File.basename(@full_path)
             @name = remove_ext name
             @path = path

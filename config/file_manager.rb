@@ -263,7 +263,7 @@ module Conf
                     dl.each { |d| d.wait }
                 end
             end
-            files.each { |f| f.path = dest }
+            files.each { |f| f.path = dest; f.downloaded = true }
             files
         end
     end
@@ -340,7 +340,7 @@ module Conf
                     Logger.<<(__FILE__,"ERROR","LocalFileManager can not delete a non existant file ! #{file.cname}")
                     abort;
                 end
-                cmd = "rm #{file.full_path}"
+                cmd = "rm '#{file.full_path}'"
                 unless system(cmd)
                     Logger.<<(__FILE__,"ERROR","LocalFileManager trouble for deleting file #{file}")
                     abort

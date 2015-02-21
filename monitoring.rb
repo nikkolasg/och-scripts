@@ -38,6 +38,7 @@ opt_parse = OptionParser.new do |opt|
     opt.on("--table TABLE","You want to specify a specific table for a specific source, for example, you want to reprocess the table that you had created 3 weeks ago, like RECORDS_MSS_20150115.") do |n|
         $opts[:table] = n.chomp.upcase
     end
+   
 end
 
 opt_parse.parse!

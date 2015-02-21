@@ -19,6 +19,7 @@ module Database
                     elsif @opts[:index].is_a?(Array)
                         @index_fields = RubyUtil::symbolize(@opts[:index])
                     end
+                    @sql_fetch_all = !(@opts[:sql_no_fetch_all] || true)
                 end
 
                 def create type
@@ -30,9 +31,10 @@ module Database
                         ## records table
                         ## aux tables
                         @index_fields.each do |field|
-                            reg = lambda { |sql| sql.gsub /#{field} [^,]+,/,"#{field} int not null," }
-                            records = reg.call(records)
-                            records_union = reg.call(records)
+                            #puts records.inspect 
+                            #reg = lambda { |sql| sql.gsub /#{field} [^,]+,/,"#{field} int not null," }
+                            #records = reg.call(records)
+                            #records_union = reg.call(records)
 
                             sql = "CREATE TABLE IF NOT EXISTS " +
                                 " #{table_name(field)} (" +
@@ -45,9 +47,11 @@ module Database
                         end
                         ## first create the record table
                         records = SqlGenerator.for_records(@table_records,@source.records_fields)
+                        puts records if @opts[:v]
                         @db.query records
                         ## then lookup similar tables
                         records_union = SqlGenerator.for_records_union(@table_records_union,@source.records_fields,union: TableUtil::search_tables(@table_records)) 
+                        puts records_union if @opts[:v]
                         @db.query records_union
                         Logger.<<(__FILE__,"INFO","Created Records table ... ")
                     end
@@ -83,6 +87,7 @@ module Database
                         if id = @index_value[record[i]]
                             record[i] = id
                         else
+                            ## we insert and then put the id
                             id =  insert_and_id f,record[i]
                             @index_value[record[i]] = id
                             record[i] = id

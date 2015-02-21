@@ -88,6 +88,7 @@ module Parser
                     source.folders.each do |folder|
                         url = File.join(fold,source.name.to_s,folder)
                         fm.delete_dir(url)
+                        Logger.<<(__FILE__,"INFO","Deleted all files in #{folder} for #{source.name}...")
                     end
                 end
             end

@@ -42,6 +42,11 @@ monitor "mss_stats" do
         field :called_number_ton
     end
     stats do 
+        ## TYPES
+        list("POC",:record_type) { |x| x.to_i == 11 }
+        list("MOC",:record_type) { |x| x.to_i == 1 }
+        list("FORW", :record_type) { |x| x.to_i == 3 }
+
         ## NAT
         list("fixed",:record_type,:called_number,:called_number_ton) do |rec,n,ton|
             rec.to_i == 1 && !ton.empty? && national.call(ton.to_i,n) { |nn|  fixed.any? { |x| nn.start_with?(x) } }
@@ -62,10 +67,6 @@ monitor "mss_stats" do
         list("int_poc",:record_type,:called_number_ton,:called_number) do |a,b,c|
             a.to_i == 11 && !b.empty? && b.to_i == 5 && !c.start_with?("41")
         end
-        ## TYPES
-        list("POC",:record_type) { |x| x.to_i == 11 }
-        list("MOC",:record_type) { |x| x.to_i == 1 }
-        list("FORW", :record_type) { |x| x.to_i == 3 }
     end
 end
 

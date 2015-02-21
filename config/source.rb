@@ -18,6 +18,7 @@ module Conf
             ## generic one 
             @kgetter = Getter::GenericSourceGetter 
             @kinserter = Inserter::GenericSourceInserter
+            @file_length = 100
         end
 
         ## accessor for the schema used by this source
@@ -137,7 +138,8 @@ module Conf
         end
         alias :eql? :==
 
-
+        ## Used to set the command line options to 
+        #  the inner class file_manager & schema
         def set_options opts =  {}
             @file_manager.set_options(opts) if @file_manager
             @schema.set_options(opts) if @schema

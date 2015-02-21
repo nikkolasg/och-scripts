@@ -93,12 +93,13 @@ module Getter
             manager.start do
                 @current_source.folders.each do |folder|
                     files = @files[folder]
+                    puts "folder => #{folder}, Files => #{files}" if @opts[:v]
                     next if files.empty? 
                     # download into the TMP directory by folder
                     spath = File.join(path, @current_source.name.to_s,folder)
                     manager.download_files files,spath,v: true
                     move_files folder
-                    @current_source.schema.insert_files files
+                    @current_source.schema.insert_files files,folder
                     SignalHandler.check { Logger.<<(__FILE__,"WARNING","SIGINT Catched. Abort.")}
                 end
             end

@@ -106,7 +106,7 @@ module Database
 
         ## call to make an SQL Query
         def  query(sql_query)
-            (Logger.<<(__FILE__,"INFO","Reconnection to the db ...");connect_;) if Time.now - @last_query > RETRY_TIME
+            (Logger.<<(__FILE__,"DEBUG","Reconnection to the db ...");connect_;) if Time.now - @last_query > RETRY_TIME
             @last_query = Time.now
             raise "Database Not connected before querying .. !!" unless @con
             @con.query(sql_query)  
@@ -248,7 +248,7 @@ module Database
         id INT UNSIGNED NOT NULL AUTO_INCREMENT,
         file_id INT UNSIGNED NOT NULL,
             #{ records_fields.map { |k,v| "#{k} #{v}"}.join(',') },
-        INDEX (id),
+        PRIMARY KEY (id),
         INDEX (file_id)) "
             sql += "ENGINE=MERGE UNION=(#{opts[:union].join(',')}) INSERT_METHOD=NO"
             append_directories(sql)
@@ -307,7 +307,7 @@ module Database
             append_directories sql
 
         end
-        def self.for_monitor_source_backlog table_name,file_length = 40
+        def self.for_monitor_source_backlog table_name,file_length = 100
             sql = "CREATE TABLE IF NOT EXISTS #{table_name} (" +
                 " file_id INT UNSIGNED NOT NULL AUTO_INCREMENT, " +
                 " file_name VARCHAR(#{file_length}) UNIQUE, " +

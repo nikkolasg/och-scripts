@@ -47,6 +47,8 @@ module Database
                     @table_records_union = "RECORDS_#{source.name.upcase}_UNION"
                     @db = Database::Mysql.default
                     @opts = opts
+                    ## by default fetch all results
+                    @sql_fetch_all = !(@opts[:sql_no_fetch_all] || false)
                 end
 
                 def rename new_name
@@ -111,24 +113,63 @@ module Database
                 end
 
                 def reset type
-                    @db.connect do
-                        TableUtil::reset_table @table_files if type == :files
-                        if type == :records 
-                            sql = "SELECT distinct file_id from #{@table_records_union}";
-                            res = @db.query(sql)
-                            ids = []
-                            res.each_hash do |row|
-                                ids << row['file_id']
+                    if @opts[:min_date] || @opts[:max_date]
+                        reset_filter type
+                    else
+                        @db.connect do
+                            TableUtil::reset_table @table_files if type == :files
+                            if type == :records 
+                                sql = "SELECT distinct file_id from #{@table_records_union}";
+                                res = @db.query(sql)
+                                ids = []
+                                res.each_hash do |row|
+                                    ids << row['file_id']
+                                end
+                                TableUtil::reset_table @table_records if type == :records
+                                TableUtil::reset_table @table_records_union if type == :records
+                                sql = "UPDATE #{@table_files} SET processed = 0 WHERE file_id IN (#{RubyUtil::sqlize(ids,:no_parenthesis => true, :no_quotes => true)})"
+                                @db.query(sql) unless ids.empty?
                             end
-                            TableUtil::reset_table @table_records if type == :records
-                            TableUtil::reset_table @table_records_union if type == :records
-                            sql = "UPDATE #{@table_files} SET processed = 0 WHERE file_id IN (#{RubyUtil::sqlize(ids,:no_parenthesis => true, :no_quotes => true)})"
-                            @db.query(sql) unless ids.empty?
+                            Logger.<<(__FILE__,"INFO","Reset #{type} tables for #{@source.name}")
                         end
-                        Logger.<<(__FILE__,"INFO","Reset #{type} tables for #{@source.name}")
                     end
                 end
 
+                ## Reset a table with a time filter
+                def reset_filter type
+                    ## transform date into timestamp
+                    min_date = @opts[:min_date] || '02/01/1970' ## if no min date, delete 
+                    ## all before max_date then 
+                    min_date = Util.date(min_date,format: "%Y-%m-%d %H:%M:%S") 
+                    max_date = @opts[:max_date] || 'now'
+                    max_date = Util.date(max_date,format: "%Y-%m-%d %H:%M:%S")
+                    min_ts = Util.date(min_date,format: "%s")
+                    max_ts = Util.date(max_date,format: "%s")
+                    ## create & query sql§
+                    if type == :files
+                        sql = "DELETE FROM #{@table_files} WHERE timest BETWEEN " +
+                            " '#{min_date}' AND  '#{max_date}'"
+                        puts sql if @opts[:v]
+                        @db.connect { @db.query(sql) }
+                    elsif type == :records
+                        time_field = @source.flow.time_field_records
+                        sql_id = "SELECT distinct file_id from #{@table_records_union}" +
+                            " WHERE #{time_field} BETWEEN #{min_ts} AND #{max_ts}"
+                        @db.connect do
+                            puts sql_id if @opts[:v]
+                            res = @db.query(sql_id)
+                            ids = []
+                            ## take the ids that we will remove, so we can mark them as unprocesse
+                            res.each_hash { |row| ids << row['file_id'] }
+                            sql = "DELETE FROM %s WHERE #{@source.flow.time_field_records} " +
+                                "BETWEEN #{min_ts} AND #{max_ts}"
+                            sql_unproc = "UPDATE #{@table_files} SET processed = 0 WHERE file_id IN (#{RubyUtil::sqlize(ids,:no_parenthesis => true, :no_quotes => true)})"
+                            @db.query(sql % @table_records)
+                            @db.query(sql % @table_records_union)
+                            @db.query(sql_unproc) unless ids.empty?
+                        end
+                    end
+                end
                 ## select files unprocessed from the files table of this source
                 ## for the GET PART
                 def select_new_files
@@ -168,11 +209,12 @@ module Database
                 #KEY : Folder
                 #VALUE : List of CDR::FILE 
                 #for the GET PART
-                def insert_files files
+                def insert_files files, folder = nil
                     sql = ""
-                    if files.is_a?(Array)
-                        sql = "INSERT INTO #{@table_files} (file_name) VALUES "
-                        sql += files.map{|f|"('#{f.name}')"}.join(',')
+                    if files.is_a?(Array) && folder 
+                        sql = "INSERT INTO #{@table_files} (file_name,folder) VALUES "
+                        sql += files.map{|f|"('#{f.name}','#{folder}')"}.join(',')
+                        sql += " ON DUPLICATE KEY UPDATE file_name=file_name;"
                     elsif files.is_a?(Hash)
                         sql = "INSERT INTO #{@table_files} (folder,file_name) VALUES "
                         sql += files.map  do |fold,lfiles|
@@ -183,7 +225,7 @@ module Database
                         @db.query(sql)
                     end
                 end
-                
+
                 ## Update records in the files table to set them as processed
                 ## INSERT PART
                 def processed_files files_id
@@ -233,7 +275,7 @@ module Database
                     end
                 end
 
-                
+
 
                 ## Select all new records to be analzed for a monitor
                 # You can also specify a Proc which will be called with
@@ -246,27 +288,30 @@ module Database
                         "\nWHERE " + new_records_where(monitor) +
                         ";"
                     @db.connect do
+                        #require 'ruby-debug'
                         puts sql if @opts[:d]
                         ## special case for union where we might have
                         # hundreds of millions of record taht can't fit
                         # into memory
-                        if @opts[:union] 
+                        if @opts[:union] || !@sql_fetch_all
                             @db.con.query_with_result = false
                             @db.query(sql)
                             res = @db.con.use_result
                         else
                             res = @db.query(sql)
+                            ## sends back the number of rows to the caller 
+                            ## so it can update progression in real time
+                            opts[:proc].call(res.num_rows) if opts[:proc]
+                            Logger.<<(__FILE__,"INFO","Retrieved #{res.num_rows} records to be analyzed from #{@source.name} ...")
                         end
-                        ## sends back the number of rows to the caller 
-                        ## so it can update progression in real time
-                        opts[:proc].call(res.num_rows) if opts[:proc]
-                        Logger.<<(__FILE__,"INFO","Retrieved #{res.num_rows} records to be analyzed from #{@source.name} ...")
                         res.each_hash do |row|
                             yield RubyUtil::symbolize(row)
                         end
-                        if @opts[:union]
+
+                        #debugger if @opts[:d]
+                        if @opts[:union] || !@sql_fetch_all
                             res.free
-                            @db.query_with_result = true
+                            @db.con.query_with_result = true
                         end
                     end
                 end
