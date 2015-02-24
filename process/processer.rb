@@ -64,6 +64,7 @@ module Stats
                     ## if we want to seelect from union or not
                     h[:union] = true if @opts[:union]
                     ## return a row from the db to be analyzed
+                    Logger.<<(__FILE__,"INFO","Will analyze records from #{source.name}.")
                     source.schema.new_records(@current,h) do |row|
                         analyse_row row
                         counter += 1

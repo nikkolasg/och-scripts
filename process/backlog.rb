@@ -133,6 +133,14 @@ module Stats
                 return
             end
         end
+        saved = @source.schema.filter_files files.values.flatten(1)
+        files.each do |folder,files_|
+            ocount = files_.size
+            files_ -= saved
+            ncount = files_.size
+            files[folder] = files_
+            Logger.<<(__FILE__,"INFO","Filtering #{"(" + folder + ")" unless folder.empty?} : #{ocount} => #{ncount}")
+        end
         return files
     end
 
@@ -157,7 +165,7 @@ module Stats
         record[fields[time_field]]
     end
 
-    # organized by FILE => SWITCH hash
+    # organized by SWITCH => FILES hash
     def list_files
         files = {}
         @source.folders.each do |sw|

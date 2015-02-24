@@ -44,6 +44,7 @@ module Database
         def connect_
             @con = ::Mysql.new(@host,@login,@pass,@db) 
             @con.options(::Mysql::OPT_LOCAL_INFILE,true) ## no effects...
+            @last_query = Time.now
             return test_connection
         end
         def test_connection
@@ -63,6 +64,7 @@ module Database
         def connect
             safe_query do 
                 if @con ## if we already are connected
+                    check_time
                     if  block_given? 
                         yield 
                     else 
@@ -106,8 +108,8 @@ module Database
 
         ## call to make an SQL Query
         def  query(sql_query)
-            (Logger.<<(__FILE__,"DEBUG","Reconnection to the db ...");connect_;) if Time.now - @last_query > RETRY_TIME
             @last_query = Time.now
+            check_time
             raise "Database Not connected before querying .. !!" unless @con
             @con.query(sql_query)  
         end
@@ -120,7 +122,11 @@ module Database
             info
         end
 
-
+        def check_time
+            return unless Time.now - @last_query > RETRY_TIME
+            Logger.<<(__FILE__,"DEBUG","Reconnection to the db ...")
+            connect_
+        end
         ## Wrapper that handles exception
         ## and return the result for the query or true if no(result ^ exception)
         def safe_query()
