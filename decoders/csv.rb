@@ -1,3 +1,23 @@
+#
+# Copyright (C) 2014-2015 Nicolas GAILLY for Orange Communications SA, Switzerland
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
 module Decoder
 
     class CSVDecoder
@@ -45,6 +65,7 @@ module Decoder
                     @nb_line += 1
                     ## remove nils elements ...
                     record = line.chomp.split(@sep).map { |c| c ?  c : "" }
+                    ## Proc.new without block wraps the block given to the decode meth
                     break unless analyze(record,&block)               
                     SignalHandler.check { Logger.<<(__FILE__,"WARNING","Stopping decoding file #{file.full_path}"); file_.close }
                 end
@@ -83,18 +104,9 @@ module Decoder
             end
 
             @json[name][:values] << record
-            if block_given?
-                @json = @mapper.map_json(@json) if @mapper
-                @json = @filter.filter_json(@json) if @filter
-                yield @json
-                @json[name][:values].shift # delete the entry
-            end
+            
 
-            ## When decoding BIG files ( i.e. 800Mb, 1Gb etc)
-            # for either dumping or debugging pruporse you may want to 
-            # only parse a certain nb of lines
             Logger.<<(__FILE__,"DEBUG","Decoded #{@nb_line} lines for now ... ",inline: true) if @opts[:v] && @nb_line % 10000 == 0
-            return false if @opts[:nb_line] && @opts[:nb_line] < @nb_line
             return true
         end
         ## return the hash of fields

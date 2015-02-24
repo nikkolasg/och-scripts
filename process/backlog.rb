@@ -1,3 +1,23 @@
+#
+# Copyright (C) 2014-2015 Nicolas GAILLY for Orange Communications SA, Switzerland
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of
+# this software and associated documentation files (the "Software"), to deal in
+# the Software without restriction, including without limitation the rights to
+# use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+# the Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+# FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+# COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+# IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
 module Stats
 
 
@@ -68,19 +88,14 @@ module Stats
                         ## only download the file if needed
                         @manager.download_files [file],path unless file.downloaded?
                         file.unzip! if file.zip?
-                        ## decode one time only
-                        json ||= @source.decoder.decode file
                         str += "#{mon.name}:O "
-                        analyze_json json
-                        @current.schema.insert_stats @source
-                        @current.reset_stats
-                        @current.schema.backlog_processed_files @source,[file]
+                        analyze_file file
                         SignalHandler.check { Logger.<<(__FILE__,"WARNING","SIGNINT catched .Abort.");@db.close}
                     end
                     Logger.<<(__FILE__,"INFO",str+")")
                     count += 1
                     progression(count)
-                    json = nil
+                    @json = nil
                     SignalHandler.check { Logger.<<(__FILE__,"WARNING","SIGNINT catched .Abort.");@db.close}
 
                 end
@@ -91,8 +106,23 @@ module Stats
         end
     end
 
+    ## will deocde it in a decode-all manner or
+    # record by record
+    def analyze_file file
+        count = 0
+        @json ||= @source.decoder.decode file do |fields,record|
+            analyze_record fields,record
+            count += 1
+            Logger.<<(__FILE__,"INFO","Analyzed #{count} records from #{file.name}") if count % 10000 == 0
+        end
+        analyze_json if json
+        @current.schema.insert_stats @source
+        @current.reset_stats
+        @current.schema.backlog_processed_files @source,[file]
+    end
 
     def analyze_json json
+        count = 0
         json.each do |name,hash|
             fields = hash[:fields]
             values = hash[:values]
@@ -101,6 +131,7 @@ module Stats
                 analyze_record(fields,record) 
             end
         end
+        Logger.<<(__FILE__,"INFO","Analyzed #{count} records from from complete json") 
     end
 
     ## In the case of normal processing, the "folder" field is automatically
@@ -189,7 +220,7 @@ module Stats
             end
         end
     end
-    
+
     ## acutally retrieves the files in backlog + from the source schema ^FILE table
     ## i.e. the "normal" table
     def get_source_saved_files
