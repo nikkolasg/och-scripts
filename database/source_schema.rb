@@ -121,11 +121,14 @@ module Database
                     @db.connect do 
                         TableUtil::delete_table @table_files if type == :files
                         if type == :records
-                            TableUtil::delete_table @table_records 
-                            TableUtil::delete_table @table_records_union 
-                            TableUtil::search_tables(@table_records).each do |t|
-
-                                TableUtil::delete_table t
+                            if @opts[:min_date] || @opts[:max_date]
+                                delete_filter
+                            else
+                                TableUtil::delete_table @table_records,@db
+                                TableUtil::delete_table @table_records_union,@db 
+                                TableUtil::search_tables(@table_records).each do |t|
+                                    TableUtil::delete_table t
+                                end
                             end
                         end
                         Logger.<<(__FILE__,"INFO","Deleted #{type} tables for #{@source.name}")
@@ -156,6 +159,8 @@ module Database
                 end
 
                 ## Reset a table with a time filter
+                ### looks for RECORDS between min-date and maxdate
+                ## looks for FILES with timestamp between min-date & max-date
                 def reset_filter type
                     ## transform date into timestamp
                     min_date = @opts[:min_date] || '02/01/1970' ## if no min date, delete 
@@ -190,6 +195,39 @@ module Database
                         end
                     end
                 end
+
+                ## Will delete table according to some time criterions
+                ## Delete RECORDS_{TIME} if time between mindate & maxdate
+                ## change union table after.
+                ## no file delete ...
+                def delete_filter 
+                    ## First list all potentials tables
+                    tables =  TableUtil::search_tables(@table_records)
+                    tables.delete @table_records ## do not delete the current one !
+                    ## Then select the one with date in the interval
+                    min_date = Util.date(@opts[:min_date] || "02/01/1970")
+                    max_date = Util.date(@opts[:max_date] || "now")
+                    delete,keep = tables.partition do |name|
+                        name =~ /_(\d{8})$/
+                        date = $1
+                        val = date >= min_date && date <= max_date
+                        Logger.<<(__FILE__,"INFO","Will delete table #{name} from #{@source.name}") if val
+                        next val
+                    end
+                    ## need to include it in union statement 
+                    keep += [@table_records]
+                    ## change the UNION table to only keep the right one
+                    sql = "ALTER TABLE #{@table_records_union} " +
+                        " UNION=(#{keep.map{|x| "`#{x}`"}.join(',')})"
+                    @db.connect do 
+                        ## delete table
+                        delete.each { |name| TableUtil::delete_table(name,@db) }
+                        ## change union
+                        puts sql if @opts[:d]
+                        @db.query(sql)
+                    end
+                end
+
                 ## select files unprocessed from the files table of this source
                 ## for the GET PART
                 def select_new_files

@@ -125,6 +125,7 @@ module Parser
             fm = Conf::LocalFileManager.new
             ahash[:flow] = Proc.new do |flow|
                 flow.sources.each do |source|
+                    source.set_options opts
                     source.schema.delete :files
                     source.schema.delete :records
                     #fm.delete_source_files source
@@ -136,15 +137,18 @@ module Parser
             end
 
             ahash[:source] = Proc.new do |source|
+                source.set_options opts
                 source.schema.delete :files
                 source.schema.delete :records
                 #fm.delete_source_files source
             end
             ahash[:files] = Proc.new do |source|
+                source.set_options opts
                 source.schema.delete :files
                 #fm.delete_source_files source
             end
             ahash[:records] = Proc.new do |source|
+                source.set_options opts
                 source.schema.delete :records
                 source.schema.reset_files 
                 #fm.restore_source_files source

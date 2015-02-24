@@ -107,6 +107,7 @@ module Database
         end
 
         # return an array of table names  associated with this prefix 
+        #  and possibly with a date suffix
         def self.search_tables prefix_name,db = nil
             sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES " +
                 "  WHERE TABLE_NAME REGEXP '^#{prefix_name}(_[0-9]{8})?$';" 

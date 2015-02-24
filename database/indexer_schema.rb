@@ -79,13 +79,14 @@ module Database
 
                 def delete type = nil
                     super(type)
+                    ## not delete if we delete by date
+                    return if @opts[:min_date] || @opts[:max_date]
                     @db.connect 
                     @index_fields.each do |field|
                         sql = "DROP TABLE IF EXISTS #{table_name(field)} "
                         @db.query(sql)
                         Logger.<<(__FILE__,"INFO","Deleted aux table for #{field}...")
                     end
-
                 end
 
                 def reset type = nil

@@ -199,6 +199,21 @@ db.connect do
         break if i == 10
     end
     res.free
+    tname = "RECORDS_MSS_IN"
+    tnames = Database::TableUtil::search_tables(tname)
+    tnames.delete tname
+    puts "Table listed for tname are : #{tnames.inspect}"
+    min_date = Util.date("1 week ago")
+    max_date = Util.date("4 days ago")
+    del_table,keep_table = tnames.partition do |name|
+        name =~ /_(\d{8})$/
+        date = $1
+        val = date >= min_date && date <= max_date
+        puts "Comparing #{min_date}  < #{date}  < #{max_date} ==> #{val.to_s}"
+        next val
+    end
+    puts "After filtering we have to keep : #{keep_table} , to delete : #{del_table.inspect}"
+
 end
 
 def method_without_block 
