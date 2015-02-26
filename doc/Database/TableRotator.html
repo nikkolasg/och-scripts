@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: Database::TableRotator</title>
+
+  <link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#classes">Classes</a>
+          <a href="../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../database/rotator_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="database/rotator.rb">database/rotator.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link"><a href="../Object.html">Object</a></p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-get_new_name">::get_new_name</a></li>
+          
+          <li><a href="#method-c-get_timestamp">::get_timestamp</a></li>
+          
+          <li><a href="#method-c-move_and_delete">::move_and_delete</a></li>
+          
+          <li><a href="#method-c-rotate">::rotate</a></li>
+          
+          <li><a href="#method-c-source">::source</a></li>
+          
+          <li><a href="#method-c-to_date">::to_date</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../Conf.html">Conf</a></li>
+        
+          <li><a href="../Conf/ActionField.html">Conf::ActionField</a></li>
+        
+          <li><a href="../Conf/App.html">Conf::App</a></li>
+        
+          <li><a href="../Conf/Database.html">Conf::Database</a></li>
+        
+          <li><a href="../Conf/Directories.html">Conf::Directories</a></li>
+        
+          <li><a href="../Conf/FileManager.html">Conf::FileManager</a></li>
+        
+          <li><a href="../Conf/Filter.html">Conf::Filter</a></li>
+        
+          <li><a href="../Conf/Flow.html">Conf::Flow</a></li>
+        
+          <li><a href="../Conf/Host.html">Conf::Host</a></li>
+        
+          <li><a href="../Conf/ListField.html">Conf::ListField</a></li>
+        
+          <li><a href="../Conf/LocalFileManager.html">Conf::LocalFileManager</a></li>
+        
+          <li><a href="../Conf/Logging.html">Conf::Logging</a></li>
+        
+          <li><a href="../Conf/MeanField.html">Conf::MeanField</a></li>
+        
+          <li><a href="../Conf/Monitor.html">Conf::Monitor</a></li>
+        
+          <li><a href="../Conf/NullFilter.html">Conf::NullFilter</a></li>
+        
+          <li><a href="../Conf/SftpFileManager.html">Conf::SftpFileManager</a></li>
+        
+          <li><a href="../Conf/Source.html">Conf::Source</a></li>
+        
+          <li><a href="../Conf/Stats.html">Conf::Stats</a></li>
+        
+          <li><a href="../Conf/SumField.html">Conf::SumField</a></li>
+        
+          <li><a href="../Database.html">Database</a></li>
+        
+          <li><a href="../Database/GenericTable.html">Database::GenericTable</a></li>
+        
+          <li><a href="../Database/Mysql.html">Database::Mysql</a></li>
+        
+          <li><a href="../Database/Mysql/Result.html">Database::Mysql::Result</a></li>
+        
+          <li><a href="../Database/Schema.html">Database::Schema</a></li>
+        
+          <li><a href="../Database/Schema/Monitor.html">Database::Schema::Monitor</a></li>
+        
+          <li><a href="../Database/Schema/Monitor/GenericSchema.html">Database::Schema::Monitor::GenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Monitor/NewGenericSchema.html">Database::Schema::Monitor::NewGenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source.html">Database::Schema::Source</a></li>
+        
+          <li><a href="../Database/Schema/Source/FileCountSchema.html">Database::Schema::Source::FileCountSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/GenericSchema.html">Database::Schema::Source::GenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/IndexerSchema.html">Database::Schema::Source::IndexerSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/ProceraSchema.html">Database::Schema::Source::ProceraSchema</a></li>
+        
+          <li><a href="../Database/SqlGenerator.html">Database::SqlGenerator</a></li>
+        
+          <li><a href="../Database/TableRotator.html">Database::TableRotator</a></li>
+        
+          <li><a href="../Database/TableUtil.html">Database::TableUtil</a></li>
+        
+          <li><a href="../Mapper.html">Mapper</a></li>
+        
+          <li><a href="../Mapper/GenericMapper.html">Mapper::GenericMapper</a></li>
+        
+          <li><a href="../Mapper/LogicaMapper.html">Mapper::LogicaMapper</a></li>
+        
+          <li><a href="../Mapper/MmsOutMapper.html">Mapper::MmsOutMapper</a></li>
+        
+          <li><a href="../Mapper/Nkm15Mapper.html">Mapper::Nkm15Mapper</a></li>
+        
+          <li><a href="../Mapper/PGWMapper.html">Mapper::PGWMapper</a></li>
+        
+          <li><a href="../Mapper/ProceraMapper.html">Mapper::ProceraMapper</a></li>
+        
+          <li><a href="../Mapper/SmsMapper.html">Mapper::SmsMapper</a></li>
+        
+          <li><a href="../Mapper/TAPMapper.html">Mapper::TAPMapper</a></li>
+        
+          <li><a href="../Mapper/TalMapper.html">Mapper::TalMapper</a></li>
+        
+          <li><a href="../Mapper/XDRMapper.html">Mapper::XDRMapper</a></li>
+        
+          <li><a href="../Decoder.html">Decoder</a></li>
+        
+          <li><a href="../Decoder/BigCSVDecoder.html">Decoder::BigCSVDecoder</a></li>
+        
+          <li><a href="../Decoder/CSVDecoder.html">Decoder::CSVDecoder</a></li>
+        
+          <li><a href="../Decoder/CSVFields.html">Decoder::CSVFields</a></li>
+        
+          <li><a href="../Decoder/LogicaDecoder.html">Decoder::LogicaDecoder</a></li>
+        
+          <li><a href="../Decoder/NKM15Decoder.html">Decoder::NKM15Decoder</a></li>
+        
+          <li><a href="../Decoder/NullDecoder.html">Decoder::NullDecoder</a></li>
+        
+          <li><a href="../Decoder/PGWDecoder.html">Decoder::PGWDecoder</a></li>
+        
+          <li><a href="../Decoder/TALDecoder.html">Decoder::TALDecoder</a></li>
+        
+          <li><a href="../Decoder/XDRDecoder.html">Decoder::XDRDecoder</a></li>
+        
+          <li><a href="../Inserter.html">Inserter</a></li>
+        
+          <li><a href="../Inserter/BigSourceInserter.html">Inserter::BigSourceInserter</a></li>
+        
+          <li><a href="../Inserter/GenericSourceInserter.html">Inserter::GenericSourceInserter</a></li>
+        
+          <li><a href="../Inserter/NullSourceInserter.html">Inserter::NullSourceInserter</a></li>
+        
+          <li><a href="../Inserter/PGWInserter.html">Inserter::PGWInserter</a></li>
+        
+          <li><a href="../Parser.html">Parser</a></li>
+        
+          <li><a href="../Parser/CheckParser.html">Parser::CheckParser</a></li>
+        
+          <li><a href="../Parser/DatabaseParser.html">Parser::DatabaseParser</a></li>
+        
+          <li><a href="../Parser/DirectoriesParser.html">Parser::DirectoriesParser</a></li>
+        
+          <li><a href="../Parser/OperationParser.html">Parser::OperationParser</a></li>
+        
+          <li><a href="../Getter.html">Getter</a></li>
+        
+          <li><a href="../Getter/FileCountGetter.html">Getter::FileCountGetter</a></li>
+        
+          <li><a href="../Getter/GenericSourceGetter.html">Getter::GenericSourceGetter</a></li>
+        
+          <li><a href="../Getter/NullSourceGetter.html">Getter::NullSourceGetter</a></li>
+        
+          <li><a href="../Fetchers.html">Fetchers</a></li>
+        
+          <li><a href="../Fetchers/LocalFileFetcher.html">Fetchers::LocalFileFetcher</a></li>
+        
+          <li><a href="../Fetchers/SftpFileFetcher.html">Fetchers::SftpFileFetcher</a></li>
+        
+          <li><a href="../Stats.html">Stats</a></li>
+        
+          <li><a href="../Stats/BacklogStats.html">Stats::BacklogStats</a></li>
+        
+          <li><a href="../Stats/GenericStats.html">Stats::GenericStats</a></li>
+        
+          <li><a href="../CDR.html">CDR</a></li>
+        
+          <li><a href="../CDR/File.html">CDR::File</a></li>
+        
+          <li><a href="../IncludeModule.html">IncludeModule</a></li>
+        
+          <li><a href="../IncludeModule/ModuleClass.html">IncludeModule::ModuleClass</a></li>
+        
+          <li><a href="../Collector.html">Collector</a></li>
+        
+          <li><a href="../Debug.html">Debug</a></li>
+        
+          <li><a href="../EMMConfig.html">EMMConfig</a></li>
+        
+          <li><a href="../Fixnum.html">Fixnum</a></li>
+        
+          <li><a href="../Lazy.html">Lazy</a></li>
+        
+          <li><a href="../LazyLispyEnumerable.html">LazyLispyEnumerable</a></li>
+        
+          <li><a href="../LispyEnumerable.html">LispyEnumerable</a></li>
+        
+          <li><a href="../Logger.html">Logger</a></li>
+        
+          <li><a href="../MysqlDumper.html">MysqlDumper</a></li>
+        
+          <li><a href="../Object.html">Object</a></li>
+        
+          <li><a href="../RubyUtil.html">RubyUtil</a></li>
+        
+          <li><a href="../SignalHandler.html">SignalHandler</a></li>
+        
+          <li><a href="../SuperTest.html">SuperTest</a></li>
+        
+          <li><a href="../T1.html">T1</a></li>
+        
+          <li><a href="../T2.html">T2</a></li>
+        
+          <li><a href="../Test.html">Test</a></li>
+        
+          <li><a href="../Test2.html">Test2</a></li>
+        
+          <li><a href="../TestParser.html">TestParser</a></li>
+        
+          <li><a href="../Util.html">Util</a></li>
+        
+          <li><a href="../ValueModule.html">ValueModule</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Database::TableRotator</h1>
+
+    <div id="description" class="description">
+      
+<p>little hack to not have one more useless indentation  because defining only
+class method (and dont want to put self. everywhere !)</p>
+
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+      <!-- Constants -->
+      <div id="constants-list" class="section">
+        <h3 class="section-header">Constants</h3>
+        <dl>
+        
+          <dt><a name="YESTERDAY">YESTERDAY</a></dt>
+          
+          <dd class="description"></dd>
+          
+        
+        </dl>
+      </div>
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="rotate-method" class="method-detail ">
+          <a name="method-c-rotate"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">rotate</span><span
+              class="method-args">(type,subject, opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>do the actual rotation</p>
+            
+
+            
+            <div class="method-source-code" id="rotate-source">
+<pre>
+<span class="ruby-comment"># File database/rotator.rb, line 39</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">rotate</span> <span class="ruby-identifier">type</span>,<span class="ruby-identifier">subject</span>, <span class="ruby-identifier">opts</span> = {}
+    <span class="ruby-keyword">unless</span> [<span class="ruby-value">:source</span>,<span class="ruby-value">:monitor</span>].<span class="ruby-identifier">include?</span> <span class="ruby-identifier">type</span>.<span class="ruby-identifier">to_sym</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;ERROR&quot;</span>,<span class="ruby-node">&quot;TableRotator rotation subject unknown #{subject} :(. Abort.&quot;</span>)
+        <span class="ruby-identifier">abort</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">type</span>,<span class="ruby-identifier">subject</span>,<span class="ruby-identifier">opts</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- rotate-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- rotate-method -->
+
+      
+        <div id="source-method" class="method-detail ">
+          <a name="method-c-source"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">source</span><span
+              class="method-args">(source,opts)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>sql = <a
+href="SqlGenerator.html#method-c-for_records">SqlGenerator.for_records</a>(schema.table_records,
+source.records_fields)</p>
+
+<pre>reCREATE the MERGE</pre>
+
+<p><a href="TableUtil.html#method-c-delete_table">TableUtil::delete_table</a>
+schema.table_records_union tables = <a
+href="TableUtil.html#method-c-search_tables">TableUtil::search_tables</a>
+table_name sql_ = <a
+href="SqlGenerator.html#method-c-for_records_union">SqlGenerator.for_records_union</a>(schema.table_records_union,
+source.records_fields, union: tables ) db = <a
+href="Mysql.html#method-c-default">Mysql.default</a> db.connect do
+db.query(sql);  db.query(sql_)  end end</p>
+            
+
+            
+            <div class="method-source-code" id="source-source">
+<pre>
+<span class="ruby-comment"># File database/rotator.rb, line 78</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">source</span> <span class="ruby-identifier">source</span>,<span class="ruby-identifier">opts</span>
+    <span class="ruby-identifier">schema</span> = <span class="ruby-identifier">source</span>.<span class="ruby-identifier">schema</span>
+    <span class="ruby-identifier">yesterday</span> = <span class="ruby-node">&quot;#{Util::date(TableRotator::YESTERDAY)}&quot;</span>
+    <span class="ruby-identifier">table_name</span> = <span class="ruby-identifier">schema</span>.<span class="ruby-identifier">table_records</span>
+    <span class="ruby-identifier">new_name</span> = <span class="ruby-identifier">table_name</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">yesterday</span>
+    <span class="ruby-identifier">db</span> = <span class="ruby-constant">Mysql</span>.<span class="ruby-identifier">default</span>
+    <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-comment">## take the cschema of the table</span>
+        <span class="ruby-identifier">table_create_stmt</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-node">&quot;show create table #{table_name}&quot;</span>).<span class="ruby-identifier">fetch_row</span>[<span class="ruby-value">1</span>]
+        <span class="ruby-identifier">union_stmt</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-node">&quot;show create table #{schema.table_records_union}&quot;</span>).<span class="ruby-identifier">fetch_row</span>[<span class="ruby-value">1</span>]
+        <span class="ruby-comment">## rename the old table</span>
+        <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">rename_table</span> <span class="ruby-identifier">table_name</span>,<span class="ruby-identifier">new_name</span>,<span class="ruby-identifier">db</span>
+        <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">compress_table</span> <span class="ruby-identifier">new_name</span>,<span class="ruby-identifier">db</span>
+        <span class="ruby-comment">## re create the table</span>
+        <span class="ruby-identifier">db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">table_create_stmt</span>)
+        
+        <span class="ruby-comment">## re create unions</span>
+        <span class="ruby-comment">### tables_union will already contains the new table we have created 2 lines above</span>
+        <span class="ruby-identifier">tables_union</span> = <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">search_tables</span> <span class="ruby-identifier">table_name</span>,<span class="ruby-identifier">db</span>
+        <span class="ruby-comment">##update union statement</span>
+        <span class="ruby-identifier">union_stmt</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp">/UNION=\(.*\)/</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span> <span class="ruby-string">&quot;UNION=(&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tables_union</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">nn</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;`#{nn}`&quot;</span>}.<span class="ruby-identifier">join</span>(<span class="ruby-string">','</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;)&quot;</span> }
+        <span class="ruby-comment">##create the union</span>
+        <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">delete_table</span> <span class="ruby-identifier">schema</span>.<span class="ruby-identifier">table_records_union</span>
+        <span class="ruby-identifier">db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">union_stmt</span>)
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- source-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- source-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="private-class-method-details" class="method-section section">
+        <h3 class="section-header">Private Class Methods</h3>
+
+      
+        <div id="get_new_name-method" class="method-detail ">
+          <a name="method-c-get_new_name"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">get_new_name</span><span
+              class="method-args">(table,timestamp)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>return the new name formed based on the original name + ts</p>
+            
+
+            
+            <div class="method-source-code" id="get_new_name-source">
+<pre>
+<span class="ruby-comment"># File database/rotator.rb, line 108</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_new_name</span> <span class="ruby-identifier">table</span>,<span class="ruby-identifier">timestamp</span>
+    <span class="ruby-identifier">table</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">to_date</span>(<span class="ruby-identifier">timestamp</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- get_new_name-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- get_new_name-method -->
+
+      
+        <div id="get_timestamp-method" class="method-detail ">
+          <a name="method-c-get_timestamp"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">get_timestamp</span><span
+              class="method-args">(opts)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="get_timestamp-source">
+<pre>
+<span class="ruby-comment"># File database/rotator.rb, line 125</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_timestamp</span> <span class="ruby-identifier">opts</span>
+    <span class="ruby-identifier">year</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:year</span>]
+    <span class="ruby-identifier">month</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:month</span>]
+    <span class="ruby-identifier">day</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:day</span>]
+    <span class="ruby-constant">Time</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">year</span>,<span class="ruby-identifier">month</span>,<span class="ruby-identifier">day</span>).<span class="ruby-identifier">utc</span>.<span class="ruby-identifier">to_i</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- get_timestamp-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- get_timestamp-method -->
+
+      
+        <div id="move_and_delete-method" class="method-detail ">
+          <a name="method-c-move_and_delete"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">move_and_delete</span><span
+              class="method-args">(oldt,newt,timestamp)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>make the transfer of the old and new table</p>
+            
+
+            
+            <div class="method-source-code" id="move_and_delete-source">
+<pre>
+<span class="ruby-comment"># File database/rotator.rb, line 113</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">move_and_delete</span> <span class="ruby-identifier">oldt</span>,<span class="ruby-identifier">newt</span>,<span class="ruby-identifier">timestamp</span>
+    <span class="ruby-identifier">ins</span> = <span class="ruby-node">&quot;INSERT INTO #{newt} SELECT * FROM #{oldt} &quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-node">&quot; WHERE #{Conf::database.timestamp} &lt; #{timestamp}&quot;</span>;
+    <span class="ruby-identifier">del</span> = <span class="ruby-node">&quot;DELETE FROM #{oldt} WHERE &quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-node">&quot; #{App.database.timestamp} &lt; #{timestamp}&quot;</span>
+    <span class="ruby-identifier">db</span> = <span class="ruby-constant">Mysql</span>.<span class="ruby-identifier">default</span>
+    <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">ins</span>)
+        <span class="ruby-identifier">db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">del</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">compress_table</span> <span class="ruby-identifier">newt</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- move_and_delete-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- move_and_delete-method -->
+
+      
+        <div id="to_date-method" class="method-detail ">
+          <a name="method-c-to_date"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">to_date</span><span
+              class="method-args">(timestamp)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="to_date-source">
+<pre>
+<span class="ruby-comment"># File database/rotator.rb, line 131</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_date</span> <span class="ruby-identifier">timestamp</span>
+    <span class="ruby-constant">Time</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">timestamp</span>).<span class="ruby-identifier">strftime</span>(<span class="ruby-constant">Util</span><span class="ruby-operator">::</span><span class="ruby-constant">DATE_FORMAT</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- to_date-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- to_date-method -->
+
+      
+      </div><!-- private-class-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

@@ -1,0 +1,1351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: Database::Schema::Source::GenericSchema</title>
+
+  <link rel="stylesheet" href="../../../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../../../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../../../index.html">Home</a>
+          <a href="../../../index.html#classes">Classes</a>
+          <a href="../../../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../../../database/source_schema_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="database/source_schema.rb">database/source_schema.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link"><a href="../../../Object.html">Object</a></p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-i-create">#create</a></li>
+          
+          <li><a href="#method-i-delete">#delete</a></li>
+          
+          <li><a href="#method-i-delete_filter">#delete_filter</a></li>
+          
+          <li><a href="#method-i-delete_records_from_fileid">#delete_records_from_fileid</a></li>
+          
+          <li><a href="#method-i-filter_files">#filter_files</a></li>
+          
+          <li><a href="#method-i-insert_files">#insert_files</a></li>
+          
+          <li><a href="#method-i-insert_records">#insert_records</a></li>
+          
+          <li><a href="#method-i-new_records">#new_records</a></li>
+          
+          <li><a href="#method-i-new_records_from">#new_records_from</a></li>
+          
+          <li><a href="#method-i-new_records_select">#new_records_select</a></li>
+          
+          <li><a href="#method-i-new_records_where">#new_records_where</a></li>
+          
+          <li><a href="#method-i-processed_files">#processed_files</a></li>
+          
+          <li><a href="#method-i-rename">#rename</a></li>
+          
+          <li><a href="#method-i-reset">#reset</a></li>
+          
+          <li><a href="#method-i-reset_files">#reset_files</a></li>
+          
+          <li><a href="#method-i-reset_filter">#reset_filter</a></li>
+          
+          <li><a href="#method-i-select_new_files">#select_new_files</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+      <!-- Included Modules -->
+      <div id="includes-section" class="section">
+        <h3 class="section-header">Included Modules</h3>
+        <ul class="link-list">
+        
+        
+          <li><a class="include" href="../../Schema.html">Database::Schema</a></li>
+        
+        
+        </ul>
+      </div>
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../../../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../../../Conf.html">Conf</a></li>
+        
+          <li><a href="../../../Conf/ActionField.html">Conf::ActionField</a></li>
+        
+          <li><a href="../../../Conf/App.html">Conf::App</a></li>
+        
+          <li><a href="../../../Conf/Database.html">Conf::Database</a></li>
+        
+          <li><a href="../../../Conf/Directories.html">Conf::Directories</a></li>
+        
+          <li><a href="../../../Conf/FileManager.html">Conf::FileManager</a></li>
+        
+          <li><a href="../../../Conf/Filter.html">Conf::Filter</a></li>
+        
+          <li><a href="../../../Conf/Flow.html">Conf::Flow</a></li>
+        
+          <li><a href="../../../Conf/Host.html">Conf::Host</a></li>
+        
+          <li><a href="../../../Conf/ListField.html">Conf::ListField</a></li>
+        
+          <li><a href="../../../Conf/LocalFileManager.html">Conf::LocalFileManager</a></li>
+        
+          <li><a href="../../../Conf/Logging.html">Conf::Logging</a></li>
+        
+          <li><a href="../../../Conf/MeanField.html">Conf::MeanField</a></li>
+        
+          <li><a href="../../../Conf/Monitor.html">Conf::Monitor</a></li>
+        
+          <li><a href="../../../Conf/NullFilter.html">Conf::NullFilter</a></li>
+        
+          <li><a href="../../../Conf/SftpFileManager.html">Conf::SftpFileManager</a></li>
+        
+          <li><a href="../../../Conf/Source.html">Conf::Source</a></li>
+        
+          <li><a href="../../../Conf/Stats.html">Conf::Stats</a></li>
+        
+          <li><a href="../../../Conf/SumField.html">Conf::SumField</a></li>
+        
+          <li><a href="../../../Database.html">Database</a></li>
+        
+          <li><a href="../../../Database/GenericTable.html">Database::GenericTable</a></li>
+        
+          <li><a href="../../../Database/Mysql.html">Database::Mysql</a></li>
+        
+          <li><a href="../../../Database/Mysql/Result.html">Database::Mysql::Result</a></li>
+        
+          <li><a href="../../../Database/Schema.html">Database::Schema</a></li>
+        
+          <li><a href="../../../Database/Schema/Monitor.html">Database::Schema::Monitor</a></li>
+        
+          <li><a href="../../../Database/Schema/Monitor/GenericSchema.html">Database::Schema::Monitor::GenericSchema</a></li>
+        
+          <li><a href="../../../Database/Schema/Monitor/NewGenericSchema.html">Database::Schema::Monitor::NewGenericSchema</a></li>
+        
+          <li><a href="../../../Database/Schema/Source.html">Database::Schema::Source</a></li>
+        
+          <li><a href="../../../Database/Schema/Source/FileCountSchema.html">Database::Schema::Source::FileCountSchema</a></li>
+        
+          <li><a href="../../../Database/Schema/Source/GenericSchema.html">Database::Schema::Source::GenericSchema</a></li>
+        
+          <li><a href="../../../Database/Schema/Source/IndexerSchema.html">Database::Schema::Source::IndexerSchema</a></li>
+        
+          <li><a href="../../../Database/Schema/Source/ProceraSchema.html">Database::Schema::Source::ProceraSchema</a></li>
+        
+          <li><a href="../../../Database/SqlGenerator.html">Database::SqlGenerator</a></li>
+        
+          <li><a href="../../../Database/TableRotator.html">Database::TableRotator</a></li>
+        
+          <li><a href="../../../Database/TableUtil.html">Database::TableUtil</a></li>
+        
+          <li><a href="../../../Mapper.html">Mapper</a></li>
+        
+          <li><a href="../../../Mapper/GenericMapper.html">Mapper::GenericMapper</a></li>
+        
+          <li><a href="../../../Mapper/LogicaMapper.html">Mapper::LogicaMapper</a></li>
+        
+          <li><a href="../../../Mapper/MmsOutMapper.html">Mapper::MmsOutMapper</a></li>
+        
+          <li><a href="../../../Mapper/Nkm15Mapper.html">Mapper::Nkm15Mapper</a></li>
+        
+          <li><a href="../../../Mapper/PGWMapper.html">Mapper::PGWMapper</a></li>
+        
+          <li><a href="../../../Mapper/ProceraMapper.html">Mapper::ProceraMapper</a></li>
+        
+          <li><a href="../../../Mapper/SmsMapper.html">Mapper::SmsMapper</a></li>
+        
+          <li><a href="../../../Mapper/TAPMapper.html">Mapper::TAPMapper</a></li>
+        
+          <li><a href="../../../Mapper/TalMapper.html">Mapper::TalMapper</a></li>
+        
+          <li><a href="../../../Mapper/XDRMapper.html">Mapper::XDRMapper</a></li>
+        
+          <li><a href="../../../Decoder.html">Decoder</a></li>
+        
+          <li><a href="../../../Decoder/BigCSVDecoder.html">Decoder::BigCSVDecoder</a></li>
+        
+          <li><a href="../../../Decoder/CSVDecoder.html">Decoder::CSVDecoder</a></li>
+        
+          <li><a href="../../../Decoder/CSVFields.html">Decoder::CSVFields</a></li>
+        
+          <li><a href="../../../Decoder/LogicaDecoder.html">Decoder::LogicaDecoder</a></li>
+        
+          <li><a href="../../../Decoder/NKM15Decoder.html">Decoder::NKM15Decoder</a></li>
+        
+          <li><a href="../../../Decoder/NullDecoder.html">Decoder::NullDecoder</a></li>
+        
+          <li><a href="../../../Decoder/PGWDecoder.html">Decoder::PGWDecoder</a></li>
+        
+          <li><a href="../../../Decoder/TALDecoder.html">Decoder::TALDecoder</a></li>
+        
+          <li><a href="../../../Decoder/XDRDecoder.html">Decoder::XDRDecoder</a></li>
+        
+          <li><a href="../../../Inserter.html">Inserter</a></li>
+        
+          <li><a href="../../../Inserter/BigSourceInserter.html">Inserter::BigSourceInserter</a></li>
+        
+          <li><a href="../../../Inserter/GenericSourceInserter.html">Inserter::GenericSourceInserter</a></li>
+        
+          <li><a href="../../../Inserter/NullSourceInserter.html">Inserter::NullSourceInserter</a></li>
+        
+          <li><a href="../../../Inserter/PGWInserter.html">Inserter::PGWInserter</a></li>
+        
+          <li><a href="../../../Parser.html">Parser</a></li>
+        
+          <li><a href="../../../Parser/CheckParser.html">Parser::CheckParser</a></li>
+        
+          <li><a href="../../../Parser/DatabaseParser.html">Parser::DatabaseParser</a></li>
+        
+          <li><a href="../../../Parser/DirectoriesParser.html">Parser::DirectoriesParser</a></li>
+        
+          <li><a href="../../../Parser/OperationParser.html">Parser::OperationParser</a></li>
+        
+          <li><a href="../../../Getter.html">Getter</a></li>
+        
+          <li><a href="../../../Getter/FileCountGetter.html">Getter::FileCountGetter</a></li>
+        
+          <li><a href="../../../Getter/GenericSourceGetter.html">Getter::GenericSourceGetter</a></li>
+        
+          <li><a href="../../../Getter/NullSourceGetter.html">Getter::NullSourceGetter</a></li>
+        
+          <li><a href="../../../Fetchers.html">Fetchers</a></li>
+        
+          <li><a href="../../../Fetchers/LocalFileFetcher.html">Fetchers::LocalFileFetcher</a></li>
+        
+          <li><a href="../../../Fetchers/SftpFileFetcher.html">Fetchers::SftpFileFetcher</a></li>
+        
+          <li><a href="../../../Stats.html">Stats</a></li>
+        
+          <li><a href="../../../Stats/BacklogStats.html">Stats::BacklogStats</a></li>
+        
+          <li><a href="../../../Stats/GenericStats.html">Stats::GenericStats</a></li>
+        
+          <li><a href="../../../CDR.html">CDR</a></li>
+        
+          <li><a href="../../../CDR/File.html">CDR::File</a></li>
+        
+          <li><a href="../../../IncludeModule.html">IncludeModule</a></li>
+        
+          <li><a href="../../../IncludeModule/ModuleClass.html">IncludeModule::ModuleClass</a></li>
+        
+          <li><a href="../../../Collector.html">Collector</a></li>
+        
+          <li><a href="../../../Debug.html">Debug</a></li>
+        
+          <li><a href="../../../EMMConfig.html">EMMConfig</a></li>
+        
+          <li><a href="../../../Fixnum.html">Fixnum</a></li>
+        
+          <li><a href="../../../Lazy.html">Lazy</a></li>
+        
+          <li><a href="../../../LazyLispyEnumerable.html">LazyLispyEnumerable</a></li>
+        
+          <li><a href="../../../LispyEnumerable.html">LispyEnumerable</a></li>
+        
+          <li><a href="../../../Logger.html">Logger</a></li>
+        
+          <li><a href="../../../MysqlDumper.html">MysqlDumper</a></li>
+        
+          <li><a href="../../../Object.html">Object</a></li>
+        
+          <li><a href="../../../RubyUtil.html">RubyUtil</a></li>
+        
+          <li><a href="../../../SignalHandler.html">SignalHandler</a></li>
+        
+          <li><a href="../../../SuperTest.html">SuperTest</a></li>
+        
+          <li><a href="../../../T1.html">T1</a></li>
+        
+          <li><a href="../../../T2.html">T2</a></li>
+        
+          <li><a href="../../../Test.html">Test</a></li>
+        
+          <li><a href="../../../Test2.html">Test2</a></li>
+        
+          <li><a href="../../../TestParser.html">TestParser</a></li>
+        
+          <li><a href="../../../Util.html">Util</a></li>
+        
+          <li><a href="../../../ValueModule.html">ValueModule</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Database::Schema::Source::GenericSchema</h1>
+
+    <div id="description" class="description">
+      
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+      <!-- Attributes -->
+      <div id="attribute-method-details" class="method-section section">
+        <h3 class="section-header">Attributes</h3>
+
+        
+        <div id="opts-attribute-method" class="method-detail">
+          <a name="opts"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">opts</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="table_files-attribute-method" class="method-detail">
+          <a name="table_files"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">table_files</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="table_records-attribute-method" class="method-detail">
+          <a name="table_records"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">table_records</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="table_records_union-attribute-method" class="method-detail">
+          <a name="table_records_union"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">table_records_union</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+      </div><!-- attribute-method-details -->
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(source, opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">source</span>, <span class="ruby-identifier">opts</span> = {}
+    <span class="ruby-ivar">@source</span> = <span class="ruby-identifier">source</span>
+    <span class="ruby-ivar">@table_files</span> = <span class="ruby-node">&quot;FILES_#{source.name.upcase}&quot;</span>
+    <span class="ruby-ivar">@table_records</span> = <span class="ruby-node">&quot;RECORDS_#{source.name.upcase}&quot;</span>
+    <span class="ruby-ivar">@table_records_union</span> = <span class="ruby-node">&quot;RECORDS_#{source.name.upcase}_UNION&quot;</span>
+    <span class="ruby-ivar">@db</span> = <span class="ruby-constant">Database</span><span class="ruby-operator">::</span><span class="ruby-constant">Mysql</span>.<span class="ruby-identifier">default</span>
+    <span class="ruby-ivar">@opts</span> = <span class="ruby-identifier">opts</span>
+    <span class="ruby-comment">## by default fetch all results</span>
+    <span class="ruby-ivar">@sql_fetch_all</span> = <span class="ruby-operator">!</span>(<span class="ruby-ivar">@opts</span>[<span class="ruby-value">:sql_no_fetch_all</span>] <span class="ruby-operator">||</span> <span class="ruby-keyword">false</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="create-method" class="method-detail ">
+          <a name="method-i-create"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">create</span><span
+              class="method-args">(type)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>create a table of the specified type</pre>
+
+<p>type can be :files, or :records</p>
+            
+
+            
+            <div class="method-source-code" id="create-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 107</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span> <span class="ruby-identifier">type</span>
+    <span class="ruby-identifier">sql</span> = <span class="ruby-string">&quot;&quot;</span>
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-identifier">sql</span> = <span class="ruby-constant">SqlGenerator</span>.<span class="ruby-identifier">for_files</span>(<span class="ruby-ivar">@table_files</span>,<span class="ruby-ivar">@source</span>.<span class="ruby-identifier">file_length</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:files</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:records</span>
+            <span class="ruby-identifier">sql</span> = <span class="ruby-constant">SqlGenerator</span>.<span class="ruby-identifier">for_records</span>(<span class="ruby-ivar">@table_records</span>,<span class="ruby-ivar">@source</span>.<span class="ruby-identifier">records_fields</span>) 
+            <span class="ruby-identifier">puts</span> <span class="ruby-identifier">sql</span>
+            <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+            <span class="ruby-identifier">sql</span> = <span class="ruby-constant">SqlGenerator</span>.<span class="ruby-identifier">for_records_union</span>(<span class="ruby-ivar">@table_records_union</span>,<span class="ruby-ivar">@source</span>.<span class="ruby-identifier">records_fields</span>, <span class="ruby-identifier">union</span><span class="ruby-operator">:</span> <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">search_tables</span>(<span class="ruby-ivar">@table_records</span>))
+            <span class="ruby-identifier">puts</span> <span class="ruby-identifier">sql</span> 
+            <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Setup #{type} tables for #{@source.name}&quot;</span>)
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- create-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- create-method -->
+
+      
+        <div id="delete-method" class="method-detail ">
+          <a name="method-i-delete"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">delete</span><span
+              class="method-args">(type)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="delete-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 123</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span> <span class="ruby-identifier">type</span>
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">delete_table</span> <span class="ruby-ivar">@table_files</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:files</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:records</span>
+            <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:min_date</span>] <span class="ruby-operator">||</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:max_date</span>]
+                <span class="ruby-identifier">delete_filter</span>
+            <span class="ruby-keyword">else</span>
+                <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">delete_table</span> <span class="ruby-ivar">@table_records</span>,<span class="ruby-ivar">@db</span>
+                <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">delete_table</span> <span class="ruby-ivar">@table_records_union</span>,<span class="ruby-ivar">@db</span> 
+                <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">search_tables</span>(<span class="ruby-ivar">@table_records</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+                    <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">delete_table</span> <span class="ruby-identifier">t</span>
+                <span class="ruby-keyword">end</span>
+            <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Deleted #{type} tables for #{@source.name}&quot;</span>)
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- delete-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- delete-method -->
+
+      
+        <div id="delete_filter-method" class="method-detail ">
+          <a name="method-i-delete_filter"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">delete_filter</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Will delete table according to some time criterions Delete RECORDS_{TIME}
+if time between mindate &amp; maxdate change union table after. no file
+delete …</p>
+            
+
+            
+            <div class="method-source-code" id="delete_filter-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 206</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete_filter</span> 
+    <span class="ruby-comment">## First list all potentials tables</span>
+    <span class="ruby-identifier">tables</span> =  <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">search_tables</span>(<span class="ruby-ivar">@table_records</span>)
+    <span class="ruby-identifier">tables</span>.<span class="ruby-identifier">delete</span> <span class="ruby-ivar">@table_records</span> <span class="ruby-comment">## do not delete the current one !</span>
+    <span class="ruby-comment">## Then select the one with date in the interval</span>
+    <span class="ruby-identifier">min_date</span> = <span class="ruby-constant">Util</span>.<span class="ruby-identifier">date</span>(<span class="ruby-ivar">@opts</span>[<span class="ruby-value">:min_date</span>] <span class="ruby-operator">||</span> <span class="ruby-string">&quot;02/01/1970&quot;</span>)
+    <span class="ruby-identifier">max_date</span> = <span class="ruby-constant">Util</span>.<span class="ruby-identifier">date</span>(<span class="ruby-ivar">@opts</span>[<span class="ruby-value">:max_date</span>] <span class="ruby-operator">||</span> <span class="ruby-string">&quot;now&quot;</span>)
+    <span class="ruby-identifier">delete</span>,<span class="ruby-identifier">keep</span> = <span class="ruby-identifier">tables</span>.<span class="ruby-identifier">partition</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">name</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp">/_(\d{8})$/</span>
+        <span class="ruby-identifier">date</span> = <span class="ruby-node">$1</span>
+        <span class="ruby-identifier">val</span> = <span class="ruby-identifier">date</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">min_date</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">date</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">max_date</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Will delete table #{name} from #{@source.name}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">val</span>
+        <span class="ruby-keyword">next</span> <span class="ruby-identifier">val</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment">## need to include it in union statement </span>
+    <span class="ruby-identifier">keep</span> <span class="ruby-operator">+=</span> [<span class="ruby-ivar">@table_records</span>]
+    <span class="ruby-comment">## change the UNION table to only keep the right one</span>
+    <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;ALTER TABLE #{@table_records_union} &quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-node">&quot; UNION=(#{keep.map{|x| &quot;`#{x}`&quot;}.join(',')})&quot;</span>
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-comment">## delete table</span>
+        <span class="ruby-identifier">delete</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">name</span><span class="ruby-operator">|</span> <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">delete_table</span>(<span class="ruby-identifier">name</span>,<span class="ruby-ivar">@db</span>) }
+        <span class="ruby-comment">## change union</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-identifier">sql</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:d</span>]
+        <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- delete_filter-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- delete_filter-method -->
+
+      
+        <div id="delete_records_from_fileid-method" class="method-detail ">
+          <a name="method-i-delete_records_from_fileid"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">delete_records_from_fileid</span><span
+              class="method-args">(fileid)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="delete_records_from_fileid-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 381</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete_records_from_fileid</span> <span class="ruby-identifier">fileid</span>
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;DELETE FROM #{@table_records} WHERE file_id &quot;</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">fileid</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value">:join</span>)
+            <span class="ruby-identifier">sql</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;IN (#{fileid.join(',')})&quot;</span>
+        <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">sql</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot; = #{fileid}&quot;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- delete_records_from_fileid-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- delete_records_from_fileid-method -->
+
+      
+        <div id="filter_files-method" class="method-detail ">
+          <a name="method-i-filter_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">filter_files</span><span
+              class="method-args">(files)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>Modify the files list so to have only unregistered</pre>
+
+<p>files in the list (i.e. not present in db):</p>
+
+<pre>for the GET PART</pre>
+            
+
+            
+            <div class="method-source-code" id="filter_files-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 250</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">filter_files</span> <span class="ruby-identifier">files</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">files</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">files</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">count</span> = <span class="ruby-identifier">files</span>.<span class="ruby-identifier">size</span>
+    <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;SELECT file_name FROM #{@table_files} WHERE file_name IN &quot;</span>
+    <span class="ruby-identifier">sql</span> <span class="ruby-operator">+=</span> <span class="ruby-constant">RubyUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">sqlize</span>(<span class="ruby-identifier">files</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span><span class="ruby-identifier">f</span>.<span class="ruby-identifier">name</span>})
+    <span class="ruby-identifier">res</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-identifier">res</span> = <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> [] <span class="ruby-keyword">unless</span> <span class="ruby-identifier">res</span>
+    <span class="ruby-identifier">files2rm</span> = []
+    <span class="ruby-identifier">res</span>.<span class="ruby-identifier">each_hash</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">files2rm</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">CDR</span><span class="ruby-operator">::</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">row</span>[<span class="ruby-string">'file_name'</span>],<span class="ruby-identifier">nosearch</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">files2rm</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- filter_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- filter_files-method -->
+
+      
+        <div id="insert_files-method" class="method-detail ">
+          <a name="method-i-insert_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">insert_files</span><span
+              class="method-args">(files, folder = nil)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>insert the files in the db for this schema
+Either take a flat list of files (CDR::File obj) OR</pre>
+
+<p>can take a hash liek this: KEY : Folder VALUE : List of CDR::FILE  for the
+GET PART</p>
+            
+
+            
+            <div class="method-source-code" id="insert_files-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 273</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">insert_files</span> <span class="ruby-identifier">files</span>, <span class="ruby-identifier">folder</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-identifier">sql</span> = <span class="ruby-string">&quot;&quot;</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">files</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">folder</span> 
+        <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;INSERT INTO #{@table_files} (file_name,folder) VALUES &quot;</span>
+        <span class="ruby-identifier">sql</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">files</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span><span class="ruby-node">&quot;('#{f.name}','#{folder}')&quot;</span>}.<span class="ruby-identifier">join</span>(<span class="ruby-string">','</span>)
+        <span class="ruby-identifier">sql</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot; ON DUPLICATE KEY UPDATE file_name=file_name;&quot;</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">files</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+        <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;INSERT INTO #{@table_files} (folder,file_name) VALUES &quot;</span>
+        <span class="ruby-identifier">sql</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">files</span>.<span class="ruby-identifier">map</span>  <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">fold</span>,<span class="ruby-identifier">lfiles</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">lfiles</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;('#{fold}','#{f.name}')&quot;</span> }
+        <span class="ruby-keyword">end</span>.<span class="ruby-identifier">flatten</span>(<span class="ruby-value">1</span>).<span class="ruby-identifier">join</span>(<span class="ruby-string">','</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- insert_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- insert_files-method -->
+
+      
+        <div id="insert_records-method" class="method-detail ">
+          <a name="method-i-insert_records"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">insert_records</span><span
+              class="method-args">(file_id, records)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>file is the hash return from the files table</pre>
+
+<p>records is the json output of the decoder</p>
+
+<pre>INSERT PART</pre>
+            
+
+            
+            <div class="method-source-code" id="insert_records-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 322</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">insert_records</span> <span class="ruby-identifier">file_id</span>, <span class="ruby-identifier">records</span>
+    <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;INSERT INTO #{@table_records} (file_id,&quot;</span> 
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-identifier">records</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>,<span class="ruby-identifier">hash</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">fields</span> = <span class="ruby-identifier">hash</span>[<span class="ruby-value">:fields</span>]
+            <span class="ruby-identifier">values</span> = <span class="ruby-identifier">hash</span>[<span class="ruby-value">:values</span>]
+            <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">values</span>.<span class="ruby-identifier">empty?</span>
+            <span class="ruby-identifier">sql_</span> = <span class="ruby-identifier">sql</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">fields</span>.<span class="ruby-identifier">keys</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">','</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;) VALUES &quot;</span>
+            <span class="ruby-identifier">sql_</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">values</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">rec</span><span class="ruby-operator">|</span> 
+                <span class="ruby-identifier">row</span> = [<span class="ruby-identifier">file_id</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">rec</span>.<span class="ruby-identifier">values_at</span>(*<span class="ruby-identifier">fields</span>.<span class="ruby-identifier">values</span>)
+                <span class="ruby-constant">RubyUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">sqlize</span>(<span class="ruby-identifier">row</span>)
+            <span class="ruby-keyword">end</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">','</span>)
+            <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql_</span>)
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- insert_records-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- insert_records-method -->
+
+      
+        <div id="new_records-method" class="method-detail ">
+          <a name="method-i-new_records"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new_records</span><span
+              class="method-args">(monitor, opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>Select all new records to be analzed for a monitor</pre>
+
+<p>You can also specify a Proc which will be called with a value equal to the
+number of rows taht will be fetched Used to see progression  PROCESS PART</p>
+            
+
+            
+            <div class="method-source-code" id="new_records-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 346</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new_records</span> <span class="ruby-identifier">monitor</span>, <span class="ruby-identifier">opts</span> = {}
+    <span class="ruby-identifier">sql</span> = <span class="ruby-string">&quot;SELECT &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">new_records_select</span>(<span class="ruby-identifier">monitor</span>) <span class="ruby-operator">+</span>
+        <span class="ruby-string">&quot;\nFROM &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">new_records_from</span>(<span class="ruby-identifier">monitor</span>,<span class="ruby-identifier">opts</span>) <span class="ruby-operator">+</span>
+        <span class="ruby-string">&quot;\nWHERE &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">new_records_where</span>(<span class="ruby-identifier">monitor</span>) <span class="ruby-operator">+</span>
+        <span class="ruby-string">&quot;;&quot;</span>
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-comment">#require 'ruby-debug'</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-identifier">sql</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:d</span>]
+        <span class="ruby-comment">## special case for union where we might have</span>
+        <span class="ruby-comment"># hundreds of millions of record taht can't fit</span>
+        <span class="ruby-comment"># into memory</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:union</span>] <span class="ruby-operator">||</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@sql_fetch_all</span>
+            <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">con</span>.<span class="ruby-identifier">query_with_result</span> = <span class="ruby-keyword">false</span>
+            <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+            <span class="ruby-identifier">res</span> = <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">con</span>.<span class="ruby-identifier">use_result</span>
+        <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">res</span> = <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+            <span class="ruby-comment">## sends back the number of rows to the caller </span>
+            <span class="ruby-comment">## so it can update progression in real time</span>
+            <span class="ruby-identifier">opts</span>[<span class="ruby-value">:proc</span>].<span class="ruby-identifier">call</span>(<span class="ruby-identifier">res</span>.<span class="ruby-identifier">num_rows</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:proc</span>]
+            <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Retrieved #{res.num_rows} records to be analyzed from #{@source.name} ...&quot;</span>)
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">res</span>.<span class="ruby-identifier">each_hash</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+            <span class="ruby-keyword">yield</span> <span class="ruby-constant">RubyUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">symbolize</span>(<span class="ruby-identifier">row</span>)
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-comment">#debugger if @opts[:d]</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:union</span>] <span class="ruby-operator">||</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@sql_fetch_all</span>
+            <span class="ruby-identifier">res</span>.<span class="ruby-identifier">free</span>
+            <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">con</span>.<span class="ruby-identifier">query_with_result</span> = <span class="ruby-keyword">true</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new_records-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new_records-method -->
+
+      
+        <div id="processed_files-method" class="method-detail ">
+          <a name="method-i-processed_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">processed_files</span><span
+              class="method-args">(files_id)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Update records in the files table to set them as processed INSERT PART</p>
+            
+
+            
+            <div class="method-source-code" id="processed_files-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 292</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">processed_files</span> <span class="ruby-identifier">files_id</span>
+    <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;UPDATE #{@table_files} SET processed = 1 &quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-string">&quot;WHERE file_id IN (&quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-constant">RubyUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">sqlize</span>(<span class="ruby-identifier">files_id</span>,<span class="ruby-identifier">no_parenthesis</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>) <span class="ruby-operator">+</span>
+        <span class="ruby-string">&quot;);&quot;</span>
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:insert_only</span>]
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Maked files as inserted in monitors for source #{@source.name}&quot;</span>)
+        <span class="ruby-ivar">@source</span>.<span class="ruby-identifier">flow</span>.<span class="ruby-identifier">monitors</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">mon</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">mon</span>.<span class="ruby-identifier">schema</span>.<span class="ruby-identifier">processed_files</span>(<span class="ruby-ivar">@source</span>,<span class="ruby-identifier">files_id</span>)
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- processed_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- processed_files-method -->
+
+      
+        <div id="rename-method" class="method-detail ">
+          <a name="method-i-rename"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">rename</span><span
+              class="method-args">(new_name)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="rename-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">rename</span> <span class="ruby-identifier">new_name</span>
+    <span class="ruby-identifier">nfiles</span> = <span class="ruby-node">&quot;FILES_#{new_name.upcase}&quot;</span>
+    <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">rename_table</span> <span class="ruby-ivar">@table_files</span>,<span class="ruby-identifier">nfiles</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Renamed files table #{@table_files} to #{nfiles}&quot;</span>)
+    <span class="ruby-ivar">@table_files</span> = <span class="ruby-identifier">nfiles</span>
+
+    <span class="ruby-identifier">nrecords</span> = <span class="ruby-node">&quot;RECORDS_#{new_name.upcase}&quot;</span>
+    <span class="ruby-identifier">nrecords_union</span> = <span class="ruby-node">&quot;RECORDS_#{new_name.upcase}_UNION&quot;</span>
+    <span class="ruby-identifier">at_records</span> = <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">search_tables</span>(<span class="ruby-ivar">@table_records</span>)
+    <span class="ruby-identifier">ntables</span> = []
+    <span class="ruby-identifier">at_records</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">table</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">ntable</span> = <span class="ruby-identifier">table</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-ivar">@table_records</span>,<span class="ruby-identifier">nrecords</span>)
+        <span class="ruby-identifier">ntables</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">ntable</span>
+        <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">rename_table</span> <span class="ruby-identifier">table</span>,<span class="ruby-identifier">ntable</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment">## delete union</span>
+    <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">delete_table</span> <span class="ruby-ivar">@table_records_union</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Renamed records table #{@table_records} to #{nrecords}&quot;</span>)
+    <span class="ruby-comment">## affect rights values</span>
+    <span class="ruby-ivar">@table_records</span> = <span class="ruby-identifier">nrecords</span>
+    <span class="ruby-ivar">@table_records_union</span> = <span class="ruby-identifier">nrecords_union</span>
+    <span class="ruby-comment">## create again the union</span>
+    <span class="ruby-identifier">sql</span> = <span class="ruby-constant">SqlGenerator</span>.<span class="ruby-identifier">for_records_union</span>(<span class="ruby-ivar">@table_records_union</span>,
+                                         <span class="ruby-ivar">@source</span>.<span class="ruby-identifier">records_fields</span>,
+                                         <span class="ruby-identifier">union</span><span class="ruby-operator">:</span> <span class="ruby-identifier">ntables</span>)
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> { <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>) }
+
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- rename-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- rename-method -->
+
+      
+        <div id="reset-method" class="method-detail ">
+          <a name="method-i-reset"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">reset</span><span
+              class="method-args">(type)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="reset-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 141</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reset</span> <span class="ruby-identifier">type</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:min_date</span>] <span class="ruby-operator">||</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:max_date</span>]
+        <span class="ruby-identifier">reset_filter</span> <span class="ruby-identifier">type</span>
+    <span class="ruby-keyword">else</span>
+        <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span>
+            <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">reset_table</span> <span class="ruby-ivar">@table_files</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:files</span>
+            <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:records</span> 
+                <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;SELECT distinct file_id from #{@table_records_union}&quot;</span>;
+                <span class="ruby-identifier">res</span> = <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+                <span class="ruby-identifier">ids</span> = []
+                <span class="ruby-identifier">res</span>.<span class="ruby-identifier">each_hash</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+                    <span class="ruby-identifier">ids</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>[<span class="ruby-string">'file_id'</span>]
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">reset_table</span> <span class="ruby-ivar">@table_records</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:records</span>
+                <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">reset_table</span> <span class="ruby-ivar">@table_records_union</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:records</span>
+                <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;UPDATE #{@table_files} SET processed = 0 WHERE file_id IN (#{RubyUtil::sqlize(ids,:no_parenthesis =&gt; true, :no_quotes =&gt; true)})&quot;</span>
+                <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">ids</span>.<span class="ruby-identifier">empty?</span>
+            <span class="ruby-keyword">end</span>
+            <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Reset #{type} tables for #{@source.name}&quot;</span>)
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- reset-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- reset-method -->
+
+      
+        <div id="reset_files-method" class="method-detail ">
+          <a name="method-i-reset_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">reset_files</span><span
+              class="method-args">(files_id = nil)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>set all the files to be unprocessed</p>
+            
+
+            
+            <div class="method-source-code" id="reset_files-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 310</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reset_files</span> <span class="ruby-identifier">files_id</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;UPDATE #{@table_files} SET processed = 0 &quot;</span> 
+    <span class="ruby-identifier">sql</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;WHERE file_id IN (#{RubyUtil::sqlize(files_id,no_parenthesis: true)})&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">files_id</span>
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- reset_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- reset_files-method -->
+
+      
+        <div id="reset_filter-method" class="method-detail ">
+          <a name="method-i-reset_filter"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">reset_filter</span><span
+              class="method-args">(type)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Reset a table with a time filter</p>
+
+<pre>looks for RECORDS between min-date and maxdate</pre>
+
+<p>looks for FILES with timestamp between min-date &amp; max-date</p>
+            
+
+            
+            <div class="method-source-code" id="reset_filter-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 167</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reset_filter</span> <span class="ruby-identifier">type</span>
+    <span class="ruby-comment">## transform date into timestamp</span>
+    <span class="ruby-identifier">min_date</span> = <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:min_date</span>] <span class="ruby-operator">||</span> <span class="ruby-string">'02/01/1970'</span> <span class="ruby-comment">## if no min date, delete </span>
+    <span class="ruby-comment">## all before max_date then </span>
+    <span class="ruby-identifier">min_date</span> = <span class="ruby-constant">Util</span>.<span class="ruby-identifier">date</span>(<span class="ruby-identifier">min_date</span>,<span class="ruby-identifier">format</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>) 
+    <span class="ruby-identifier">max_date</span> = <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:max_date</span>] <span class="ruby-operator">||</span> <span class="ruby-string">'now'</span>
+    <span class="ruby-identifier">max_date</span> = <span class="ruby-constant">Util</span>.<span class="ruby-identifier">date</span>(<span class="ruby-identifier">max_date</span>,<span class="ruby-identifier">format</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)
+    <span class="ruby-identifier">min_ts</span> = <span class="ruby-constant">Util</span>.<span class="ruby-identifier">date</span>(<span class="ruby-identifier">min_date</span>,<span class="ruby-identifier">format</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;%s&quot;</span>)
+    <span class="ruby-identifier">max_ts</span> = <span class="ruby-constant">Util</span>.<span class="ruby-identifier">date</span>(<span class="ruby-identifier">max_date</span>,<span class="ruby-identifier">format</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;%s&quot;</span>)
+    <span class="ruby-comment">## create &amp; query sql§</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:files</span>
+        <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;DELETE FROM #{@table_files} WHERE timest BETWEEN &quot;</span> <span class="ruby-operator">+</span>
+            <span class="ruby-node">&quot; '#{min_date}' AND  '#{max_date}'&quot;</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-identifier">sql</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:v</span>]
+        <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> { <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>) }
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:records</span>
+        <span class="ruby-identifier">time_field</span> = <span class="ruby-ivar">@source</span>.<span class="ruby-identifier">flow</span>.<span class="ruby-identifier">time_field_records</span>
+        <span class="ruby-identifier">sql_id</span> = <span class="ruby-node">&quot;SELECT distinct file_id from #{@table_records_union}&quot;</span> <span class="ruby-operator">+</span>
+            <span class="ruby-node">&quot; WHERE #{time_field} BETWEEN #{min_ts} AND #{max_ts}&quot;</span>
+        <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span>
+            <span class="ruby-identifier">puts</span> <span class="ruby-identifier">sql_id</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:v</span>]
+            <span class="ruby-identifier">res</span> = <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql_id</span>)
+            <span class="ruby-identifier">ids</span> = []
+            <span class="ruby-comment">## take the ids that we will remove, so we can mark them as unprocesse</span>
+            <span class="ruby-identifier">res</span>.<span class="ruby-identifier">each_hash</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span> <span class="ruby-identifier">ids</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>[<span class="ruby-string">'file_id'</span>] }
+            <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;DELETE FROM %s WHERE #{@source.flow.time_field_records} &quot;</span> <span class="ruby-operator">+</span>
+                <span class="ruby-node">&quot;BETWEEN #{min_ts} AND #{max_ts}&quot;</span>
+            <span class="ruby-identifier">sql_unproc</span> = <span class="ruby-node">&quot;UPDATE #{@table_files} SET processed = 0 WHERE file_id IN (#{RubyUtil::sqlize(ids,:no_parenthesis =&gt; true, :no_quotes =&gt; true)})&quot;</span>
+            <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span> <span class="ruby-operator">%</span> <span class="ruby-ivar">@table_records</span>)
+            <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span> <span class="ruby-operator">%</span> <span class="ruby-ivar">@table_records_union</span>)
+            <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql_unproc</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">ids</span>.<span class="ruby-identifier">empty?</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- reset_filter-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- reset_filter-method -->
+
+      
+        <div id="select_new_files-method" class="method-detail ">
+          <a name="method-i-select_new_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">select_new_files</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>select files unprocessed from the files table of this source for the GET
+PART</p>
+            
+
+            
+            <div class="method-source-code" id="select_new_files-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 236</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">select_new_files</span>
+    <span class="ruby-identifier">res</span> = []
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;SELECT * FROM #{@table_files} where processed = 0&quot;</span>
+        <span class="ruby-identifier">res</span> = <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">h</span> = []
+    <span class="ruby-identifier">res</span>.<span class="ruby-identifier">each_hash</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">RubyUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">symbolize</span>(<span class="ruby-identifier">row</span>) }
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">h</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- select_new_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- select_new_files-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+      <div id="protected-instance-method-details" class="method-section section">
+        <h3 class="section-header">Protected Instance Methods</h3>
+
+      
+        <div id="new_records_from-method" class="method-detail ">
+          <a name="method-i-new_records_from"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new_records_from</span><span
+              class="method-args">(monitor,opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="new_records_from-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 420</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new_records_from</span> <span class="ruby-identifier">monitor</span>,<span class="ruby-identifier">opts</span> = {}
+    <span class="ruby-identifier">table</span> = <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:table</span>] <span class="ruby-operator">||</span> (<span class="ruby-ivar">@opts</span>[<span class="ruby-value">:union</span>] <span class="ruby-operator">?</span> <span class="ruby-node">&quot;#{@table_records_union}&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>) <span class="ruby-operator">||</span> <span class="ruby-node">&quot;#{@table_records}&quot;</span>
+    <span class="ruby-identifier">table</span> = <span class="ruby-identifier">table</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot; AS r &quot;</span>
+    <span class="ruby-identifier">sql</span> = <span class="ruby-identifier">table</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">monitor</span>.<span class="ruby-identifier">filter</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">monitor</span>.<span class="ruby-identifier">filter</span>.<span class="ruby-identifier">fields_allowed</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value">:folder</span>)
+        <span class="ruby-identifier">sql</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;LEFT JOIN #{table_files} AS f &quot;</span> <span class="ruby-operator">+</span>
+            <span class="ruby-string">&quot;ON r.file_id = f.file_id &quot;</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">sql</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new_records_from-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new_records_from-method -->
+
+      
+        <div id="new_records_select-method" class="method-detail ">
+          <a name="method-i-new_records_select"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new_records_select</span><span
+              class="method-args">(monitor)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>Theses methods return the portion of the query</pre>
+
+<p>to be computed to get the new records to analyze for this monitor</p>
+
+<pre>We agree that we name the records table &quot;r&quot;
+                      the files table &quot;f&quot;
+so we can do r.file_id, etc    
+needed when JOIN is necessary (to get folder name etc)</pre>
+            
+
+            
+            <div class="method-source-code" id="new_records_select-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 402</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new_records_select</span> <span class="ruby-identifier">monitor</span>
+    <span class="ruby-identifier">time</span> = <span class="ruby-identifier">monitor</span>.<span class="ruby-identifier">time_field</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">monitor</span>.<span class="ruby-identifier">flow</span>.<span class="ruby-identifier">time_field_records</span>
+    <span class="ruby-identifier">sql</span> = [<span class="ruby-string">&quot;r.file_id&quot;</span>,<span class="ruby-node">&quot;r.#{time}&quot;</span>]
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">monitor</span>.<span class="ruby-identifier">filter</span> <span class="ruby-comment">## no necessary filter on a monitor</span>
+        <span class="ruby-identifier">fields</span> = <span class="ruby-identifier">monitor</span>.<span class="ruby-identifier">filter</span>.<span class="ruby-identifier">fields_allowed</span>.<span class="ruby-identifier">dup</span>
+        <span class="ruby-comment">## in case we request the folder attribute,</span>
+        <span class="ruby-comment">#we have to get it back from the files table, so </span>
+        <span class="ruby-comment">#prefix it with &quot;f&quot;</span>
+        <span class="ruby-keyword">if</span> (<span class="ruby-identifier">i</span> = <span class="ruby-identifier">fields</span>.<span class="ruby-identifier">index</span>(<span class="ruby-value">:folder</span>))
+            <span class="ruby-identifier">fields</span>.<span class="ruby-identifier">delete_at</span>(<span class="ruby-identifier">i</span>)
+            <span class="ruby-identifier">sql</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;f.folder&quot;</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">sql</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">fields</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;r.#{f}&quot;</span> }
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">sql</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">monitor</span>.<span class="ruby-identifier">stats</span>.<span class="ruby-identifier">fields</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;r.#{f}&quot;</span> }
+    <span class="ruby-identifier">sql</span>.<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">','</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new_records_select-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new_records_select-method -->
+
+      
+        <div id="new_records_where-method" class="method-detail ">
+          <a name="method-i-new_records_where"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new_records_where</span><span
+              class="method-args">(monitor)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="new_records_where-source">
+<pre>
+<span class="ruby-comment"># File database/source_schema.rb, line 431</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new_records_where</span> <span class="ruby-identifier">monitor</span>
+    <span class="ruby-identifier">sql</span> = <span class="ruby-string">&quot;r.file_id NOT IN &quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-string">&quot;(SELECT file_id FROM &quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-identifier">monitor</span>.<span class="ruby-identifier">schema</span>.<span class="ruby-identifier">table_records</span>(<span class="ruby-ivar">@source</span>) <span class="ruby-operator">+</span>
+        <span class="ruby-string">&quot;)&quot;</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">sql</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new_records_where-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new_records_where-method -->
+
+      
+      </div><!-- protected-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

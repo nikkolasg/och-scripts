@@ -1,0 +1,880 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: Conf::Filter</title>
+
+  <link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#classes">Classes</a>
+          <a href="../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../config/filter_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="config/filter.rb">config/filter.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link"><a href="../Object.html">Object</a></p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-i-evaluate">#evaluate</a></li>
+          
+          <li><a href="#method-i-field">#field</a></li>
+          
+          <li><a href="#method-i-fields">#fields</a></li>
+          
+          <li><a href="#method-i-fields_allowed">#fields_allowed</a></li>
+          
+          <li><a href="#method-i-fields_file">#fields_file</a></li>
+          
+          <li><a href="#method-i-filter_fields">#filter_fields</a></li>
+          
+          <li><a href="#method-i-filter_json">#filter_json</a></li>
+          
+          <li><a href="#method-i-filter_record">#filter_record</a></li>
+          
+          <li><a href="#method-i-filter_row">#filter_row</a></li>
+          
+          <li><a href="#method-i-merge_filter">#merge_filter</a></li>
+          
+          <li><a href="#method-i-set_fields2keep">#set_fields2keep</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../Conf.html">Conf</a></li>
+        
+          <li><a href="../Conf/ActionField.html">Conf::ActionField</a></li>
+        
+          <li><a href="../Conf/App.html">Conf::App</a></li>
+        
+          <li><a href="../Conf/Database.html">Conf::Database</a></li>
+        
+          <li><a href="../Conf/Directories.html">Conf::Directories</a></li>
+        
+          <li><a href="../Conf/FileManager.html">Conf::FileManager</a></li>
+        
+          <li><a href="../Conf/Filter.html">Conf::Filter</a></li>
+        
+          <li><a href="../Conf/Flow.html">Conf::Flow</a></li>
+        
+          <li><a href="../Conf/Host.html">Conf::Host</a></li>
+        
+          <li><a href="../Conf/ListField.html">Conf::ListField</a></li>
+        
+          <li><a href="../Conf/LocalFileManager.html">Conf::LocalFileManager</a></li>
+        
+          <li><a href="../Conf/Logging.html">Conf::Logging</a></li>
+        
+          <li><a href="../Conf/MeanField.html">Conf::MeanField</a></li>
+        
+          <li><a href="../Conf/Monitor.html">Conf::Monitor</a></li>
+        
+          <li><a href="../Conf/NullFilter.html">Conf::NullFilter</a></li>
+        
+          <li><a href="../Conf/SftpFileManager.html">Conf::SftpFileManager</a></li>
+        
+          <li><a href="../Conf/Source.html">Conf::Source</a></li>
+        
+          <li><a href="../Conf/Stats.html">Conf::Stats</a></li>
+        
+          <li><a href="../Conf/SumField.html">Conf::SumField</a></li>
+        
+          <li><a href="../Database.html">Database</a></li>
+        
+          <li><a href="../Database/GenericTable.html">Database::GenericTable</a></li>
+        
+          <li><a href="../Database/Mysql.html">Database::Mysql</a></li>
+        
+          <li><a href="../Database/Mysql/Result.html">Database::Mysql::Result</a></li>
+        
+          <li><a href="../Database/Schema.html">Database::Schema</a></li>
+        
+          <li><a href="../Database/Schema/Monitor.html">Database::Schema::Monitor</a></li>
+        
+          <li><a href="../Database/Schema/Monitor/GenericSchema.html">Database::Schema::Monitor::GenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Monitor/NewGenericSchema.html">Database::Schema::Monitor::NewGenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source.html">Database::Schema::Source</a></li>
+        
+          <li><a href="../Database/Schema/Source/FileCountSchema.html">Database::Schema::Source::FileCountSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/GenericSchema.html">Database::Schema::Source::GenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/IndexerSchema.html">Database::Schema::Source::IndexerSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/ProceraSchema.html">Database::Schema::Source::ProceraSchema</a></li>
+        
+          <li><a href="../Database/SqlGenerator.html">Database::SqlGenerator</a></li>
+        
+          <li><a href="../Database/TableRotator.html">Database::TableRotator</a></li>
+        
+          <li><a href="../Database/TableUtil.html">Database::TableUtil</a></li>
+        
+          <li><a href="../Mapper.html">Mapper</a></li>
+        
+          <li><a href="../Mapper/GenericMapper.html">Mapper::GenericMapper</a></li>
+        
+          <li><a href="../Mapper/LogicaMapper.html">Mapper::LogicaMapper</a></li>
+        
+          <li><a href="../Mapper/MmsOutMapper.html">Mapper::MmsOutMapper</a></li>
+        
+          <li><a href="../Mapper/Nkm15Mapper.html">Mapper::Nkm15Mapper</a></li>
+        
+          <li><a href="../Mapper/PGWMapper.html">Mapper::PGWMapper</a></li>
+        
+          <li><a href="../Mapper/ProceraMapper.html">Mapper::ProceraMapper</a></li>
+        
+          <li><a href="../Mapper/SmsMapper.html">Mapper::SmsMapper</a></li>
+        
+          <li><a href="../Mapper/TAPMapper.html">Mapper::TAPMapper</a></li>
+        
+          <li><a href="../Mapper/TalMapper.html">Mapper::TalMapper</a></li>
+        
+          <li><a href="../Mapper/XDRMapper.html">Mapper::XDRMapper</a></li>
+        
+          <li><a href="../Decoder.html">Decoder</a></li>
+        
+          <li><a href="../Decoder/BigCSVDecoder.html">Decoder::BigCSVDecoder</a></li>
+        
+          <li><a href="../Decoder/CSVDecoder.html">Decoder::CSVDecoder</a></li>
+        
+          <li><a href="../Decoder/CSVFields.html">Decoder::CSVFields</a></li>
+        
+          <li><a href="../Decoder/LogicaDecoder.html">Decoder::LogicaDecoder</a></li>
+        
+          <li><a href="../Decoder/NKM15Decoder.html">Decoder::NKM15Decoder</a></li>
+        
+          <li><a href="../Decoder/NullDecoder.html">Decoder::NullDecoder</a></li>
+        
+          <li><a href="../Decoder/PGWDecoder.html">Decoder::PGWDecoder</a></li>
+        
+          <li><a href="../Decoder/TALDecoder.html">Decoder::TALDecoder</a></li>
+        
+          <li><a href="../Decoder/XDRDecoder.html">Decoder::XDRDecoder</a></li>
+        
+          <li><a href="../Inserter.html">Inserter</a></li>
+        
+          <li><a href="../Inserter/BigSourceInserter.html">Inserter::BigSourceInserter</a></li>
+        
+          <li><a href="../Inserter/GenericSourceInserter.html">Inserter::GenericSourceInserter</a></li>
+        
+          <li><a href="../Inserter/NullSourceInserter.html">Inserter::NullSourceInserter</a></li>
+        
+          <li><a href="../Inserter/PGWInserter.html">Inserter::PGWInserter</a></li>
+        
+          <li><a href="../Parser.html">Parser</a></li>
+        
+          <li><a href="../Parser/CheckParser.html">Parser::CheckParser</a></li>
+        
+          <li><a href="../Parser/DatabaseParser.html">Parser::DatabaseParser</a></li>
+        
+          <li><a href="../Parser/DirectoriesParser.html">Parser::DirectoriesParser</a></li>
+        
+          <li><a href="../Parser/OperationParser.html">Parser::OperationParser</a></li>
+        
+          <li><a href="../Getter.html">Getter</a></li>
+        
+          <li><a href="../Getter/FileCountGetter.html">Getter::FileCountGetter</a></li>
+        
+          <li><a href="../Getter/GenericSourceGetter.html">Getter::GenericSourceGetter</a></li>
+        
+          <li><a href="../Getter/NullSourceGetter.html">Getter::NullSourceGetter</a></li>
+        
+          <li><a href="../Fetchers.html">Fetchers</a></li>
+        
+          <li><a href="../Fetchers/LocalFileFetcher.html">Fetchers::LocalFileFetcher</a></li>
+        
+          <li><a href="../Fetchers/SftpFileFetcher.html">Fetchers::SftpFileFetcher</a></li>
+        
+          <li><a href="../Stats.html">Stats</a></li>
+        
+          <li><a href="../Stats/BacklogStats.html">Stats::BacklogStats</a></li>
+        
+          <li><a href="../Stats/GenericStats.html">Stats::GenericStats</a></li>
+        
+          <li><a href="../CDR.html">CDR</a></li>
+        
+          <li><a href="../CDR/File.html">CDR::File</a></li>
+        
+          <li><a href="../IncludeModule.html">IncludeModule</a></li>
+        
+          <li><a href="../IncludeModule/ModuleClass.html">IncludeModule::ModuleClass</a></li>
+        
+          <li><a href="../Collector.html">Collector</a></li>
+        
+          <li><a href="../Debug.html">Debug</a></li>
+        
+          <li><a href="../EMMConfig.html">EMMConfig</a></li>
+        
+          <li><a href="../Fixnum.html">Fixnum</a></li>
+        
+          <li><a href="../Lazy.html">Lazy</a></li>
+        
+          <li><a href="../LazyLispyEnumerable.html">LazyLispyEnumerable</a></li>
+        
+          <li><a href="../LispyEnumerable.html">LispyEnumerable</a></li>
+        
+          <li><a href="../Logger.html">Logger</a></li>
+        
+          <li><a href="../MysqlDumper.html">MysqlDumper</a></li>
+        
+          <li><a href="../Object.html">Object</a></li>
+        
+          <li><a href="../RubyUtil.html">RubyUtil</a></li>
+        
+          <li><a href="../SignalHandler.html">SignalHandler</a></li>
+        
+          <li><a href="../SuperTest.html">SuperTest</a></li>
+        
+          <li><a href="../T1.html">T1</a></li>
+        
+          <li><a href="../T2.html">T2</a></li>
+        
+          <li><a href="../Test.html">Test</a></li>
+        
+          <li><a href="../Test2.html">Test2</a></li>
+        
+          <li><a href="../TestParser.html">TestParser</a></li>
+        
+          <li><a href="../Util.html">Util</a></li>
+        
+          <li><a href="../ValueModule.html">ValueModule</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Conf::Filter</h1>
+
+    <div id="description" class="description">
+      
+<p>class that handles all the filtering in the application</p>
+
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+      <!-- Attributes -->
+      <div id="attribute-method-details" class="method-section section">
+        <h3 class="section-header">Attributes</h3>
+
+        
+        <div id="filters-attribute-method" class="method-detail">
+          <a name="filters"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">filters</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="parent-attribute-method" class="method-detail">
+          <a name="parent"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">parent</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+      </div><!-- attribute-method-details -->
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(parent)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File config/filter.rb, line 54</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>  <span class="ruby-identifier">parent</span>
+    <span class="ruby-ivar">@filters</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span>,<span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-identifier">k</span>] = [] }
+    <span class="ruby-ivar">@parent</span> = <span class="ruby-identifier">parent</span>
+    <span class="ruby-ivar">@filtered_fields</span> = []
+    <span class="ruby-identifier">set_fields2keep</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="field-method" class="method-detail ">
+          <a name="method-i-field"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">field</span><span
+              class="method-args">(*names, &block)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>set a rule for theses names</p>
+            
+
+            
+            <div class="method-source-code" id="field-source">
+<pre>
+<span class="ruby-comment"># File config/filter.rb, line 75</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">field</span> *<span class="ruby-identifier">names</span>, &amp;<span class="ruby-identifier">block</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">block</span>
+        <span class="ruby-ivar">@filters</span>[<span class="ruby-identifier">names</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">block</span>
+    <span class="ruby-keyword">else</span> <span class="ruby-comment">## only affectation of fields</span>
+        <span class="ruby-ivar">@filters</span>[<span class="ruby-identifier">names</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- field-source -->
+            
+          </div>
+
+          
+          <div class="aliases">
+            Also aliased as: <a href="Filter.html#method-i-fields">fields</a>
+          </div>
+          
+
+          
+        </div><!-- field-method -->
+
+      
+        <div id="fields-method" class="method-detail method-alias">
+          <a name="method-i-fields"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">fields</span><span
+              class="method-args">(*names, &block)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+          </div>
+
+          
+
+          
+          <div class="aliases">
+            Alias for: <a href="Filter.html#method-i-field">field</a>
+          </div>
+          
+        </div><!-- fields-method -->
+
+      
+        <div id="fields_allowed-method" class="method-detail ">
+          <a name="method-i-fields_allowed"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">fields_allowed</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="fields_allowed-source">
+<pre>
+<span class="ruby-comment"># File config/filter.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">fields_allowed</span>
+    <span class="ruby-ivar">@filters</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-constant">Set</span>.<span class="ruby-identifier">new</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">col</span>,(<span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span>)<span class="ruby-operator">|</span> <span class="ruby-identifier">col</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">k</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">empty?</span> ; <span class="ruby-identifier">col</span>}.<span class="ruby-identifier">to_a</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- fields_allowed-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- fields_allowed-method -->
+
+      
+        <div id="fields_file-method" class="method-detail ">
+          <a name="method-i-fields_file"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">fields_file</span><span
+              class="method-args">(file_name)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>instead of enumerating all fields, we can pass a dump file ! like value:sql
+field,  a dump file ! like value:sql field,</p>
+            
+
+            
+            <div class="method-source-code" id="fields_file-source">
+<pre>
+<span class="ruby-comment"># File config/filter.rb, line 86</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">fields_file</span> <span class="ruby-identifier">file_name</span>
+    <span class="ruby-identifier">path</span> = <span class="ruby-constant">Conf</span><span class="ruby-operator">::</span><span class="ruby-identifier">directories</span>.<span class="ruby-identifier">app</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;/&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">file_name</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;File in fields_file does not exists !!&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-operator">::</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span>(<span class="ruby-identifier">path</span>)
+    <span class="ruby-identifier">require_relative</span> <span class="ruby-string">'../decoders/dump'</span>
+    <span class="ruby-identifier">h</span> = <span class="ruby-constant">MysqlDumper</span><span class="ruby-operator">::</span><span class="ruby-identifier">read_dump_file</span> <span class="ruby-identifier">path</span>
+    <span class="ruby-identifier">h</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span>  <span class="ruby-operator">|</span><span class="ruby-identifier">field</span>,<span class="ruby-identifier">sql</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">field</span>(<span class="ruby-identifier">field</span>)
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- fields_file-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- fields_file-method -->
+
+      
+        <div id="filter_fields-method" class="method-detail ">
+          <a name="method-i-filter_fields"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">filter_fields</span><span
+              class="method-args">(fields)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p><a href="Filter.html">Filter</a> out some fields,  USELESS</p>
+            
+
+            
+            <div class="method-source-code" id="filter_fields-source">
+<pre>
+<span class="ruby-comment"># File config/filter.rb, line 110</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">filter_fields</span> <span class="ruby-identifier">fields</span>
+    <span class="ruby-identifier">fields_</span> = <span class="ruby-identifier">fields_allowed</span>
+    <span class="ruby-identifier">fields</span>.<span class="ruby-identifier">keep_if</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">field</span>,<span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">fields_allowed</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">field</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">fields</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- filter_fields-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- filter_fields-method -->
+
+      
+        <div id="filter_json-method" class="method-detail ">
+          <a name="method-i-filter_json"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">filter_json</span><span
+              class="method-args">(json)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>filter out an entire json</p>
+            
+
+            
+            <div class="method-source-code" id="filter_json-source">
+<pre>
+<span class="ruby-comment"># File config/filter.rb, line 97</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">filter_json</span> <span class="ruby-identifier">json</span>
+    <span class="ruby-identifier">json</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>,<span class="ruby-identifier">hash</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">fields</span> = <span class="ruby-identifier">hash</span>[<span class="ruby-value">:fields</span>]
+        <span class="ruby-identifier">values</span> = <span class="ruby-identifier">hash</span>[<span class="ruby-value">:values</span>]
+        <span class="ruby-identifier">hash</span>[<span class="ruby-value">:fields</span>] = <span class="ruby-identifier">fields</span> = <span class="ruby-identifier">filter_fields</span> <span class="ruby-identifier">fields</span>
+        <span class="ruby-identifier">hash</span>[<span class="ruby-value">:values</span>] = <span class="ruby-identifier">values</span>.<span class="ruby-identifier">keep_if</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">filter_record</span> <span class="ruby-identifier">fields</span>,<span class="ruby-identifier">record</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- filter_json-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- filter_json-method -->
+
+      
+        <div id="filter_record-method" class="method-detail ">
+          <a name="method-i-filter_record"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">filter_record</span><span
+              class="method-args">(fields,record)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>filter out fields AND record at same time. If field is not present in
+filter, discard the value from the record and discard the field too.</p>
+            
+
+            
+            <div class="method-source-code" id="filter_record-source">
+<pre>
+<span class="ruby-comment"># File config/filter.rb, line 122</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">filter_record</span> <span class="ruby-identifier">fields</span>,<span class="ruby-identifier">record</span>
+    <span class="ruby-identifier">found</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-identifier">allowed</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-ivar">@filters</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ffields</span>,<span class="ruby-identifier">actions</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">arr_ind</span> = <span class="ruby-identifier">fields</span>.<span class="ruby-identifier">values_at</span>(*<span class="ruby-identifier">ffields</span>)
+        <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">arr_ind</span>.<span class="ruby-identifier">any?</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span> <span class="ruby-identifier">n</span>.<span class="ruby-identifier">nil?</span> }
+        <span class="ruby-identifier">arr</span> = <span class="ruby-identifier">record</span>.<span class="ruby-identifier">values_at</span>(*<span class="ruby-identifier">arr_ind</span>)
+        <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">arr</span>.<span class="ruby-identifier">any?</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span> <span class="ruby-identifier">n</span>.<span class="ruby-identifier">nil?</span> }
+        <span class="ruby-identifier">found</span> = <span class="ruby-keyword">true</span>
+        <span class="ruby-identifier">allowed</span> <span class="ruby-operator">&amp;=</span> <span class="ruby-identifier">evaluate</span>(<span class="ruby-identifier">actions</span>,<span class="ruby-identifier">arr</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">allowed</span>
+        <span class="ruby-keyword">next</span> <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">allowed</span> &amp; <span class="ruby-identifier">found</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- filter_record-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- filter_record-method -->
+
+      
+        <div id="filter_row-method" class="method-detail ">
+          <a name="method-i-filter_row"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">filter_row</span><span
+              class="method-args">(row)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>Filter out a ROW from the RECORDS table in the db
+No need to pass by filter_fields before, since</pre>
+
+<p>the row is Hash and have already the symbolized fields as key</p>
+            
+
+            
+            <div class="method-source-code" id="filter_row-source">
+<pre>
+<span class="ruby-comment"># File config/filter.rb, line 141</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">filter_row</span> <span class="ruby-identifier">row</span>
+    <span class="ruby-identifier">found</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-identifier">allowed</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-ivar">@filters</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ffields</span>,<span class="ruby-identifier">actions</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">arr</span> = <span class="ruby-identifier">row</span>.<span class="ruby-identifier">values_at</span>(*<span class="ruby-identifier">ffields</span>)
+        <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">arr</span>.<span class="ruby-identifier">any?</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span> <span class="ruby-identifier">n</span>.<span class="ruby-identifier">nil?</span> }
+        <span class="ruby-identifier">found</span> = <span class="ruby-keyword">true</span>
+        <span class="ruby-identifier">allowed</span> <span class="ruby-operator">&amp;=</span> <span class="ruby-identifier">evaluate</span>(<span class="ruby-identifier">actions</span>,<span class="ruby-identifier">arr</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">allowed</span>
+        <span class="ruby-keyword">next</span> <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">allowed</span> &amp; <span class="ruby-identifier">found</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- filter_row-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- filter_row-method -->
+
+      
+        <div id="merge_filter-method" class="method-detail ">
+          <a name="method-i-merge_filter"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">merge_filter</span><span
+              class="method-args">(filter)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>you can pass another filter and it will merge</pre>
+
+<p>the two in one. in case of 2 blocks for one field, both block will be
+executed</p>
+            
+
+            
+            <div class="method-source-code" id="merge_filter-source">
+<pre>
+<span class="ruby-comment"># File config/filter.rb, line 68</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">merge_filter</span> <span class="ruby-identifier">filter</span>
+    <span class="ruby-identifier">filter</span>.<span class="ruby-identifier">filters</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">names</span>,<span class="ruby-identifier">arr</span><span class="ruby-operator">|</span>
+        <span class="ruby-ivar">@filters</span>[<span class="ruby-identifier">names</span>] <span class="ruby-operator">+=</span>  <span class="ruby-identifier">arr</span> <span class="ruby-comment">## adds all  blocksfor this particular field</span>
+    <span class="ruby-keyword">end</span> 
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- merge_filter-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- merge_filter-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+      <div id="private-instance-method-details" class="method-section section">
+        <h3 class="section-header">Private Instance Methods</h3>
+
+      
+        <div id="evaluate-method" class="method-detail ">
+          <a name="method-i-evaluate"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">evaluate</span><span
+              class="method-args">(actions,array)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>evaluate all filters for a given field, for this value</pre>
+
+<p>return true if all evaluates to true otherwise false</p>
+            
+
+            
+            <div class="method-source-code" id="evaluate-source">
+<pre>
+<span class="ruby-comment"># File config/filter.rb, line 161</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">evaluate</span> <span class="ruby-identifier">actions</span>,<span class="ruby-identifier">array</span>
+    <span class="ruby-identifier">actions</span>.<span class="ruby-identifier">all?</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">action</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">next</span> <span class="ruby-identifier">action</span>.<span class="ruby-identifier">call</span>(*<span class="ruby-identifier">array</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">action</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Proc</span>)
+        <span class="ruby-comment">## if no proc, then it is true value</span>
+        <span class="ruby-keyword">next</span> <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">end</span>  
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- evaluate-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- evaluate-method -->
+
+      
+        <div id="set_fields2keep-method" class="method-detail ">
+          <a name="method-i-set_fields2keep"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">set_fields2keep</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Allow some fields to always be taken, accepted like the field which gives
+us the timing ;) (instead of putting it in every filter)</p>
+            
+
+            
+            <div class="method-source-code" id="set_fields2keep-source">
+<pre>
+<span class="ruby-comment"># File config/filter.rb, line 173</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_fields2keep</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@parent</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Flow</span>)
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:field</span>,<span class="ruby-ivar">@parent</span>.<span class="ruby-identifier">time_field_records</span>)
+    <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@parent</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Monitor</span>)
+        <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:field</span>,<span class="ruby-ivar">@parent</span>.<span class="ruby-identifier">time_field</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@parent</span>.<span class="ruby-identifier">flow</span>.<span class="ruby-identifier">time_field_records</span>)
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- set_fields2keep-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- set_fields2keep-method -->
+
+      
+      </div><!-- private-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

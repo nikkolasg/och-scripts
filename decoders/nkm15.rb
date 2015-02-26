@@ -78,6 +78,7 @@ module Decoder
                 values = line.split(":")
                 rec[:values] << values
             end
+            Debug::debug_json(json) if @opts[:d]
             json = @mapper.map_json(json) if @mapper
             json = @filter.filter_json(json) if @filter
             Debug::debug_json(json) if @opts[:d]

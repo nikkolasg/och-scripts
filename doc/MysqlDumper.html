@@ -1,0 +1,904 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Module: MysqlDumper</title>
+
+  <link rel="stylesheet" href="./rdoc.css" type="text/css" media="screen" />
+
+  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="module">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="./index.html">Home</a>
+          <a href="./index.html#classes">Classes</a>
+          <a href="./index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="./decoders/dump_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="decoders/dump.rb">decoders/dump.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-i-analyze">#analyze</a></li>
+          
+          <li><a href="#method-i-detect_input">#detect_input</a></li>
+          
+          <li><a href="#method-i-dump">#dump</a></li>
+          
+          <li><a href="#method-i-is_shared-3F">#is_shared?</a></li>
+          
+          <li><a href="#method-i-max">#max</a></li>
+          
+          <li><a href="#method-i-mean">#mean</a></li>
+          
+          <li><a href="#method-i-read_dump_file">#read_dump_file</a></li>
+          
+          <li><a href="#method-i-stats">#stats</a></li>
+          
+          <li><a href="#method-i-std_dev">#std_dev</a></li>
+          
+          <li><a href="#method-i-sum">#sum</a></li>
+          
+          <li><a href="#method-i-transform">#transform</a></li>
+          
+          <li><a href="#method-i-write_to_file">#write_to_file</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="./images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="./Conf.html">Conf</a></li>
+        
+          <li><a href="./Conf/ActionField.html">Conf::ActionField</a></li>
+        
+          <li><a href="./Conf/App.html">Conf::App</a></li>
+        
+          <li><a href="./Conf/Database.html">Conf::Database</a></li>
+        
+          <li><a href="./Conf/Directories.html">Conf::Directories</a></li>
+        
+          <li><a href="./Conf/FileManager.html">Conf::FileManager</a></li>
+        
+          <li><a href="./Conf/Filter.html">Conf::Filter</a></li>
+        
+          <li><a href="./Conf/Flow.html">Conf::Flow</a></li>
+        
+          <li><a href="./Conf/Host.html">Conf::Host</a></li>
+        
+          <li><a href="./Conf/ListField.html">Conf::ListField</a></li>
+        
+          <li><a href="./Conf/LocalFileManager.html">Conf::LocalFileManager</a></li>
+        
+          <li><a href="./Conf/Logging.html">Conf::Logging</a></li>
+        
+          <li><a href="./Conf/MeanField.html">Conf::MeanField</a></li>
+        
+          <li><a href="./Conf/Monitor.html">Conf::Monitor</a></li>
+        
+          <li><a href="./Conf/NullFilter.html">Conf::NullFilter</a></li>
+        
+          <li><a href="./Conf/SftpFileManager.html">Conf::SftpFileManager</a></li>
+        
+          <li><a href="./Conf/Source.html">Conf::Source</a></li>
+        
+          <li><a href="./Conf/Stats.html">Conf::Stats</a></li>
+        
+          <li><a href="./Conf/SumField.html">Conf::SumField</a></li>
+        
+          <li><a href="./Database.html">Database</a></li>
+        
+          <li><a href="./Database/GenericTable.html">Database::GenericTable</a></li>
+        
+          <li><a href="./Database/Mysql.html">Database::Mysql</a></li>
+        
+          <li><a href="./Database/Mysql/Result.html">Database::Mysql::Result</a></li>
+        
+          <li><a href="./Database/Schema.html">Database::Schema</a></li>
+        
+          <li><a href="./Database/Schema/Monitor.html">Database::Schema::Monitor</a></li>
+        
+          <li><a href="./Database/Schema/Monitor/GenericSchema.html">Database::Schema::Monitor::GenericSchema</a></li>
+        
+          <li><a href="./Database/Schema/Monitor/NewGenericSchema.html">Database::Schema::Monitor::NewGenericSchema</a></li>
+        
+          <li><a href="./Database/Schema/Source.html">Database::Schema::Source</a></li>
+        
+          <li><a href="./Database/Schema/Source/FileCountSchema.html">Database::Schema::Source::FileCountSchema</a></li>
+        
+          <li><a href="./Database/Schema/Source/GenericSchema.html">Database::Schema::Source::GenericSchema</a></li>
+        
+          <li><a href="./Database/Schema/Source/IndexerSchema.html">Database::Schema::Source::IndexerSchema</a></li>
+        
+          <li><a href="./Database/Schema/Source/ProceraSchema.html">Database::Schema::Source::ProceraSchema</a></li>
+        
+          <li><a href="./Database/SqlGenerator.html">Database::SqlGenerator</a></li>
+        
+          <li><a href="./Database/TableRotator.html">Database::TableRotator</a></li>
+        
+          <li><a href="./Database/TableUtil.html">Database::TableUtil</a></li>
+        
+          <li><a href="./Mapper.html">Mapper</a></li>
+        
+          <li><a href="./Mapper/GenericMapper.html">Mapper::GenericMapper</a></li>
+        
+          <li><a href="./Mapper/LogicaMapper.html">Mapper::LogicaMapper</a></li>
+        
+          <li><a href="./Mapper/MmsOutMapper.html">Mapper::MmsOutMapper</a></li>
+        
+          <li><a href="./Mapper/Nkm15Mapper.html">Mapper::Nkm15Mapper</a></li>
+        
+          <li><a href="./Mapper/PGWMapper.html">Mapper::PGWMapper</a></li>
+        
+          <li><a href="./Mapper/ProceraMapper.html">Mapper::ProceraMapper</a></li>
+        
+          <li><a href="./Mapper/SmsMapper.html">Mapper::SmsMapper</a></li>
+        
+          <li><a href="./Mapper/TAPMapper.html">Mapper::TAPMapper</a></li>
+        
+          <li><a href="./Mapper/TalMapper.html">Mapper::TalMapper</a></li>
+        
+          <li><a href="./Mapper/XDRMapper.html">Mapper::XDRMapper</a></li>
+        
+          <li><a href="./Decoder.html">Decoder</a></li>
+        
+          <li><a href="./Decoder/BigCSVDecoder.html">Decoder::BigCSVDecoder</a></li>
+        
+          <li><a href="./Decoder/CSVDecoder.html">Decoder::CSVDecoder</a></li>
+        
+          <li><a href="./Decoder/CSVFields.html">Decoder::CSVFields</a></li>
+        
+          <li><a href="./Decoder/LogicaDecoder.html">Decoder::LogicaDecoder</a></li>
+        
+          <li><a href="./Decoder/NKM15Decoder.html">Decoder::NKM15Decoder</a></li>
+        
+          <li><a href="./Decoder/NullDecoder.html">Decoder::NullDecoder</a></li>
+        
+          <li><a href="./Decoder/PGWDecoder.html">Decoder::PGWDecoder</a></li>
+        
+          <li><a href="./Decoder/TALDecoder.html">Decoder::TALDecoder</a></li>
+        
+          <li><a href="./Decoder/XDRDecoder.html">Decoder::XDRDecoder</a></li>
+        
+          <li><a href="./Inserter.html">Inserter</a></li>
+        
+          <li><a href="./Inserter/BigSourceInserter.html">Inserter::BigSourceInserter</a></li>
+        
+          <li><a href="./Inserter/GenericSourceInserter.html">Inserter::GenericSourceInserter</a></li>
+        
+          <li><a href="./Inserter/NullSourceInserter.html">Inserter::NullSourceInserter</a></li>
+        
+          <li><a href="./Inserter/PGWInserter.html">Inserter::PGWInserter</a></li>
+        
+          <li><a href="./Parser.html">Parser</a></li>
+        
+          <li><a href="./Parser/CheckParser.html">Parser::CheckParser</a></li>
+        
+          <li><a href="./Parser/DatabaseParser.html">Parser::DatabaseParser</a></li>
+        
+          <li><a href="./Parser/DirectoriesParser.html">Parser::DirectoriesParser</a></li>
+        
+          <li><a href="./Parser/OperationParser.html">Parser::OperationParser</a></li>
+        
+          <li><a href="./Getter.html">Getter</a></li>
+        
+          <li><a href="./Getter/FileCountGetter.html">Getter::FileCountGetter</a></li>
+        
+          <li><a href="./Getter/GenericSourceGetter.html">Getter::GenericSourceGetter</a></li>
+        
+          <li><a href="./Getter/NullSourceGetter.html">Getter::NullSourceGetter</a></li>
+        
+          <li><a href="./Fetchers.html">Fetchers</a></li>
+        
+          <li><a href="./Fetchers/LocalFileFetcher.html">Fetchers::LocalFileFetcher</a></li>
+        
+          <li><a href="./Fetchers/SftpFileFetcher.html">Fetchers::SftpFileFetcher</a></li>
+        
+          <li><a href="./Stats.html">Stats</a></li>
+        
+          <li><a href="./Stats/BacklogStats.html">Stats::BacklogStats</a></li>
+        
+          <li><a href="./Stats/GenericStats.html">Stats::GenericStats</a></li>
+        
+          <li><a href="./CDR.html">CDR</a></li>
+        
+          <li><a href="./CDR/File.html">CDR::File</a></li>
+        
+          <li><a href="./IncludeModule.html">IncludeModule</a></li>
+        
+          <li><a href="./IncludeModule/ModuleClass.html">IncludeModule::ModuleClass</a></li>
+        
+          <li><a href="./Collector.html">Collector</a></li>
+        
+          <li><a href="./Debug.html">Debug</a></li>
+        
+          <li><a href="./EMMConfig.html">EMMConfig</a></li>
+        
+          <li><a href="./Fixnum.html">Fixnum</a></li>
+        
+          <li><a href="./Lazy.html">Lazy</a></li>
+        
+          <li><a href="./LazyLispyEnumerable.html">LazyLispyEnumerable</a></li>
+        
+          <li><a href="./LispyEnumerable.html">LispyEnumerable</a></li>
+        
+          <li><a href="./Logger.html">Logger</a></li>
+        
+          <li><a href="./MysqlDumper.html">MysqlDumper</a></li>
+        
+          <li><a href="./Object.html">Object</a></li>
+        
+          <li><a href="./RubyUtil.html">RubyUtil</a></li>
+        
+          <li><a href="./SignalHandler.html">SignalHandler</a></li>
+        
+          <li><a href="./SuperTest.html">SuperTest</a></li>
+        
+          <li><a href="./T1.html">T1</a></li>
+        
+          <li><a href="./T2.html">T2</a></li>
+        
+          <li><a href="./Test.html">Test</a></li>
+        
+          <li><a href="./Test2.html">Test2</a></li>
+        
+          <li><a href="./TestParser.html">TestParser</a></li>
+        
+          <li><a href="./Util.html">Util</a></li>
+        
+          <li><a href="./ValueModule.html">ValueModule</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="module">MysqlDumper</h1>
+
+    <div id="description" class="description">
+      
+<p>Copyright (C) 2014-2015 Nicolas GAILLY for Orange Communications SA,
+Switzerland</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the “Software”),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.</p>
+
+<pre>Module that can dump mysql statements to describe a log file</pre>
+
+<p>It can take file name as input, with the right decoder (in decoders/
+folder) or <a href="CDR/File.html">CDR::File</a> objects .. It will make an
+average and decide on best situation  can write the dump in a file
+specified</p>
+
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+      <!-- Constants -->
+      <div id="constants-list" class="section">
+        <h3 class="section-header">Constants</h3>
+        <dl>
+        
+          <dt><a name="MAX_DEV">MAX_DEV</a></dt>
+          
+          <dd class="description"></dd>
+          
+        
+        </dl>
+      </div>
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="analyze-method" class="method-detail ">
+          <a name="method-i-analyze"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">analyze</span><span
+              class="method-args">(shared,field,values)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>main function that will analyze  the values and return SQL statement if
+this field is shared amongst every records or not and the values for this
+field</p>
+            
+
+            
+            <div class="method-source-code" id="analyze-source">
+<pre>
+<span class="ruby-comment"># File decoders/dump.rb, line 72</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">analyze</span> <span class="ruby-identifier">shared</span>,<span class="ruby-identifier">field</span>,<span class="ruby-identifier">values</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">field</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">start_with?</span>(<span class="ruby-constant">Util</span><span class="ruby-operator">::</span><span class="ruby-constant">TIME_PREFIX</span>) <span class="ruby-comment">## TIME STAMP !</span>
+        <span class="ruby-identifier">v</span> = <span class="ruby-string">&quot;INT UNSIGNED DEFAULT 0&quot;</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;DUMP FIELD : #{field} =&gt; #{v}&quot;</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">v</span>
+    <span class="ruby-keyword">end</span> 
+    <span class="ruby-comment">## analyze otherwise</span>
+    <span class="ruby-identifier">size_values</span> = <span class="ruby-identifier">values</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> <span class="ruby-identifier">c</span>.<span class="ruby-identifier">size</span> }
+    <span class="ruby-identifier">mean</span> = <span class="ruby-identifier">mean</span>(<span class="ruby-identifier">size_values</span>)
+    <span class="ruby-identifier">max</span> = <span class="ruby-identifier">max</span>(<span class="ruby-identifier">size_values</span>)
+    <span class="ruby-identifier">dev</span> = <span class="ruby-identifier">std_dev</span>(<span class="ruby-identifier">size_values</span>,<span class="ruby-identifier">mean</span>)
+    <span class="ruby-comment">## check number, letters </span>
+    <span class="ruby-identifier">num</span>,<span class="ruby-identifier">alpha</span>,<span class="ruby-identifier">hexa</span> = <span class="ruby-identifier">detect_input</span> <span class="ruby-identifier">values</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">max</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;Field #{field} has a max of 0, do you want to keep it ? (y/n) : &quot;</span>
+        <span class="ruby-identifier">v</span> = <span class="ruby-string">&quot;&quot;</span>
+        <span class="ruby-identifier">v</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span> <span class="ruby-keyword">while</span> <span class="ruby-identifier">v</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;y&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">v</span> <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;n&quot;</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">v</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;y&quot;</span> 
+            <span class="ruby-identifier">v</span> = <span class="ruby-string">&quot;&quot;</span>
+            <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;Enter the MySql type you want for this field : &quot;</span>
+            <span class="ruby-identifier">v</span> = <span class="ruby-constant">STDIN</span>.<span class="ruby-identifier">gets</span>.<span class="ruby-identifier">chomp</span> <span class="ruby-keyword">while</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">empty?</span>
+            <span class="ruby-keyword">return</span> <span class="ruby-identifier">v</span>
+        <span class="ruby-keyword">else</span>
+            <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment">## for now, only consider CHAR or VARCHAR values</span>
+    <span class="ruby-comment"># due to the casting pb in the the monitoring tool</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">shared</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">dev</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-constant">MysqlDumper</span><span class="ruby-operator">::</span><span class="ruby-constant">MAX_DEV</span>
+        <span class="ruby-identifier">v</span> = <span class="ruby-node">&quot;CHAR(#{max}) DEFAULT ''&quot;</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">mean</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">2</span> <span class="ruby-comment">## if size &lt; 2, no need to varchar, otehrwise making overhead over nothing !</span>
+        <span class="ruby-identifier">v</span> = <span class="ruby-node">&quot;CHAR(#{max}) DEFAULT ''&quot;</span>
+    <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">v</span> = <span class="ruby-node">&quot;VARCHAR(#{max}) DEFAULT ''&quot;</span> 
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;DUMP FIELD : #{field} =&gt; max: #{max} , dev : #{dev}, mean: #{mean} ==&gt; #{v}&quot;</span>)
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">v</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- analyze-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- analyze-method -->
+
+      
+        <div id="detect_input-method" class="method-detail ">
+          <a name="method-i-detect_input"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">detect_input</span><span
+              class="method-args">(values)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>detect ahh the characteres inside</p>
+            
+
+            
+            <div class="method-source-code" id="detect_input-source">
+<pre>
+<span class="ruby-comment"># File decoders/dump.rb, line 117</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">detect_input</span> <span class="ruby-identifier">values</span>
+    <span class="ruby-identifier">chars</span> = <span class="ruby-constant">Set</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">values</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">cs</span> = <span class="ruby-identifier">row</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;&quot;</span>)
+        <span class="ruby-identifier">chars</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">cs</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">letters</span> = (<span class="ruby-string">&quot;a&quot;</span><span class="ruby-operator">..</span><span class="ruby-string">&quot;z&quot;</span>).<span class="ruby-identifier">to_a</span>
+    <span class="ruby-identifier">nums</span> = (<span class="ruby-string">&quot;1&quot;</span><span class="ruby-operator">..</span><span class="ruby-string">&quot;9&quot;</span>).<span class="ruby-identifier">to_a</span>
+
+    <span class="ruby-identifier">num</span> = (<span class="ruby-identifier">chars</span> &amp; <span class="ruby-identifier">nums</span>).<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">false</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>
+    <span class="ruby-identifier">alpha</span> = (<span class="ruby-identifier">chars</span> &amp; <span class="ruby-identifier">letters</span>).<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">false</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>
+    <span class="ruby-identifier">hexa</span> = (<span class="ruby-identifier">alpha</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">num</span>) <span class="ruby-operator">?</span> (<span class="ruby-identifier">chars</span>.<span class="ruby-identifier">any?</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-string">&quot;g&quot;</span>} <span class="ruby-operator">?</span> <span class="ruby-keyword">false</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">true</span> ) <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">num</span>,<span class="ruby-identifier">alpha</span>,<span class="ruby-identifier">hexa</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- detect_input-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- detect_input-method -->
+
+      
+        <div id="dump-method" class="method-detail ">
+          <a name="method-i-dump"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">dump</span><span
+              class="method-args">(decoder, files, opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="dump-source">
+<pre>
+<span class="ruby-comment"># File decoders/dump.rb, line 47</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">dump</span> <span class="ruby-identifier">decoder</span>, <span class="ruby-identifier">files</span>, <span class="ruby-identifier">opts</span> = {}
+    <span class="ruby-identifier">list</span> = <span class="ruby-identifier">transform</span> <span class="ruby-identifier">files</span>
+    <span class="ruby-identifier">info</span>,<span class="ruby-identifier">fields</span>,<span class="ruby-identifier">names</span> = <span class="ruby-identifier">stats</span> <span class="ruby-identifier">decoder</span>,<span class="ruby-identifier">list</span>
+    <span class="ruby-identifier">sql</span> = {}
+    <span class="ruby-identifier">info</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">field</span>,<span class="ruby-identifier">values</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">shared</span> = <span class="ruby-identifier">is_shared?</span> <span class="ruby-identifier">names</span>,<span class="ruby-identifier">fields</span>[<span class="ruby-identifier">field</span>]
+        <span class="ruby-identifier">v</span> = <span class="ruby-identifier">analyze</span> <span class="ruby-identifier">shared</span>,<span class="ruby-identifier">field</span>,<span class="ruby-identifier">values</span>
+        <span class="ruby-identifier">sql</span>[<span class="ruby-identifier">field</span>] = <span class="ruby-identifier">v</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">v</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">write_to_file</span> <span class="ruby-identifier">sql</span>,<span class="ruby-identifier">opts</span>[<span class="ruby-value">:file</span>]  <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:file</span>]
+    <span class="ruby-identifier">sql</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- dump-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- dump-method -->
+
+      
+        <div id="is_shared-3F-method" class="method-detail ">
+          <a name="method-i-is_shared-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">is_shared?</span><span
+              class="method-args">(names , field_by_names)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="is_shared-3F-source">
+<pre>
+<span class="ruby-comment"># File decoders/dump.rb, line 111</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">is_shared?</span> <span class="ruby-identifier">names</span> , <span class="ruby-identifier">field_by_names</span>
+    <span class="ruby-identifier">names</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">field_by_names</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- is_shared-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- is_shared-3F-method -->
+
+      
+        <div id="max-method" class="method-detail ">
+          <a name="method-i-max"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">max</span><span
+              class="method-args">(values)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="max-source">
+<pre>
+<span class="ruby-comment"># File decoders/dump.rb, line 181</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">max</span> <span class="ruby-identifier">values</span>
+    <span class="ruby-identifier">values</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value">0</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">col</span>,<span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">col</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">col</span> }
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- max-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- max-method -->
+
+      
+        <div id="mean-method" class="method-detail ">
+          <a name="method-i-mean"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">mean</span><span
+              class="method-args">(values)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="mean-source">
+<pre>
+<span class="ruby-comment"># File decoders/dump.rb, line 189</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">mean</span> <span class="ruby-identifier">values</span>
+    <span class="ruby-identifier">sum</span>(<span class="ruby-identifier">values</span>) <span class="ruby-operator">/</span> <span class="ruby-identifier">values</span>.<span class="ruby-identifier">length</span>.<span class="ruby-identifier">to_f</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- mean-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- mean-method -->
+
+      
+        <div id="read_dump_file-method" class="method-detail ">
+          <a name="method-i-read_dump_file"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">read_dump_file</span><span
+              class="method-args">(file)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>file must be in format column_name:SQL TYPE output format is a Hash key
+=&gt; column_name value =&gt; sql type</p>
+            
+
+            
+            <div class="method-source-code" id="read_dump_file-source">
+<pre>
+<span class="ruby-comment"># File decoders/dump.rb, line 38</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">read_dump_file</span> <span class="ruby-identifier">file</span>
+    <span class="ruby-identifier">hash</span> = {}
+    <span class="ruby-constant">File</span>.<span class="ruby-identifier">read</span>(<span class="ruby-identifier">file</span>).<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;\n&quot;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">field</span>,<span class="ruby-identifier">sql</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">split</span> <span class="ruby-string">':'</span>
+        <span class="ruby-identifier">hash</span>[<span class="ruby-identifier">field</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_sym</span>] = <span class="ruby-identifier">sql</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">hash</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- read_dump_file-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- read_dump_file-method -->
+
+      
+        <div id="stats-method" class="method-detail ">
+          <a name="method-i-stats"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">stats</span><span
+              class="method-args">(decoder,file_list)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>return a hash with</pre>
+
+<p>key = field name value = Array of values Array of all fields set of records
+name</p>
+            
+
+            
+            <div class="method-source-code" id="stats-source">
+<pre>
+<span class="ruby-comment"># File decoders/dump.rb, line 150</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">stats</span> <span class="ruby-identifier">decoder</span>,<span class="ruby-identifier">file_list</span>
+    <span class="ruby-identifier">stats</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">h</span>,<span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-identifier">k</span>] = [] }
+    <span class="ruby-comment"># or just some particular ones</span>
+    <span class="ruby-comment"># key : field name</span>
+    <span class="ruby-comment"># value : set of records name that share that field</span>
+    <span class="ruby-identifier">afields</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span>,<span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-constant">Set</span>.<span class="ruby-identifier">new</span> }
+    <span class="ruby-comment">## collection of records name</span>
+    <span class="ruby-identifier">names</span> = <span class="ruby-constant">Set</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">file_list</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">json</span> = <span class="ruby-identifier">decoder</span>.<span class="ruby-identifier">decode</span> <span class="ruby-identifier">file</span>
+        <span class="ruby-identifier">hn</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span>,<span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-identifier">k</span>] = [] }
+        <span class="ruby-comment">## s is a hash with</span>
+        <span class="ruby-comment">#key : field name  =&gt; arr of values !</span>
+        <span class="ruby-identifier">s</span> = <span class="ruby-identifier">json</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-identifier">hn</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">col</span>,(<span class="ruby-identifier">name</span>,<span class="ruby-identifier">hash</span>)<span class="ruby-operator">|</span>
+            <span class="ruby-identifier">names</span>.<span class="ruby-identifier">add</span>(<span class="ruby-identifier">name</span>)
+            <span class="ruby-identifier">fields</span> = <span class="ruby-identifier">hash</span>[<span class="ruby-value">:fields</span>]
+            <span class="ruby-identifier">values</span> = <span class="ruby-identifier">hash</span>[<span class="ruby-value">:values</span>]
+            <span class="ruby-comment">## iteratoe over each field</span>
+            <span class="ruby-identifier">fields</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">field</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">afields</span>[<span class="ruby-identifier">field</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">name</span>
+                <span class="ruby-identifier">values</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+                    <span class="ruby-identifier">col</span>[<span class="ruby-identifier">field</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>[<span class="ruby-identifier">index</span>]
+                <span class="ruby-keyword">end</span>
+            <span class="ruby-keyword">end</span>
+            <span class="ruby-identifier">col</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">s</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span>,<span class="ruby-identifier">arr</span><span class="ruby-operator">|</span>  <span class="ruby-identifier">stats</span>[<span class="ruby-identifier">f</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">arr</span> }
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">stats</span>,<span class="ruby-identifier">afields</span>,<span class="ruby-identifier">names</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- stats-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- stats-method -->
+
+      
+        <div id="std_dev-method" class="method-detail ">
+          <a name="method-i-std_dev"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">std_dev</span><span
+              class="method-args">(values,mean_ = nil)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="std_dev-source">
+<pre>
+<span class="ruby-comment"># File decoders/dump.rb, line 193</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">std_dev</span> <span class="ruby-identifier">values</span>,<span class="ruby-identifier">mean_</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-identifier">m</span> = <span class="ruby-identifier">mean_</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">mean</span>(<span class="ruby-identifier">values</span>)
+    <span class="ruby-identifier">sum</span> = <span class="ruby-identifier">values</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value">0</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">col</span>,<span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">col</span> <span class="ruby-operator">+=</span> (<span class="ruby-identifier">i</span><span class="ruby-operator">-</span><span class="ruby-identifier">m</span>)<span class="ruby-operator">**</span><span class="ruby-value">2</span> }
+    <span class="ruby-identifier">v</span> = <span class="ruby-constant">Math</span><span class="ruby-operator">::</span><span class="ruby-identifier">sqrt</span>(<span class="ruby-identifier">sum</span><span class="ruby-operator">/</span>(<span class="ruby-identifier">values</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>).<span class="ruby-identifier">to_f</span>)
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">v</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- std_dev-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- std_dev-method -->
+
+      
+        <div id="sum-method" class="method-detail ">
+          <a name="method-i-sum"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">sum</span><span
+              class="method-args">(values)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="sum-source">
+<pre>
+<span class="ruby-comment"># File decoders/dump.rb, line 185</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">sum</span> <span class="ruby-identifier">values</span>
+    <span class="ruby-identifier">values</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value">0</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">col</span>,<span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">col</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">i</span> }
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- sum-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- sum-method -->
+
+      
+        <div id="transform-method" class="method-detail ">
+          <a name="method-i-transform"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">transform</span><span
+              class="method-args">(files)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>transform in <a href="CDR/File.html">CDR::File</a> objects</p>
+            
+
+            
+            <div class="method-source-code" id="transform-source">
+<pre>
+<span class="ruby-comment"># File decoders/dump.rb, line 132</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">transform</span> <span class="ruby-identifier">files</span>
+    <span class="ruby-identifier">files</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">v</span> = <span class="ruby-keyword">nil</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">f</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">CDR</span><span class="ruby-operator">::</span><span class="ruby-constant">File</span>)
+            <span class="ruby-identifier">v</span> = <span class="ruby-constant">CDR</span><span class="ruby-operator">::</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">f</span>,<span class="ruby-identifier">search</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>)
+            <span class="ruby-identifier">v</span>.<span class="ruby-identifier">unzip!</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">zip?</span>
+        <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">v</span> = <span class="ruby-identifier">f</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">v</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- transform-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- transform-method -->
+
+      
+        <div id="write_to_file-method" class="method-detail ">
+          <a name="method-i-write_to_file"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">write_to_file</span><span
+              class="method-args">(sql,file)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="write_to_file-source">
+<pre>
+<span class="ruby-comment"># File decoders/dump.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">write_to_file</span> <span class="ruby-identifier">sql</span>,<span class="ruby-identifier">file</span>
+    <span class="ruby-identifier">open</span>(<span class="ruby-identifier">file</span>,<span class="ruby-string">&quot;w+&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">sql</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">field</span>,<span class="ruby-identifier">sql_</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">f</span>.<span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;#{field}:#{sql_}&quot;</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- write_to_file-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- write_to_file-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

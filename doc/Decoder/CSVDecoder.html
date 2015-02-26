@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: Decoder::CSVDecoder</title>
+
+  <link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#classes">Classes</a>
+          <a href="../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../decoders/csv_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="decoders/csv.rb">decoders/csv.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link"><a href="../Object.html">Object</a></p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-i-analyze">#analyze</a></li>
+          
+          <li><a href="#method-i-decode">#decode</a></li>
+          
+          <li><a href="#method-i-dump_file">#dump_file</a></li>
+          
+          <li><a href="#method-i-finalize_json">#finalize_json</a></li>
+          
+          <li><a href="#method-i-get_fields">#get_fields</a></li>
+          
+          <li><a href="#method-i-test_file">#test_file</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+      <!-- Included Modules -->
+      <div id="includes-section" class="section">
+        <h3 class="section-header">Included Modules</h3>
+        <ul class="link-list">
+        
+        
+          <li><a class="include" href="../Decoder.html">Decoder</a></li>
+        
+        
+        </ul>
+      </div>
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../Conf.html">Conf</a></li>
+        
+          <li><a href="../Conf/ActionField.html">Conf::ActionField</a></li>
+        
+          <li><a href="../Conf/App.html">Conf::App</a></li>
+        
+          <li><a href="../Conf/Database.html">Conf::Database</a></li>
+        
+          <li><a href="../Conf/Directories.html">Conf::Directories</a></li>
+        
+          <li><a href="../Conf/FileManager.html">Conf::FileManager</a></li>
+        
+          <li><a href="../Conf/Filter.html">Conf::Filter</a></li>
+        
+          <li><a href="../Conf/Flow.html">Conf::Flow</a></li>
+        
+          <li><a href="../Conf/Host.html">Conf::Host</a></li>
+        
+          <li><a href="../Conf/ListField.html">Conf::ListField</a></li>
+        
+          <li><a href="../Conf/LocalFileManager.html">Conf::LocalFileManager</a></li>
+        
+          <li><a href="../Conf/Logging.html">Conf::Logging</a></li>
+        
+          <li><a href="../Conf/MeanField.html">Conf::MeanField</a></li>
+        
+          <li><a href="../Conf/Monitor.html">Conf::Monitor</a></li>
+        
+          <li><a href="../Conf/NullFilter.html">Conf::NullFilter</a></li>
+        
+          <li><a href="../Conf/SftpFileManager.html">Conf::SftpFileManager</a></li>
+        
+          <li><a href="../Conf/Source.html">Conf::Source</a></li>
+        
+          <li><a href="../Conf/Stats.html">Conf::Stats</a></li>
+        
+          <li><a href="../Conf/SumField.html">Conf::SumField</a></li>
+        
+          <li><a href="../Database.html">Database</a></li>
+        
+          <li><a href="../Database/GenericTable.html">Database::GenericTable</a></li>
+        
+          <li><a href="../Database/Mysql.html">Database::Mysql</a></li>
+        
+          <li><a href="../Database/Mysql/Result.html">Database::Mysql::Result</a></li>
+        
+          <li><a href="../Database/Schema.html">Database::Schema</a></li>
+        
+          <li><a href="../Database/Schema/Monitor.html">Database::Schema::Monitor</a></li>
+        
+          <li><a href="../Database/Schema/Monitor/GenericSchema.html">Database::Schema::Monitor::GenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Monitor/NewGenericSchema.html">Database::Schema::Monitor::NewGenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source.html">Database::Schema::Source</a></li>
+        
+          <li><a href="../Database/Schema/Source/FileCountSchema.html">Database::Schema::Source::FileCountSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/GenericSchema.html">Database::Schema::Source::GenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/IndexerSchema.html">Database::Schema::Source::IndexerSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/ProceraSchema.html">Database::Schema::Source::ProceraSchema</a></li>
+        
+          <li><a href="../Database/SqlGenerator.html">Database::SqlGenerator</a></li>
+        
+          <li><a href="../Database/TableRotator.html">Database::TableRotator</a></li>
+        
+          <li><a href="../Database/TableUtil.html">Database::TableUtil</a></li>
+        
+          <li><a href="../Mapper.html">Mapper</a></li>
+        
+          <li><a href="../Mapper/GenericMapper.html">Mapper::GenericMapper</a></li>
+        
+          <li><a href="../Mapper/LogicaMapper.html">Mapper::LogicaMapper</a></li>
+        
+          <li><a href="../Mapper/MmsOutMapper.html">Mapper::MmsOutMapper</a></li>
+        
+          <li><a href="../Mapper/Nkm15Mapper.html">Mapper::Nkm15Mapper</a></li>
+        
+          <li><a href="../Mapper/PGWMapper.html">Mapper::PGWMapper</a></li>
+        
+          <li><a href="../Mapper/ProceraMapper.html">Mapper::ProceraMapper</a></li>
+        
+          <li><a href="../Mapper/SmsMapper.html">Mapper::SmsMapper</a></li>
+        
+          <li><a href="../Mapper/TAPMapper.html">Mapper::TAPMapper</a></li>
+        
+          <li><a href="../Mapper/TalMapper.html">Mapper::TalMapper</a></li>
+        
+          <li><a href="../Mapper/XDRMapper.html">Mapper::XDRMapper</a></li>
+        
+          <li><a href="../Decoder.html">Decoder</a></li>
+        
+          <li><a href="../Decoder/BigCSVDecoder.html">Decoder::BigCSVDecoder</a></li>
+        
+          <li><a href="../Decoder/CSVDecoder.html">Decoder::CSVDecoder</a></li>
+        
+          <li><a href="../Decoder/CSVFields.html">Decoder::CSVFields</a></li>
+        
+          <li><a href="../Decoder/LogicaDecoder.html">Decoder::LogicaDecoder</a></li>
+        
+          <li><a href="../Decoder/NKM15Decoder.html">Decoder::NKM15Decoder</a></li>
+        
+          <li><a href="../Decoder/NullDecoder.html">Decoder::NullDecoder</a></li>
+        
+          <li><a href="../Decoder/PGWDecoder.html">Decoder::PGWDecoder</a></li>
+        
+          <li><a href="../Decoder/TALDecoder.html">Decoder::TALDecoder</a></li>
+        
+          <li><a href="../Decoder/XDRDecoder.html">Decoder::XDRDecoder</a></li>
+        
+          <li><a href="../Inserter.html">Inserter</a></li>
+        
+          <li><a href="../Inserter/BigSourceInserter.html">Inserter::BigSourceInserter</a></li>
+        
+          <li><a href="../Inserter/GenericSourceInserter.html">Inserter::GenericSourceInserter</a></li>
+        
+          <li><a href="../Inserter/NullSourceInserter.html">Inserter::NullSourceInserter</a></li>
+        
+          <li><a href="../Inserter/PGWInserter.html">Inserter::PGWInserter</a></li>
+        
+          <li><a href="../Parser.html">Parser</a></li>
+        
+          <li><a href="../Parser/CheckParser.html">Parser::CheckParser</a></li>
+        
+          <li><a href="../Parser/DatabaseParser.html">Parser::DatabaseParser</a></li>
+        
+          <li><a href="../Parser/DirectoriesParser.html">Parser::DirectoriesParser</a></li>
+        
+          <li><a href="../Parser/OperationParser.html">Parser::OperationParser</a></li>
+        
+          <li><a href="../Getter.html">Getter</a></li>
+        
+          <li><a href="../Getter/FileCountGetter.html">Getter::FileCountGetter</a></li>
+        
+          <li><a href="../Getter/GenericSourceGetter.html">Getter::GenericSourceGetter</a></li>
+        
+          <li><a href="../Getter/NullSourceGetter.html">Getter::NullSourceGetter</a></li>
+        
+          <li><a href="../Fetchers.html">Fetchers</a></li>
+        
+          <li><a href="../Fetchers/LocalFileFetcher.html">Fetchers::LocalFileFetcher</a></li>
+        
+          <li><a href="../Fetchers/SftpFileFetcher.html">Fetchers::SftpFileFetcher</a></li>
+        
+          <li><a href="../Stats.html">Stats</a></li>
+        
+          <li><a href="../Stats/BacklogStats.html">Stats::BacklogStats</a></li>
+        
+          <li><a href="../Stats/GenericStats.html">Stats::GenericStats</a></li>
+        
+          <li><a href="../CDR.html">CDR</a></li>
+        
+          <li><a href="../CDR/File.html">CDR::File</a></li>
+        
+          <li><a href="../IncludeModule.html">IncludeModule</a></li>
+        
+          <li><a href="../IncludeModule/ModuleClass.html">IncludeModule::ModuleClass</a></li>
+        
+          <li><a href="../Collector.html">Collector</a></li>
+        
+          <li><a href="../Debug.html">Debug</a></li>
+        
+          <li><a href="../EMMConfig.html">EMMConfig</a></li>
+        
+          <li><a href="../Fixnum.html">Fixnum</a></li>
+        
+          <li><a href="../Lazy.html">Lazy</a></li>
+        
+          <li><a href="../LazyLispyEnumerable.html">LazyLispyEnumerable</a></li>
+        
+          <li><a href="../LispyEnumerable.html">LispyEnumerable</a></li>
+        
+          <li><a href="../Logger.html">Logger</a></li>
+        
+          <li><a href="../MysqlDumper.html">MysqlDumper</a></li>
+        
+          <li><a href="../Object.html">Object</a></li>
+        
+          <li><a href="../RubyUtil.html">RubyUtil</a></li>
+        
+          <li><a href="../SignalHandler.html">SignalHandler</a></li>
+        
+          <li><a href="../SuperTest.html">SuperTest</a></li>
+        
+          <li><a href="../T1.html">T1</a></li>
+        
+          <li><a href="../T2.html">T2</a></li>
+        
+          <li><a href="../Test.html">Test</a></li>
+        
+          <li><a href="../Test2.html">Test2</a></li>
+        
+          <li><a href="../TestParser.html">TestParser</a></li>
+        
+          <li><a href="../Util.html">Util</a></li>
+        
+          <li><a href="../ValueModule.html">ValueModule</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Decoder::CSVDecoder</h1>
+
+    <div id="description" class="description">
+      
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+      <!-- Constants -->
+      <div id="constants-list" class="section">
+        <h3 class="section-header">Constants</h3>
+        <dl>
+        
+          <dt><a name="DEFAULT_SEP">DEFAULT_SEP</a></dt>
+          
+          <dd class="description"></dd>
+          
+        
+        </dl>
+      </div>
+      
+
+      
+      <!-- Attributes -->
+      <div id="attribute-method-details" class="method-section section">
+        <h3 class="section-header">Attributes</h3>
+
+        
+        <div id="sep-attribute-method" class="method-detail">
+          <a name="sep"></a>
+          
+          <a name="sep="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">sep</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+      </div><!-- attribute-method-details -->
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File decoders/csv.rb, line 32</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">opts</span> = {}
+    <span class="ruby-ivar">@opts</span> = <span class="ruby-identifier">opts</span>
+    <span class="ruby-ivar">@sep</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:separator</span>] <span class="ruby-operator">||</span> <span class="ruby-constant">DEFAULT_SEP</span>
+    <span class="ruby-ivar">@type</span> = <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:type</span>]
+    <span class="ruby-ivar">@FIELDS</span>,<span class="ruby-ivar">@RECORDS</span> = <span class="ruby-constant">CSVFields</span><span class="ruby-operator">::</span><span class="ruby-identifier">retrieve</span>(<span class="ruby-ivar">@type</span>)
+    <span class="ruby-ivar">@csv_opts</span> = { <span class="ruby-identifier">col_sep</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@sep</span>, <span class="ruby-value">:unconverted_fields</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;&quot;</span> }
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="analyze-method" class="method-detail ">
+          <a name="method-i-analyze"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">analyze</span><span
+              class="method-args">(record)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>INSERT in JSON or yield etc</p>
+            
+
+            
+            <div class="method-source-code" id="analyze-source">
+<pre>
+<span class="ruby-comment"># File decoders/csv.rb, line 90</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">analyze</span> <span class="ruby-identifier">record</span>
+    <span class="ruby-comment"># type of record</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@RECORDS</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-comment">## if a file only describe one type of record</span>
+        <span class="ruby-identifier">name</span> = <span class="ruby-ivar">@type</span>
+    <span class="ruby-keyword">else</span> <span class="ruby-comment">## otherwise we pick up the name of the record being analyzed</span>
+        <span class="ruby-identifier">code</span> = <span class="ruby-identifier">record</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">to_i</span>
+        <span class="ruby-identifier">name</span> = <span class="ruby-ivar">@RECORDS</span>.<span class="ruby-identifier">key</span>(<span class="ruby-identifier">code</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">name</span> <span class="ruby-comment"># if we have no idea what this records is ...</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment"># first time we see this record</span>
+    <span class="ruby-comment"># so we take its fields name</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@json</span>[<span class="ruby-identifier">name</span>][<span class="ruby-value">:fields</span>]
+        <span class="ruby-ivar">@json</span>[<span class="ruby-identifier">name</span>][<span class="ruby-value">:fields</span>] = <span class="ruby-identifier">get_fields</span> <span class="ruby-identifier">code</span>
+        <span class="ruby-ivar">@json</span>[<span class="ruby-identifier">name</span>][<span class="ruby-value">:values</span>] = []
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-ivar">@json</span>[<span class="ruby-identifier">name</span>][<span class="ruby-value">:values</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">record</span>
+    
+
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;DEBUG&quot;</span>,<span class="ruby-node">&quot;Decoded #{@nb_line} lines for now ... &quot;</span>,<span class="ruby-identifier">inline</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:v</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@nb_line</span> <span class="ruby-operator">%</span> <span class="ruby-value">10000</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- analyze-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- analyze-method -->
+
+      
+        <div id="decode-method" class="method-detail ">
+          <a name="method-i-decode"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">decode</span><span
+              class="method-args">(file,&block)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>main method</pre>
+
+<p>if you call it like this, it will return a JSON structure Type of record
+==&gt; :fields =&gt; field : index</p>
+
+<pre>:values =&gt; matrix of values, each line is a record</pre>
+
+<p>You can also call it with a block, then the method will yield the fields
+hash, and the record just analyzed</p>
+            
+
+            
+            <div class="method-source-code" id="decode-source">
+<pre>
+<span class="ruby-comment"># File decoders/csv.rb, line 56</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">decode</span> <span class="ruby-identifier">file</span>,&amp;<span class="ruby-identifier">block</span>
+    <span class="ruby-identifier">check</span> <span class="ruby-identifier">file</span>
+    <span class="ruby-ivar">@nb_line</span> = <span class="ruby-value">0</span>
+    <span class="ruby-identifier">fields</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-ivar">@json</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span>,<span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-identifier">k</span>] = {} }
+    <span class="ruby-identifier">fhandler</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">file</span>.<span class="ruby-identifier">full_path</span>,<span class="ruby-string">&quot;r&quot;</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file_</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">lines</span> = <span class="ruby-identifier">file_</span>.<span class="ruby-identifier">lines</span> <span class="ruby-comment"># enumerator</span>
+        <span class="ruby-identifier">lines</span>.<span class="ruby-identifier">next</span> <span class="ruby-keyword">if</span>  <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:skip_header</span>] <span class="ruby-comment">## if we want to skip first line</span>
+        <span class="ruby-identifier">lines</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">line</span><span class="ruby-operator">|</span>
+            <span class="ruby-ivar">@nb_line</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+            <span class="ruby-comment">## remove nils elements ...</span>
+            <span class="ruby-identifier">record</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">chomp</span>.<span class="ruby-identifier">split</span>(<span class="ruby-ivar">@sep</span>).<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">?</span>  <span class="ruby-identifier">c</span> <span class="ruby-operator">:</span> <span class="ruby-string">&quot;&quot;</span> }
+            <span class="ruby-comment">## Proc.new without block wraps the block given to the decode meth</span>
+            <span class="ruby-keyword">break</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">analyze</span>(<span class="ruby-identifier">record</span>,&amp;<span class="ruby-identifier">block</span>)               
+            <span class="ruby-constant">SignalHandler</span>.<span class="ruby-identifier">check</span> { <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;WARNING&quot;</span>,<span class="ruby-node">&quot;Stopping decoding file #{file.full_path}&quot;</span>); <span class="ruby-identifier">file_</span>.<span class="ruby-identifier">close</span> }
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">finalize_json</span>
+<span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;ERROR&quot;</span>,<span class="ruby-node">&quot;Error CSV Decoding file #{file.full_path}: #{e.message}&quot;</span>)
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- decode-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- decode-method -->
+
+      
+        <div id="dump_file-method" class="method-detail ">
+          <a name="method-i-dump_file"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">dump_file</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="dump_file-source">
+<pre>
+<span class="ruby-comment"># File decoders/csv.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">dump_file</span>
+    <span class="ruby-ivar">@dump_file</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-keyword">__FILE__</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;/&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@type</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;dump&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- dump_file-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- dump_file-method -->
+
+      
+        <div id="finalize_json-method" class="method-detail ">
+          <a name="method-i-finalize_json"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">finalize_json</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>MAP &amp; FILTER &amp; SANITIZE AND RETURN JSON</p>
+            
+
+            
+            <div class="method-source-code" id="finalize_json-source">
+<pre>
+<span class="ruby-comment"># File decoders/csv.rb, line 80</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">finalize_json</span> 
+    <span class="ruby-identifier">sanitize_json</span> <span class="ruby-ivar">@json</span>
+    <span class="ruby-ivar">@json</span> = <span class="ruby-ivar">@mapper</span>.<span class="ruby-identifier">map_json</span>(<span class="ruby-ivar">@json</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@mapper</span>
+    <span class="ruby-constant">Debug</span><span class="ruby-operator">::</span><span class="ruby-identifier">debug_json</span> <span class="ruby-ivar">@json</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:d</span>]
+    <span class="ruby-ivar">@json</span> = <span class="ruby-ivar">@filter</span>.<span class="ruby-identifier">filter_json</span>(<span class="ruby-ivar">@json</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@filter</span>
+    <span class="ruby-constant">Debug</span><span class="ruby-operator">::</span><span class="ruby-identifier">debug_json</span> <span class="ruby-ivar">@json</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:d</span>]
+    <span class="ruby-ivar">@json</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- finalize_json-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- finalize_json-method -->
+
+      
+        <div id="get_fields-method" class="method-detail ">
+          <a name="method-i-get_fields"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">get_fields</span><span
+              class="method-args">(code = nil)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>return the hash of fields</pre>
+
+<p>key : field name value : index in the record</p>
+            
+
+            
+            <div class="method-source-code" id="get_fields-source">
+<pre>
+<span class="ruby-comment"># File decoders/csv.rb, line 115</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_fields</span> <span class="ruby-identifier">code</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-identifier">fields</span> = <span class="ruby-keyword">nil</span> 
+    <span class="ruby-comment">## ie. only one type of records, just fetch all fields directly</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@RECORDS</span>.<span class="ruby-identifier">empty?</span>
+        <span class="ruby-identifier">fields</span> = <span class="ruby-ivar">@FIELDS</span>
+    <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">fields</span> = <span class="ruby-ivar">@FIELDS</span>[<span class="ruby-identifier">code</span>]
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">Hash</span>[<span class="ruby-identifier">fields</span>.<span class="ruby-identifier">each_with_index</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">v</span>,<span class="ruby-identifier">i</span><span class="ruby-operator">|</span> [<span class="ruby-identifier">v</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_sym</span>,<span class="ruby-identifier">i</span>] }]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- get_fields-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- get_fields-method -->
+
+      
+        <div id="test_file-method" class="method-detail ">
+          <a name="method-i-test_file"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">test_file</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="test_file-source">
+<pre>
+<span class="ruby-comment"># File decoders/csv.rb, line 44</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test_file</span>
+    <span class="ruby-ivar">@test_file</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-keyword">__FILE__</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;/&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@type</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;test&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- test_file-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- test_file-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

@@ -69,5 +69,6 @@ redirecting_number:CHAR(24)
 redirecting_number_ton:CHAR(2)
 routing_category:CHAR(2)
 ticket_type:CHAR(2)
+call_reference:CHAR(10) default ''
 time:CHAR(14)
 

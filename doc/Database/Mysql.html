@@ -1,0 +1,843 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: Database::Mysql</title>
+
+  <link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#classes">Classes</a>
+          <a href="../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../database/sql_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="database/sql.rb">database/sql.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link"><a href="../Object.html">Object</a></p>
+        
+      </div>
+      
+
+      
+
+      
+      <!-- Namespace Contents -->
+      <div id="namespace-list-section" class="section">
+        <h3 class="section-header">Namespace</h3>
+        <ul class="link-list">
+          
+          <li><span class="type">CLASS</span> <a href="Mysql/Result.html">Database::Mysql::Result</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-default">::default</a></li>
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-c-send_raw_sql_cmd">::send_raw_sql_cmd</a></li>
+          
+          <li><a href="#method-i-check_time">#check_time</a></li>
+          
+          <li><a href="#method-i-close">#close</a></li>
+          
+          <li><a href="#method-i-connect">#connect</a></li>
+          
+          <li><a href="#method-i-connect_">#connect_</a></li>
+          
+          <li><a href="#method-i-info">#info</a></li>
+          
+          <li><a href="#method-i-prepared_stmt">#prepared_stmt</a></li>
+          
+          <li><a href="#method-i-query">#query</a></li>
+          
+          <li><a href="#method-i-safe_query">#safe_query</a></li>
+          
+          <li><a href="#method-i-test_connection">#test_connection</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../Conf.html">Conf</a></li>
+        
+          <li><a href="../Conf/ActionField.html">Conf::ActionField</a></li>
+        
+          <li><a href="../Conf/App.html">Conf::App</a></li>
+        
+          <li><a href="../Conf/Database.html">Conf::Database</a></li>
+        
+          <li><a href="../Conf/Directories.html">Conf::Directories</a></li>
+        
+          <li><a href="../Conf/FileManager.html">Conf::FileManager</a></li>
+        
+          <li><a href="../Conf/Filter.html">Conf::Filter</a></li>
+        
+          <li><a href="../Conf/Flow.html">Conf::Flow</a></li>
+        
+          <li><a href="../Conf/Host.html">Conf::Host</a></li>
+        
+          <li><a href="../Conf/ListField.html">Conf::ListField</a></li>
+        
+          <li><a href="../Conf/LocalFileManager.html">Conf::LocalFileManager</a></li>
+        
+          <li><a href="../Conf/Logging.html">Conf::Logging</a></li>
+        
+          <li><a href="../Conf/MeanField.html">Conf::MeanField</a></li>
+        
+          <li><a href="../Conf/Monitor.html">Conf::Monitor</a></li>
+        
+          <li><a href="../Conf/NullFilter.html">Conf::NullFilter</a></li>
+        
+          <li><a href="../Conf/SftpFileManager.html">Conf::SftpFileManager</a></li>
+        
+          <li><a href="../Conf/Source.html">Conf::Source</a></li>
+        
+          <li><a href="../Conf/Stats.html">Conf::Stats</a></li>
+        
+          <li><a href="../Conf/SumField.html">Conf::SumField</a></li>
+        
+          <li><a href="../Database.html">Database</a></li>
+        
+          <li><a href="../Database/GenericTable.html">Database::GenericTable</a></li>
+        
+          <li><a href="../Database/Mysql.html">Database::Mysql</a></li>
+        
+          <li><a href="../Database/Mysql/Result.html">Database::Mysql::Result</a></li>
+        
+          <li><a href="../Database/Schema.html">Database::Schema</a></li>
+        
+          <li><a href="../Database/Schema/Monitor.html">Database::Schema::Monitor</a></li>
+        
+          <li><a href="../Database/Schema/Monitor/GenericSchema.html">Database::Schema::Monitor::GenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Monitor/NewGenericSchema.html">Database::Schema::Monitor::NewGenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source.html">Database::Schema::Source</a></li>
+        
+          <li><a href="../Database/Schema/Source/FileCountSchema.html">Database::Schema::Source::FileCountSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/GenericSchema.html">Database::Schema::Source::GenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/IndexerSchema.html">Database::Schema::Source::IndexerSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/ProceraSchema.html">Database::Schema::Source::ProceraSchema</a></li>
+        
+          <li><a href="../Database/SqlGenerator.html">Database::SqlGenerator</a></li>
+        
+          <li><a href="../Database/TableRotator.html">Database::TableRotator</a></li>
+        
+          <li><a href="../Database/TableUtil.html">Database::TableUtil</a></li>
+        
+          <li><a href="../Mapper.html">Mapper</a></li>
+        
+          <li><a href="../Mapper/GenericMapper.html">Mapper::GenericMapper</a></li>
+        
+          <li><a href="../Mapper/LogicaMapper.html">Mapper::LogicaMapper</a></li>
+        
+          <li><a href="../Mapper/MmsOutMapper.html">Mapper::MmsOutMapper</a></li>
+        
+          <li><a href="../Mapper/Nkm15Mapper.html">Mapper::Nkm15Mapper</a></li>
+        
+          <li><a href="../Mapper/PGWMapper.html">Mapper::PGWMapper</a></li>
+        
+          <li><a href="../Mapper/ProceraMapper.html">Mapper::ProceraMapper</a></li>
+        
+          <li><a href="../Mapper/SmsMapper.html">Mapper::SmsMapper</a></li>
+        
+          <li><a href="../Mapper/TAPMapper.html">Mapper::TAPMapper</a></li>
+        
+          <li><a href="../Mapper/TalMapper.html">Mapper::TalMapper</a></li>
+        
+          <li><a href="../Mapper/XDRMapper.html">Mapper::XDRMapper</a></li>
+        
+          <li><a href="../Decoder.html">Decoder</a></li>
+        
+          <li><a href="../Decoder/BigCSVDecoder.html">Decoder::BigCSVDecoder</a></li>
+        
+          <li><a href="../Decoder/CSVDecoder.html">Decoder::CSVDecoder</a></li>
+        
+          <li><a href="../Decoder/CSVFields.html">Decoder::CSVFields</a></li>
+        
+          <li><a href="../Decoder/LogicaDecoder.html">Decoder::LogicaDecoder</a></li>
+        
+          <li><a href="../Decoder/NKM15Decoder.html">Decoder::NKM15Decoder</a></li>
+        
+          <li><a href="../Decoder/NullDecoder.html">Decoder::NullDecoder</a></li>
+        
+          <li><a href="../Decoder/PGWDecoder.html">Decoder::PGWDecoder</a></li>
+        
+          <li><a href="../Decoder/TALDecoder.html">Decoder::TALDecoder</a></li>
+        
+          <li><a href="../Decoder/XDRDecoder.html">Decoder::XDRDecoder</a></li>
+        
+          <li><a href="../Inserter.html">Inserter</a></li>
+        
+          <li><a href="../Inserter/BigSourceInserter.html">Inserter::BigSourceInserter</a></li>
+        
+          <li><a href="../Inserter/GenericSourceInserter.html">Inserter::GenericSourceInserter</a></li>
+        
+          <li><a href="../Inserter/NullSourceInserter.html">Inserter::NullSourceInserter</a></li>
+        
+          <li><a href="../Inserter/PGWInserter.html">Inserter::PGWInserter</a></li>
+        
+          <li><a href="../Parser.html">Parser</a></li>
+        
+          <li><a href="../Parser/CheckParser.html">Parser::CheckParser</a></li>
+        
+          <li><a href="../Parser/DatabaseParser.html">Parser::DatabaseParser</a></li>
+        
+          <li><a href="../Parser/DirectoriesParser.html">Parser::DirectoriesParser</a></li>
+        
+          <li><a href="../Parser/OperationParser.html">Parser::OperationParser</a></li>
+        
+          <li><a href="../Getter.html">Getter</a></li>
+        
+          <li><a href="../Getter/FileCountGetter.html">Getter::FileCountGetter</a></li>
+        
+          <li><a href="../Getter/GenericSourceGetter.html">Getter::GenericSourceGetter</a></li>
+        
+          <li><a href="../Getter/NullSourceGetter.html">Getter::NullSourceGetter</a></li>
+        
+          <li><a href="../Fetchers.html">Fetchers</a></li>
+        
+          <li><a href="../Fetchers/LocalFileFetcher.html">Fetchers::LocalFileFetcher</a></li>
+        
+          <li><a href="../Fetchers/SftpFileFetcher.html">Fetchers::SftpFileFetcher</a></li>
+        
+          <li><a href="../Stats.html">Stats</a></li>
+        
+          <li><a href="../Stats/BacklogStats.html">Stats::BacklogStats</a></li>
+        
+          <li><a href="../Stats/GenericStats.html">Stats::GenericStats</a></li>
+        
+          <li><a href="../CDR.html">CDR</a></li>
+        
+          <li><a href="../CDR/File.html">CDR::File</a></li>
+        
+          <li><a href="../IncludeModule.html">IncludeModule</a></li>
+        
+          <li><a href="../IncludeModule/ModuleClass.html">IncludeModule::ModuleClass</a></li>
+        
+          <li><a href="../Collector.html">Collector</a></li>
+        
+          <li><a href="../Debug.html">Debug</a></li>
+        
+          <li><a href="../EMMConfig.html">EMMConfig</a></li>
+        
+          <li><a href="../Fixnum.html">Fixnum</a></li>
+        
+          <li><a href="../Lazy.html">Lazy</a></li>
+        
+          <li><a href="../LazyLispyEnumerable.html">LazyLispyEnumerable</a></li>
+        
+          <li><a href="../LispyEnumerable.html">LispyEnumerable</a></li>
+        
+          <li><a href="../Logger.html">Logger</a></li>
+        
+          <li><a href="../MysqlDumper.html">MysqlDumper</a></li>
+        
+          <li><a href="../Object.html">Object</a></li>
+        
+          <li><a href="../RubyUtil.html">RubyUtil</a></li>
+        
+          <li><a href="../SignalHandler.html">SignalHandler</a></li>
+        
+          <li><a href="../SuperTest.html">SuperTest</a></li>
+        
+          <li><a href="../T1.html">T1</a></li>
+        
+          <li><a href="../T2.html">T2</a></li>
+        
+          <li><a href="../Test.html">Test</a></li>
+        
+          <li><a href="../Test2.html">Test2</a></li>
+        
+          <li><a href="../TestParser.html">TestParser</a></li>
+        
+          <li><a href="../Util.html">Util</a></li>
+        
+          <li><a href="../ValueModule.html">ValueModule</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Database::Mysql</h1>
+
+    <div id="description" class="description">
+      
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="default-method" class="method-detail ">
+          <a name="method-c-default"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">default</span><span
+              class="method-args">(opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="default-source">
+<pre>
+<span class="ruby-comment"># File database/sql.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">default</span> <span class="ruby-identifier">opts</span> = {}
+    <span class="ruby-identifier">db</span> = <span class="ruby-constant">Conf</span>.<span class="ruby-identifier">database</span>
+    <span class="ruby-constant">Mysql</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">db</span>.<span class="ruby-identifier">host</span>,<span class="ruby-identifier">db</span>.<span class="ruby-identifier">name</span>,<span class="ruby-identifier">db</span>.<span class="ruby-identifier">login</span>,<span class="ruby-identifier">db</span>.<span class="ruby-identifier">password</span>,<span class="ruby-identifier">opts</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- default-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- default-method -->
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(h,db,login,pass,opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File database/sql.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">h</span>,<span class="ruby-identifier">db</span>,<span class="ruby-identifier">login</span>,<span class="ruby-identifier">pass</span>,<span class="ruby-identifier">opts</span> = {})
+    <span class="ruby-ivar">@host</span> = <span class="ruby-identifier">h</span>
+    <span class="ruby-ivar">@db</span> = <span class="ruby-identifier">db</span>
+    <span class="ruby-ivar">@login</span> = <span class="ruby-identifier">login</span>
+    <span class="ruby-ivar">@pass</span> = <span class="ruby-identifier">pass</span>
+    <span class="ruby-ivar">@con</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-ivar">@opts</span> = <span class="ruby-identifier">opts</span>
+    <span class="ruby-ivar">@last_query</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+    <span class="ruby-constant">SignalHandler</span>.<span class="ruby-identifier">ensure_block</span> { <span class="ruby-identifier">close</span> }
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+        <div id="send_raw_sql_cmd-method" class="method-detail ">
+          <a name="method-c-send_raw_sql_cmd"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">send_raw_sql_cmd</span><span
+              class="method-args">(sql)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="send_raw_sql_cmd-source">
+<pre>
+<span class="ruby-comment"># File database/sql.rb, line 47</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send_raw_sql_cmd</span> <span class="ruby-identifier">sql</span>
+    <span class="ruby-identifier">db</span> = <span class="ruby-constant">Conf</span>.<span class="ruby-identifier">database</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;mysql -u #{db.login} -p#{db.password} #{db.name} -e \&quot;#{sql}\&quot;&quot;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">cmd</span>
+    <span class="ruby-identifier">system</span>(<span class="ruby-identifier">cmd</span>) <span class="ruby-operator">?</span> <span class="ruby-string">&quot;Great!&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-string">&quot;Failed:/&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- send_raw_sql_cmd-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- send_raw_sql_cmd-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="check_time-method" class="method-detail ">
+          <a name="method-i-check_time"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">check_time</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="check_time-source">
+<pre>
+<span class="ruby-comment"># File database/sql.rb, line 145</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">check_time</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@last_query</span> <span class="ruby-operator">&gt;</span> <span class="ruby-constant">RETRY_TIME</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;DEBUG&quot;</span>,<span class="ruby-string">&quot;Reconnection to the db ...&quot;</span>)
+    <span class="ruby-identifier">connect_</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- check_time-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- check_time-method -->
+
+      
+        <div id="close-method" class="method-detail ">
+          <a name="method-i-close"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">close</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>useless for now</p>
+            
+
+            
+            <div class="method-source-code" id="close-source">
+<pre>
+<span class="ruby-comment"># File database/sql.rb, line 117</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">close</span>
+    <span class="ruby-identifier">safe_query</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-ivar">@con</span>.<span class="ruby-identifier">close</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@con</span> 
+        <span class="ruby-ivar">@con</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- close-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- close-method -->
+
+      
+        <div id="connect-method" class="method-detail ">
+          <a name="method-i-connect"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">connect</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Main method, must call every other method inside this method</p>
+            
+
+            
+            <div class="method-source-code" id="connect-source">
+<pre>
+<span class="ruby-comment"># File database/sql.rb, line 84</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">connect</span>
+    <span class="ruby-identifier">safe_query</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@con</span> <span class="ruby-comment">## if we already are connected</span>
+            <span class="ruby-identifier">check_time</span>
+            <span class="ruby-keyword">if</span>  <span class="ruby-identifier">block_given?</span> 
+                <span class="ruby-keyword">yield</span> 
+            <span class="ruby-keyword">else</span> 
+                <span class="ruby-keyword">return</span> 
+            <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">i</span> = <span class="ruby-value">0</span>
+            <span class="ruby-identifier">connected</span> = <span class="ruby-keyword">false</span>
+            <span class="ruby-keyword">while</span> (<span class="ruby-identifier">i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">CONNECTION_TRY</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">connected</span>) <span class="ruby-keyword">do</span> 
+                <span class="ruby-identifier">connected</span> = <span class="ruby-identifier">connect_</span>
+                <span class="ruby-identifier">i</span> = <span class="ruby-identifier">i</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+            <span class="ruby-keyword">end</span>
+            <span class="ruby-keyword">unless</span> <span class="ruby-identifier">connected</span>
+                <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;ERROR&quot;</span>,<span class="ruby-string">&quot;Can not connect to DB ..Abort.&quot;</span>)
+                <span class="ruby-identifier">abort</span>
+            <span class="ruby-keyword">end</span>
+            <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Logged into #{@db} at #{@name}@#{@host}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:v</span>]
+            <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>
+                <span class="ruby-keyword">yield</span>
+            <span class="ruby-keyword">else</span>
+                <span class="ruby-keyword">return</span>
+            <span class="ruby-keyword">end</span>
+            <span class="ruby-ivar">@con</span>.<span class="ruby-identifier">close</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@con</span>
+            <span class="ruby-ivar">@con</span> = <span class="ruby-keyword">nil</span>
+            <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Logged OUT from  #{@db} at #{@name}@#{@host}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-value">:v</span>]
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- connect-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- connect-method -->
+
+      
+        <div id="connect_-method" class="method-detail ">
+          <a name="method-i-connect_"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">connect_</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="connect_-source">
+<pre>
+<span class="ruby-comment"># File database/sql.rb, line 64</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">connect_</span>
+    <span class="ruby-ivar">@con</span> = <span class="ruby-operator">::</span><span class="ruby-constant">Mysql</span>.<span class="ruby-identifier">new</span>(<span class="ruby-ivar">@host</span>,<span class="ruby-ivar">@login</span>,<span class="ruby-ivar">@pass</span>,<span class="ruby-ivar">@db</span>) 
+    <span class="ruby-ivar">@con</span>.<span class="ruby-identifier">options</span>(<span class="ruby-operator">::</span><span class="ruby-constant">Mysql</span><span class="ruby-operator">::</span><span class="ruby-constant">OPT_LOCAL_INFILE</span>,<span class="ruby-keyword">true</span>) <span class="ruby-comment">## no effects...</span>
+    <span class="ruby-ivar">@last_query</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">test_connection</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- connect_-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- connect_-method -->
+
+      
+        <div id="info-method" class="method-detail ">
+          <a name="method-i-info"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">info</span><span
+              class="method-args">(table = nil)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>display basic info on the database and on a table if specified</p>
+            
+
+            
+            <div class="method-source-code" id="info-source">
+<pre>
+<span class="ruby-comment"># File database/sql.rb, line 139</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">info</span>(<span class="ruby-identifier">table</span> = <span class="ruby-keyword">nil</span>)
+    <span class="ruby-identifier">info</span> = <span class="ruby-node">&quot;Database info : #{@con.get_server_info}&quot;</span>
+    <span class="ruby-identifier">info</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@con</span>.<span class="ruby-identifier">query</span>(<span class="ruby-node">&quot;describe #{table};&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">table</span>  
+    <span class="ruby-identifier">info</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- info-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- info-method -->
+
+      
+        <div id="prepared_stmt-method" class="method-detail ">
+          <a name="method-i-prepared_stmt"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">prepared_stmt</span><span
+              class="method-args">(sql)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>call to make  a prepared statement.</p>
+            
+
+            
+            <div class="method-source-code" id="prepared_stmt-source">
+<pre>
+<span class="ruby-comment"># File database/sql.rb, line 125</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">prepared_stmt</span> <span class="ruby-identifier">sql</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-ivar">@con</span>.<span class="ruby-identifier">prepare</span>(<span class="ruby-identifier">sql</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@con</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- prepared_stmt-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- prepared_stmt-method -->
+
+      
+        <div id="query-method" class="method-detail ">
+          <a name="method-i-query"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">query</span><span
+              class="method-args">(sql_query)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>call to make an SQL Query</p>
+            
+
+            
+            <div class="method-source-code" id="query-source">
+<pre>
+<span class="ruby-comment"># File database/sql.rb, line 130</span>
+<span class="ruby-keyword">def</span>  <span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql_query</span>)
+    <span class="ruby-ivar">@last_query</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+    <span class="ruby-identifier">check_time</span>
+    <span class="ruby-identifier">raise</span> <span class="ruby-string">&quot;Database Not connected before querying .. !!&quot;</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@con</span>
+    <span class="ruby-ivar">@con</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql_query</span>)  
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- query-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- query-method -->
+
+      
+        <div id="safe_query-method" class="method-detail ">
+          <a name="method-i-safe_query"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">safe_query</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Wrapper that handles exception and return the result for the query or true
+if no(result ^ exception)</p>
+            
+
+            
+            <div class="method-source-code" id="safe_query-source">
+<pre>
+<span class="ruby-comment"># File database/sql.rb, line 152</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">safe_query</span>()
+    <span class="ruby-identifier">ret</span> = <span class="ruby-keyword">yield</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block_given?</span>
+    <span class="ruby-keyword">return</span> ( <span class="ruby-identifier">ret</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">ret</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">true</span> ) <span class="ruby-comment"># return not nil, otherwise return true</span>
+<span class="ruby-keyword">rescue</span> <span class="ruby-operator">::</span><span class="ruby-constant">Mysql</span><span class="ruby-operator">::</span><span class="ruby-constant">Error</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;ERROR&quot;</span>,<span class="ruby-node">&quot;#{e.errno} : #{e.error} (#{e})&quot;</span>)
+    <span class="ruby-identifier">raise</span> <span class="ruby-identifier">e</span> 
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- safe_query-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- safe_query-method -->
+
+      
+        <div id="test_connection-method" class="method-detail ">
+          <a name="method-i-test_connection"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">test_connection</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="test_connection-source">
+<pre>
+<span class="ruby-comment"># File database/sql.rb, line 70</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test_connection</span>
+    <span class="ruby-keyword">begin</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@con</span>
+        <span class="ruby-ivar">@con</span>.<span class="ruby-identifier">ping</span>()
+    <span class="ruby-keyword">rescue</span> <span class="ruby-operator">::</span><span class="ruby-constant">Mysql</span><span class="ruby-operator">::</span><span class="ruby-constant">Error</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;WARNING&quot;</span>,<span class="ruby-string">&quot;Database not responding to ping...&quot;</span>)
+        <span class="ruby-keyword">return</span> <span class="ruby-keyword">false</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- test_connection-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- test_connection-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

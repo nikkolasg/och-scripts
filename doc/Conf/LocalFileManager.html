@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: Conf::LocalFileManager</title>
+
+  <link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#classes">Classes</a>
+          <a href="../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../config/file_manager_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="config/file_manager.rb">config/file_manager.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link"><a href="FileManager.html">Conf::FileManager</a></p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-i-delete_dir">#delete_dir</a></li>
+          
+          <li><a href="#method-i-delete_files">#delete_files</a></li>
+          
+          <li><a href="#method-i-delete_files_from">#delete_files_from</a></li>
+          
+          <li><a href="#method-i-delete_source_files">#delete_source_files</a></li>
+          
+          <li><a href="#method-i-download_all_files">#download_all_files</a></li>
+          
+          <li><a href="#method-i-exec_cmd">#exec_cmd</a></li>
+          
+          <li><a href="#method-i-ls">#ls</a></li>
+          
+          <li><a href="#method-i-move_files">#move_files</a></li>
+          
+          <li><a href="#method-i-rename_dir">#rename_dir</a></li>
+          
+          <li><a href="#method-i-rename_source_files">#rename_source_files</a></li>
+          
+          <li><a href="#method-i-restore_source_files">#restore_source_files</a></li>
+          
+          <li><a href="#method-i-start">#start</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../Conf.html">Conf</a></li>
+        
+          <li><a href="../Conf/ActionField.html">Conf::ActionField</a></li>
+        
+          <li><a href="../Conf/App.html">Conf::App</a></li>
+        
+          <li><a href="../Conf/Database.html">Conf::Database</a></li>
+        
+          <li><a href="../Conf/Directories.html">Conf::Directories</a></li>
+        
+          <li><a href="../Conf/FileManager.html">Conf::FileManager</a></li>
+        
+          <li><a href="../Conf/Filter.html">Conf::Filter</a></li>
+        
+          <li><a href="../Conf/Flow.html">Conf::Flow</a></li>
+        
+          <li><a href="../Conf/Host.html">Conf::Host</a></li>
+        
+          <li><a href="../Conf/ListField.html">Conf::ListField</a></li>
+        
+          <li><a href="../Conf/LocalFileManager.html">Conf::LocalFileManager</a></li>
+        
+          <li><a href="../Conf/Logging.html">Conf::Logging</a></li>
+        
+          <li><a href="../Conf/MeanField.html">Conf::MeanField</a></li>
+        
+          <li><a href="../Conf/Monitor.html">Conf::Monitor</a></li>
+        
+          <li><a href="../Conf/NullFilter.html">Conf::NullFilter</a></li>
+        
+          <li><a href="../Conf/SftpFileManager.html">Conf::SftpFileManager</a></li>
+        
+          <li><a href="../Conf/Source.html">Conf::Source</a></li>
+        
+          <li><a href="../Conf/Stats.html">Conf::Stats</a></li>
+        
+          <li><a href="../Conf/SumField.html">Conf::SumField</a></li>
+        
+          <li><a href="../Database.html">Database</a></li>
+        
+          <li><a href="../Database/GenericTable.html">Database::GenericTable</a></li>
+        
+          <li><a href="../Database/Mysql.html">Database::Mysql</a></li>
+        
+          <li><a href="../Database/Mysql/Result.html">Database::Mysql::Result</a></li>
+        
+          <li><a href="../Database/Schema.html">Database::Schema</a></li>
+        
+          <li><a href="../Database/Schema/Monitor.html">Database::Schema::Monitor</a></li>
+        
+          <li><a href="../Database/Schema/Monitor/GenericSchema.html">Database::Schema::Monitor::GenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Monitor/NewGenericSchema.html">Database::Schema::Monitor::NewGenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source.html">Database::Schema::Source</a></li>
+        
+          <li><a href="../Database/Schema/Source/FileCountSchema.html">Database::Schema::Source::FileCountSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/GenericSchema.html">Database::Schema::Source::GenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/IndexerSchema.html">Database::Schema::Source::IndexerSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/ProceraSchema.html">Database::Schema::Source::ProceraSchema</a></li>
+        
+          <li><a href="../Database/SqlGenerator.html">Database::SqlGenerator</a></li>
+        
+          <li><a href="../Database/TableRotator.html">Database::TableRotator</a></li>
+        
+          <li><a href="../Database/TableUtil.html">Database::TableUtil</a></li>
+        
+          <li><a href="../Mapper.html">Mapper</a></li>
+        
+          <li><a href="../Mapper/GenericMapper.html">Mapper::GenericMapper</a></li>
+        
+          <li><a href="../Mapper/LogicaMapper.html">Mapper::LogicaMapper</a></li>
+        
+          <li><a href="../Mapper/MmsOutMapper.html">Mapper::MmsOutMapper</a></li>
+        
+          <li><a href="../Mapper/Nkm15Mapper.html">Mapper::Nkm15Mapper</a></li>
+        
+          <li><a href="../Mapper/PGWMapper.html">Mapper::PGWMapper</a></li>
+        
+          <li><a href="../Mapper/ProceraMapper.html">Mapper::ProceraMapper</a></li>
+        
+          <li><a href="../Mapper/SmsMapper.html">Mapper::SmsMapper</a></li>
+        
+          <li><a href="../Mapper/TAPMapper.html">Mapper::TAPMapper</a></li>
+        
+          <li><a href="../Mapper/TalMapper.html">Mapper::TalMapper</a></li>
+        
+          <li><a href="../Mapper/XDRMapper.html">Mapper::XDRMapper</a></li>
+        
+          <li><a href="../Decoder.html">Decoder</a></li>
+        
+          <li><a href="../Decoder/BigCSVDecoder.html">Decoder::BigCSVDecoder</a></li>
+        
+          <li><a href="../Decoder/CSVDecoder.html">Decoder::CSVDecoder</a></li>
+        
+          <li><a href="../Decoder/CSVFields.html">Decoder::CSVFields</a></li>
+        
+          <li><a href="../Decoder/LogicaDecoder.html">Decoder::LogicaDecoder</a></li>
+        
+          <li><a href="../Decoder/NKM15Decoder.html">Decoder::NKM15Decoder</a></li>
+        
+          <li><a href="../Decoder/NullDecoder.html">Decoder::NullDecoder</a></li>
+        
+          <li><a href="../Decoder/PGWDecoder.html">Decoder::PGWDecoder</a></li>
+        
+          <li><a href="../Decoder/TALDecoder.html">Decoder::TALDecoder</a></li>
+        
+          <li><a href="../Decoder/XDRDecoder.html">Decoder::XDRDecoder</a></li>
+        
+          <li><a href="../Inserter.html">Inserter</a></li>
+        
+          <li><a href="../Inserter/BigSourceInserter.html">Inserter::BigSourceInserter</a></li>
+        
+          <li><a href="../Inserter/GenericSourceInserter.html">Inserter::GenericSourceInserter</a></li>
+        
+          <li><a href="../Inserter/NullSourceInserter.html">Inserter::NullSourceInserter</a></li>
+        
+          <li><a href="../Inserter/PGWInserter.html">Inserter::PGWInserter</a></li>
+        
+          <li><a href="../Parser.html">Parser</a></li>
+        
+          <li><a href="../Parser/CheckParser.html">Parser::CheckParser</a></li>
+        
+          <li><a href="../Parser/DatabaseParser.html">Parser::DatabaseParser</a></li>
+        
+          <li><a href="../Parser/DirectoriesParser.html">Parser::DirectoriesParser</a></li>
+        
+          <li><a href="../Parser/OperationParser.html">Parser::OperationParser</a></li>
+        
+          <li><a href="../Getter.html">Getter</a></li>
+        
+          <li><a href="../Getter/FileCountGetter.html">Getter::FileCountGetter</a></li>
+        
+          <li><a href="../Getter/GenericSourceGetter.html">Getter::GenericSourceGetter</a></li>
+        
+          <li><a href="../Getter/NullSourceGetter.html">Getter::NullSourceGetter</a></li>
+        
+          <li><a href="../Fetchers.html">Fetchers</a></li>
+        
+          <li><a href="../Fetchers/LocalFileFetcher.html">Fetchers::LocalFileFetcher</a></li>
+        
+          <li><a href="../Fetchers/SftpFileFetcher.html">Fetchers::SftpFileFetcher</a></li>
+        
+          <li><a href="../Stats.html">Stats</a></li>
+        
+          <li><a href="../Stats/BacklogStats.html">Stats::BacklogStats</a></li>
+        
+          <li><a href="../Stats/GenericStats.html">Stats::GenericStats</a></li>
+        
+          <li><a href="../CDR.html">CDR</a></li>
+        
+          <li><a href="../CDR/File.html">CDR::File</a></li>
+        
+          <li><a href="../IncludeModule.html">IncludeModule</a></li>
+        
+          <li><a href="../IncludeModule/ModuleClass.html">IncludeModule::ModuleClass</a></li>
+        
+          <li><a href="../Collector.html">Collector</a></li>
+        
+          <li><a href="../Debug.html">Debug</a></li>
+        
+          <li><a href="../EMMConfig.html">EMMConfig</a></li>
+        
+          <li><a href="../Fixnum.html">Fixnum</a></li>
+        
+          <li><a href="../Lazy.html">Lazy</a></li>
+        
+          <li><a href="../LazyLispyEnumerable.html">LazyLispyEnumerable</a></li>
+        
+          <li><a href="../LispyEnumerable.html">LispyEnumerable</a></li>
+        
+          <li><a href="../Logger.html">Logger</a></li>
+        
+          <li><a href="../MysqlDumper.html">MysqlDumper</a></li>
+        
+          <li><a href="../Object.html">Object</a></li>
+        
+          <li><a href="../RubyUtil.html">RubyUtil</a></li>
+        
+          <li><a href="../SignalHandler.html">SignalHandler</a></li>
+        
+          <li><a href="../SuperTest.html">SuperTest</a></li>
+        
+          <li><a href="../T1.html">T1</a></li>
+        
+          <li><a href="../T2.html">T2</a></li>
+        
+          <li><a href="../Test.html">Test</a></li>
+        
+          <li><a href="../Test2.html">Test2</a></li>
+        
+          <li><a href="../TestParser.html">TestParser</a></li>
+        
+          <li><a href="../Util.html">Util</a></li>
+        
+          <li><a href="../ValueModule.html">ValueModule</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Conf::LocalFileManager</h1>
+
+    <div id="description" class="description">
+      
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(source,opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 294</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">source</span>,<span class="ruby-identifier">opts</span> = {})
+    <span class="ruby-keyword">super</span>(<span class="ruby-identifier">source</span>,<span class="ruby-identifier">opts</span>)
+    <span class="ruby-ivar">@started</span> = <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="delete_dir-method" class="method-detail ">
+          <a name="method-i-delete_dir"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">delete_dir</span><span
+              class="method-args">(dir)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="delete_dir-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 323</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete_dir</span> <span class="ruby-identifier">dir</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;rm -rf #{dir}&quot;</span>
+    <span class="ruby-identifier">exec_cmd</span>(<span class="ruby-identifier">cmd</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- delete_dir-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- delete_dir-method -->
+
+      
+        <div id="delete_files-method" class="method-detail ">
+          <a name="method-i-delete_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">delete_files</span><span
+              class="method-args">(*files)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Delete <a href="../CDR/File.html">CDR::File</a> object</p>
+            
+
+            
+            <div class="method-source-code" id="delete_files-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 357</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete_files</span> *<span class="ruby-identifier">files</span>
+    <span class="ruby-identifier">files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">exists?</span> <span class="ruby-identifier">file</span>.<span class="ruby-identifier">full_path</span>
+            <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;ERROR&quot;</span>,<span class="ruby-node">&quot;LocalFileManager can not delete a non existant file ! #{file.cname}&quot;</span>)
+            <span class="ruby-identifier">abort</span>;
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;rm '#{file.full_path}'&quot;</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">system</span>(<span class="ruby-identifier">cmd</span>)
+            <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;ERROR&quot;</span>,<span class="ruby-node">&quot;LocalFileManager trouble for deleting file #{file}&quot;</span>)
+            <span class="ruby-identifier">abort</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- delete_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- delete_files-method -->
+
+      
+        <div id="delete_files_from-method" class="method-detail ">
+          <a name="method-i-delete_files_from"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">delete_files_from</span><span
+              class="method-args">(dir)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Delete all files from the directory name</p>
+            
+
+            
+            <div class="method-source-code" id="delete_files_from-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 348</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete_files_from</span> <span class="ruby-identifier">dir</span>
+    <span class="ruby-constant">Dir</span>[<span class="ruby-identifier">dir</span><span class="ruby-operator">+</span><span class="ruby-string">&quot;/*&quot;</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+        <span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-identifier">delete</span>(<span class="ruby-identifier">file</span>)
+    <span class="ruby-keyword">end</span> 
+<span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;WARNING&quot;</span>,<span class="ruby-node">&quot;Files from #{dir} could not be deleted.\n#{e.message}&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- delete_files_from-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- delete_files_from-method -->
+
+      
+        <div id="delete_source_files-method" class="method-detail ">
+          <a name="method-i-delete_source_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">delete_source_files</span><span
+              class="method-args">(source)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Delete the backup  &amp; store for this source !!</p>
+            
+
+            
+            <div class="method-source-code" id="delete_source_files-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 372</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete_source_files</span> <span class="ruby-identifier">source</span>
+    <span class="ruby-identifier">dir</span> = <span class="ruby-constant">Conf</span><span class="ruby-operator">::</span><span class="ruby-identifier">directories</span>
+    <span class="ruby-identifier">base</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dir</span>.<span class="ruby-identifier">data</span>)
+    <span class="ruby-identifier">source</span>.<span class="ruby-identifier">folders</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">fold</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">url</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dir</span>.<span class="ruby-identifier">store</span>,<span class="ruby-identifier">source</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>,<span class="ruby-identifier">fold</span>)
+        <span class="ruby-identifier">delete_files_from</span> <span class="ruby-identifier">url</span>
+        <span class="ruby-identifier">url</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dir</span>.<span class="ruby-identifier">backup</span>,<span class="ruby-identifier">source</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>,<span class="ruby-identifier">fold</span>)
+        <span class="ruby-identifier">delete_files_from</span> <span class="ruby-identifier">url</span>
+    <span class="ruby-keyword">end</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Deleted files server &amp; backup for #{source.name.to_s}&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- delete_source_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- delete_source_files-method -->
+
+      
+        <div id="download_all_files-method" class="method-detail ">
+          <a name="method-i-download_all_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">download_all_files</span><span
+              class="method-args">(files,dest)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>download all FILES object into the dest path update the files path !!</p>
+            
+
+            
+            <div class="method-source-code" id="download_all_files-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 335</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">download_all_files</span> <span class="ruby-identifier">files</span>,<span class="ruby-identifier">dest</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">files</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-constant">RubyUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">partition</span> <span class="ruby-identifier">files</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">sub</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;mv -t #{dest} &quot;</span>
+        <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">sub</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;\&quot;#{f.full_path}\&quot;&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-string">' '</span>)
+        <span class="ruby-identifier">exec_cmd</span>(<span class="ruby-identifier">cmd</span>) 
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-comment"># update files object !</span>
+    <span class="ruby-identifier">files</span>.<span class="ruby-identifier">map!</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">path</span> = <span class="ruby-identifier">dest</span>; <span class="ruby-identifier">f</span> }
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- download_all_files-source -->
+            
+          </div>
+
+          
+          <div class="aliases">
+            Also aliased as: <a href="LocalFileManager.html#method-i-move_files">move_files</a>
+          </div>
+          
+
+          
+        </div><!-- download_all_files-method -->
+
+      
+        <div id="exec_cmd-method" class="method-detail ">
+          <a name="method-i-exec_cmd"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">exec_cmd</span><span
+              class="method-args">(cmd)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="exec_cmd-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 308</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">exec_cmd</span> <span class="ruby-identifier">cmd</span>
+    <span class="ruby-identifier">out</span>,<span class="ruby-identifier">err</span>,<span class="ruby-identifier">s</span> = <span class="ruby-constant">Open3</span>.<span class="ruby-identifier">capture3</span>(<span class="ruby-identifier">cmd</span>)
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">s</span>.<span class="ruby-identifier">success?</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;ERROR&quot;</span>,<span class="ruby-node">&quot;LocalFileManager : exec cmd #{err} =&gt; \n#{cmd}&quot;</span>)
+        <span class="ruby-identifier">abort</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">out</span>.<span class="ruby-identifier">split</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- exec_cmd-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- exec_cmd-method -->
+
+      
+        <div id="ls-method" class="method-detail ">
+          <a name="method-i-ls"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">ls</span><span
+              class="method-args">(dir,regex = "")</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>does what the name suggests !</p>
+            
+
+            
+            <div class="method-source-code" id="ls-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 318</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ls</span> <span class="ruby-identifier">dir</span>,<span class="ruby-identifier">regex</span> = <span class="ruby-string">&quot;&quot;</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-identifier">regex</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">?</span> <span class="ruby-node">&quot;ls #{dir}&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;ls #{File.join(dir,regex)}&quot;</span>
+    <span class="ruby-identifier">exec_cmd</span>(<span class="ruby-identifier">cmd</span>) 
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- ls-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- ls-method -->
+
+      
+        <div id="move_files-method" class="method-detail method-alias">
+          <a name="method-i-move_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">move_files</span><span
+              class="method-args">(files,dest)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+          </div>
+
+          
+
+          
+          <div class="aliases">
+            Alias for: <a href="LocalFileManager.html#method-i-download_all_files">download_all_files</a>
+          </div>
+          
+        </div><!-- move_files-method -->
+
+      
+        <div id="rename_dir-method" class="method-detail ">
+          <a name="method-i-rename_dir"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">rename_dir</span><span
+              class="method-args">(dir,ndir)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="rename_dir-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 328</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">rename_dir</span> <span class="ruby-identifier">dir</span>,<span class="ruby-identifier">ndir</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;mv #{dir}  #{ndir}&quot;</span>
+    <span class="ruby-identifier">exec_cmd</span>(<span class="ruby-identifier">cmd</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- rename_dir-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- rename_dir-method -->
+
+      
+        <div id="rename_source_files-method" class="method-detail ">
+          <a name="method-i-rename_source_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">rename_source_files</span><span
+              class="method-args">(source,nname)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="rename_source_files-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 399</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">rename_source_files</span> <span class="ruby-identifier">source</span>,<span class="ruby-identifier">nname</span>
+    <span class="ruby-identifier">dir</span> = <span class="ruby-constant">Conf</span><span class="ruby-operator">::</span><span class="ruby-identifier">directories</span>
+    <span class="ruby-identifier">base</span> = <span class="ruby-identifier">dir</span>.<span class="ruby-identifier">data</span>
+    [<span class="ruby-value">:tmp</span>,<span class="ruby-value">:store</span>,<span class="ruby-value">:backup</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">fold</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">ourl</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dir</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">fold</span>),<span class="ruby-identifier">source</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>)
+        <span class="ruby-identifier">nurl</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dir</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">fold</span>),<span class="ruby-identifier">nname</span>)
+        <span class="ruby-identifier">rename_dir</span> <span class="ruby-identifier">ourl</span>,<span class="ruby-identifier">nurl</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- rename_source_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- rename_source_files-method -->
+
+      
+        <div id="restore_source_files-method" class="method-detail ">
+          <a name="method-i-restore_source_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">restore_source_files</span><span
+              class="method-args">(source)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>restore the backup files for this source. i.e. puts them into the server
+folder</p>
+            
+
+            
+            <div class="method-source-code" id="restore_source_files-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 387</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">restore_source_files</span> <span class="ruby-identifier">source</span>
+    <span class="ruby-identifier">dir</span> = <span class="ruby-constant">Conf</span><span class="ruby-operator">::</span><span class="ruby-identifier">directories</span>
+    <span class="ruby-identifier">base</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dir</span>.<span class="ruby-identifier">data</span>)
+    <span class="ruby-identifier">source</span>.<span class="ruby-identifier">folders</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">fold</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">url</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dir</span>.<span class="ruby-identifier">backup</span>,<span class="ruby-identifier">source</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>,<span class="ruby-identifier">fold</span>)
+        <span class="ruby-identifier">files</span> = <span class="ruby-identifier">ls</span>(<span class="ruby-identifier">url</span>).<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-constant">CDR</span><span class="ruby-operator">::</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">new</span>(<span class="ruby-operator">::</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">url</span>,<span class="ruby-identifier">f</span>),<span class="ruby-identifier">search</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>)}
+        <span class="ruby-identifier">nurl</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dir</span>.<span class="ruby-identifier">store</span>,<span class="ruby-identifier">source</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>,<span class="ruby-identifier">fold</span>)
+        <span class="ruby-identifier">download_all_files</span>(<span class="ruby-identifier">files</span>,<span class="ruby-identifier">nurl</span>) <span class="ruby-keyword">unless</span> <span class="ruby-identifier">files</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Restored file from backup &amp; server for #{source.name.to_s}&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- restore_source_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- restore_source_files-method -->
+
+      
+        <div id="start-method" class="method-detail ">
+          <a name="method-i-start"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">start</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>simple proxy so same utilization between all filemanager</p>
+            
+
+            
+            <div class="method-source-code" id="start-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 304</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">start</span>
+    <span class="ruby-keyword">yield</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- start-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- start-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

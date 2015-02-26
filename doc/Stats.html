@@ -1,0 +1,1113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Module: Stats</title>
+
+  <link rel="stylesheet" href="./rdoc.css" type="text/css" media="screen" />
+
+  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="module">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="./index.html">Home</a>
+          <a href="./index.html#classes">Classes</a>
+          <a href="./index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="./process/backlog_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="process/backlog.rb">process/backlog.rb</a></li>
+          
+            <li><a href="./process/processer_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="process/processer.rb">process/processer.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+
+      
+
+      
+      <!-- Namespace Contents -->
+      <div id="namespace-list-section" class="section">
+        <h3 class="section-header">Namespace</h3>
+        <ul class="link-list">
+          
+          <li><span class="type">CLASS</span> <a href="Stats/BacklogStats.html">Stats::BacklogStats</a></li>
+          
+          <li><span class="type">CLASS</span> <a href="Stats/GenericStats.html">Stats::GenericStats</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-create">::create</a></li>
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-i-allowed-3F">#allowed?</a></li>
+          
+          <li><a href="#method-i-analyze_file">#analyze_file</a></li>
+          
+          <li><a href="#method-i-analyze_json">#analyze_json</a></li>
+          
+          <li><a href="#method-i-analyze_record">#analyze_record</a></li>
+          
+          <li><a href="#method-i-compute">#compute</a></li>
+          
+          <li><a href="#method-i-compute_files">#compute_files</a></li>
+          
+          <li><a href="#method-i-get_files">#get_files</a></li>
+          
+          <li><a href="#method-i-get_formatted_time">#get_formatted_time</a></li>
+          
+          <li><a href="#method-i-get_saved_files">#get_saved_files</a></li>
+          
+          <li><a href="#method-i-get_source_saved_files">#get_source_saved_files</a></li>
+          
+          <li><a href="#method-i-get_time_from_record">#get_time_from_record</a></li>
+          
+          <li><a href="#method-i-list_files">#list_files</a></li>
+          
+          <li><a href="#method-i-progression">#progression</a></li>
+          
+          <li><a href="#method-i-upgrade_folder">#upgrade_folder</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="./images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="./Conf.html">Conf</a></li>
+        
+          <li><a href="./Conf/ActionField.html">Conf::ActionField</a></li>
+        
+          <li><a href="./Conf/App.html">Conf::App</a></li>
+        
+          <li><a href="./Conf/Database.html">Conf::Database</a></li>
+        
+          <li><a href="./Conf/Directories.html">Conf::Directories</a></li>
+        
+          <li><a href="./Conf/FileManager.html">Conf::FileManager</a></li>
+        
+          <li><a href="./Conf/Filter.html">Conf::Filter</a></li>
+        
+          <li><a href="./Conf/Flow.html">Conf::Flow</a></li>
+        
+          <li><a href="./Conf/Host.html">Conf::Host</a></li>
+        
+          <li><a href="./Conf/ListField.html">Conf::ListField</a></li>
+        
+          <li><a href="./Conf/LocalFileManager.html">Conf::LocalFileManager</a></li>
+        
+          <li><a href="./Conf/Logging.html">Conf::Logging</a></li>
+        
+          <li><a href="./Conf/MeanField.html">Conf::MeanField</a></li>
+        
+          <li><a href="./Conf/Monitor.html">Conf::Monitor</a></li>
+        
+          <li><a href="./Conf/NullFilter.html">Conf::NullFilter</a></li>
+        
+          <li><a href="./Conf/SftpFileManager.html">Conf::SftpFileManager</a></li>
+        
+          <li><a href="./Conf/Source.html">Conf::Source</a></li>
+        
+          <li><a href="./Conf/Stats.html">Conf::Stats</a></li>
+        
+          <li><a href="./Conf/SumField.html">Conf::SumField</a></li>
+        
+          <li><a href="./Database.html">Database</a></li>
+        
+          <li><a href="./Database/GenericTable.html">Database::GenericTable</a></li>
+        
+          <li><a href="./Database/Mysql.html">Database::Mysql</a></li>
+        
+          <li><a href="./Database/Mysql/Result.html">Database::Mysql::Result</a></li>
+        
+          <li><a href="./Database/Schema.html">Database::Schema</a></li>
+        
+          <li><a href="./Database/Schema/Monitor.html">Database::Schema::Monitor</a></li>
+        
+          <li><a href="./Database/Schema/Monitor/GenericSchema.html">Database::Schema::Monitor::GenericSchema</a></li>
+        
+          <li><a href="./Database/Schema/Monitor/NewGenericSchema.html">Database::Schema::Monitor::NewGenericSchema</a></li>
+        
+          <li><a href="./Database/Schema/Source.html">Database::Schema::Source</a></li>
+        
+          <li><a href="./Database/Schema/Source/FileCountSchema.html">Database::Schema::Source::FileCountSchema</a></li>
+        
+          <li><a href="./Database/Schema/Source/GenericSchema.html">Database::Schema::Source::GenericSchema</a></li>
+        
+          <li><a href="./Database/Schema/Source/IndexerSchema.html">Database::Schema::Source::IndexerSchema</a></li>
+        
+          <li><a href="./Database/Schema/Source/ProceraSchema.html">Database::Schema::Source::ProceraSchema</a></li>
+        
+          <li><a href="./Database/SqlGenerator.html">Database::SqlGenerator</a></li>
+        
+          <li><a href="./Database/TableRotator.html">Database::TableRotator</a></li>
+        
+          <li><a href="./Database/TableUtil.html">Database::TableUtil</a></li>
+        
+          <li><a href="./Mapper.html">Mapper</a></li>
+        
+          <li><a href="./Mapper/GenericMapper.html">Mapper::GenericMapper</a></li>
+        
+          <li><a href="./Mapper/LogicaMapper.html">Mapper::LogicaMapper</a></li>
+        
+          <li><a href="./Mapper/MmsOutMapper.html">Mapper::MmsOutMapper</a></li>
+        
+          <li><a href="./Mapper/Nkm15Mapper.html">Mapper::Nkm15Mapper</a></li>
+        
+          <li><a href="./Mapper/PGWMapper.html">Mapper::PGWMapper</a></li>
+        
+          <li><a href="./Mapper/ProceraMapper.html">Mapper::ProceraMapper</a></li>
+        
+          <li><a href="./Mapper/SmsMapper.html">Mapper::SmsMapper</a></li>
+        
+          <li><a href="./Mapper/TAPMapper.html">Mapper::TAPMapper</a></li>
+        
+          <li><a href="./Mapper/TalMapper.html">Mapper::TalMapper</a></li>
+        
+          <li><a href="./Mapper/XDRMapper.html">Mapper::XDRMapper</a></li>
+        
+          <li><a href="./Decoder.html">Decoder</a></li>
+        
+          <li><a href="./Decoder/BigCSVDecoder.html">Decoder::BigCSVDecoder</a></li>
+        
+          <li><a href="./Decoder/CSVDecoder.html">Decoder::CSVDecoder</a></li>
+        
+          <li><a href="./Decoder/CSVFields.html">Decoder::CSVFields</a></li>
+        
+          <li><a href="./Decoder/LogicaDecoder.html">Decoder::LogicaDecoder</a></li>
+        
+          <li><a href="./Decoder/NKM15Decoder.html">Decoder::NKM15Decoder</a></li>
+        
+          <li><a href="./Decoder/NullDecoder.html">Decoder::NullDecoder</a></li>
+        
+          <li><a href="./Decoder/PGWDecoder.html">Decoder::PGWDecoder</a></li>
+        
+          <li><a href="./Decoder/TALDecoder.html">Decoder::TALDecoder</a></li>
+        
+          <li><a href="./Decoder/XDRDecoder.html">Decoder::XDRDecoder</a></li>
+        
+          <li><a href="./Inserter.html">Inserter</a></li>
+        
+          <li><a href="./Inserter/BigSourceInserter.html">Inserter::BigSourceInserter</a></li>
+        
+          <li><a href="./Inserter/GenericSourceInserter.html">Inserter::GenericSourceInserter</a></li>
+        
+          <li><a href="./Inserter/NullSourceInserter.html">Inserter::NullSourceInserter</a></li>
+        
+          <li><a href="./Inserter/PGWInserter.html">Inserter::PGWInserter</a></li>
+        
+          <li><a href="./Parser.html">Parser</a></li>
+        
+          <li><a href="./Parser/CheckParser.html">Parser::CheckParser</a></li>
+        
+          <li><a href="./Parser/DatabaseParser.html">Parser::DatabaseParser</a></li>
+        
+          <li><a href="./Parser/DirectoriesParser.html">Parser::DirectoriesParser</a></li>
+        
+          <li><a href="./Parser/OperationParser.html">Parser::OperationParser</a></li>
+        
+          <li><a href="./Getter.html">Getter</a></li>
+        
+          <li><a href="./Getter/FileCountGetter.html">Getter::FileCountGetter</a></li>
+        
+          <li><a href="./Getter/GenericSourceGetter.html">Getter::GenericSourceGetter</a></li>
+        
+          <li><a href="./Getter/NullSourceGetter.html">Getter::NullSourceGetter</a></li>
+        
+          <li><a href="./Fetchers.html">Fetchers</a></li>
+        
+          <li><a href="./Fetchers/LocalFileFetcher.html">Fetchers::LocalFileFetcher</a></li>
+        
+          <li><a href="./Fetchers/SftpFileFetcher.html">Fetchers::SftpFileFetcher</a></li>
+        
+          <li><a href="./Stats.html">Stats</a></li>
+        
+          <li><a href="./Stats/BacklogStats.html">Stats::BacklogStats</a></li>
+        
+          <li><a href="./Stats/GenericStats.html">Stats::GenericStats</a></li>
+        
+          <li><a href="./CDR.html">CDR</a></li>
+        
+          <li><a href="./CDR/File.html">CDR::File</a></li>
+        
+          <li><a href="./IncludeModule.html">IncludeModule</a></li>
+        
+          <li><a href="./IncludeModule/ModuleClass.html">IncludeModule::ModuleClass</a></li>
+        
+          <li><a href="./Collector.html">Collector</a></li>
+        
+          <li><a href="./Debug.html">Debug</a></li>
+        
+          <li><a href="./EMMConfig.html">EMMConfig</a></li>
+        
+          <li><a href="./Fixnum.html">Fixnum</a></li>
+        
+          <li><a href="./Lazy.html">Lazy</a></li>
+        
+          <li><a href="./LazyLispyEnumerable.html">LazyLispyEnumerable</a></li>
+        
+          <li><a href="./LispyEnumerable.html">LispyEnumerable</a></li>
+        
+          <li><a href="./Logger.html">Logger</a></li>
+        
+          <li><a href="./MysqlDumper.html">MysqlDumper</a></li>
+        
+          <li><a href="./Object.html">Object</a></li>
+        
+          <li><a href="./RubyUtil.html">RubyUtil</a></li>
+        
+          <li><a href="./SignalHandler.html">SignalHandler</a></li>
+        
+          <li><a href="./SuperTest.html">SuperTest</a></li>
+        
+          <li><a href="./T1.html">T1</a></li>
+        
+          <li><a href="./T2.html">T2</a></li>
+        
+          <li><a href="./Test.html">Test</a></li>
+        
+          <li><a href="./Test2.html">Test2</a></li>
+        
+          <li><a href="./TestParser.html">TestParser</a></li>
+        
+          <li><a href="./Util.html">Util</a></li>
+        
+          <li><a href="./ValueModule.html">ValueModule</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="module">Stats</h1>
+
+    <div id="description" class="description">
+      
+<p>Copyright (C) 2014-2015 Nicolas GAILLY for Orange Communications SA,
+Switzerland</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the “Software”),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.</p>
+<hr style="height: 1px">
+
+<p>Copyright (C) 2014-2015 Nicolas GAILLY for Orange Communications SA,
+Switzerland</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the “Software”),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.</p>
+
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="create-method" class="method-detail ">
+          <a name="method-c-create"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">create</span><span
+              class="method-args">(type, opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="create-source">
+<pre>
+<span class="ruby-comment"># File process/processer.rb, line 23</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span> <span class="ruby-identifier">type</span>, <span class="ruby-identifier">opts</span> = {}
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">type</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-value">:generic</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-constant">GenericStats</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:flow</span>],<span class="ruby-identifier">opts</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-value">:backlog</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-constant">BacklogStats</span>.<span class="ruby-identifier">create</span> <span class="ruby-identifier">opts</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- create-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- create-method -->
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(opts)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File process/backlog.rb, line 40</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">opts</span>
+    <span class="ruby-ivar">@monitors</span> = <span class="ruby-constant">RubyUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">arrayize</span>(<span class="ruby-identifier">opts</span>[<span class="ruby-value">:monitor</span>])
+    <span class="ruby-comment">## sets the right date for the file_manager</span>
+    <span class="ruby-ivar">@files</span> = {}
+    <span class="ruby-comment">## current monitor</span>
+    <span class="ruby-ivar">@current</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-ivar">@opts</span> = <span class="ruby-identifier">opts</span>
+    <span class="ruby-ivar">@db</span> = <span class="ruby-constant">Database</span><span class="ruby-operator">::</span><span class="ruby-constant">Mysql</span>.<span class="ruby-identifier">default</span>
+    <span class="ruby-identifier">str</span> = <span class="ruby-node">&quot;Backlog processing  from #{opts[:min_date]} to #{opts[:max_date]} &quot;</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-identifier">str</span>)
+    <span class="ruby-ivar">@records_count</span> = <span class="ruby-value">0</span> <span class="ruby-comment">## to keep track of how many records have we analyzed</span>
+
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="analyze_file-method" class="method-detail ">
+          <a name="method-i-analyze_file"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">analyze_file</span><span
+              class="method-args">(file)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>will deocde it in a decode-all manner or</pre>
+
+<p>record by record</p>
+            
+
+            
+            <div class="method-source-code" id="analyze_file-source">
+<pre>
+<span class="ruby-comment"># File process/backlog.rb, line 111</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">analyze_file</span> <span class="ruby-identifier">file</span>
+    <span class="ruby-identifier">count</span> = <span class="ruby-value">0</span>
+    <span class="ruby-ivar">@json</span> <span class="ruby-operator">||=</span> <span class="ruby-ivar">@source</span>.<span class="ruby-identifier">decoder</span>.<span class="ruby-identifier">decode</span> <span class="ruby-identifier">file</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">fields</span>,<span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">analyze_record</span> <span class="ruby-identifier">fields</span>,<span class="ruby-identifier">record</span>
+        <span class="ruby-identifier">count</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Analyzed #{count} records from #{file.name}&quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">count</span> <span class="ruby-operator">%</span> <span class="ruby-value">10000</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">analyze_json</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">json</span>
+    <span class="ruby-ivar">@current</span>.<span class="ruby-identifier">schema</span>.<span class="ruby-identifier">insert_stats</span> <span class="ruby-ivar">@source</span>
+    <span class="ruby-ivar">@current</span>.<span class="ruby-identifier">reset_stats</span>
+    <span class="ruby-ivar">@current</span>.<span class="ruby-identifier">schema</span>.<span class="ruby-identifier">backlog_processed_files</span> <span class="ruby-ivar">@source</span>,[<span class="ruby-identifier">file</span>]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- analyze_file-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- analyze_file-method -->
+
+      
+        <div id="analyze_json-method" class="method-detail ">
+          <a name="method-i-analyze_json"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">analyze_json</span><span
+              class="method-args">(json)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="analyze_json-source">
+<pre>
+<span class="ruby-comment"># File process/backlog.rb, line 124</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">analyze_json</span> <span class="ruby-identifier">json</span>
+    <span class="ruby-identifier">count</span> = <span class="ruby-value">0</span>
+    <span class="ruby-identifier">json</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>,<span class="ruby-identifier">hash</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">fields</span> = <span class="ruby-identifier">hash</span>[<span class="ruby-value">:fields</span>]
+        <span class="ruby-identifier">values</span> = <span class="ruby-identifier">hash</span>[<span class="ruby-value">:values</span>]
+        <span class="ruby-identifier">values</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">record</span><span class="ruby-operator">|</span>
+            <span class="ruby-ivar">@records_count</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+            <span class="ruby-identifier">analyze_record</span>(<span class="ruby-identifier">fields</span>,<span class="ruby-identifier">record</span>) 
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Analyzed #{count} records from from complete json&quot;</span>) 
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- analyze_json-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- analyze_json-method -->
+
+      
+        <div id="analyze_record-method" class="method-detail ">
+          <a name="method-i-analyze_record"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">analyze_record</span><span
+              class="method-args">(fields,record)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="analyze_record-source">
+<pre>
+<span class="ruby-comment"># File process/backlog.rb, line 148</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">analyze_record</span> <span class="ruby-identifier">fields</span>,<span class="ruby-identifier">record</span>
+    <span class="ruby-identifier">record_time</span> = <span class="ruby-identifier">get_time_from_record</span> <span class="ruby-identifier">fields</span>,<span class="ruby-identifier">record</span> 
+    <span class="ruby-identifier">formatted_time</span> = <span class="ruby-identifier">get_formatted_time</span> <span class="ruby-identifier">record_time</span>
+    <span class="ruby-ivar">@current</span>.<span class="ruby-identifier">stats</span>.<span class="ruby-identifier">analyze</span> <span class="ruby-identifier">formatted_time</span>,<span class="ruby-identifier">fields</span>,<span class="ruby-identifier">record</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- analyze_record-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- analyze_record-method -->
+
+      
+        <div id="compute-method" class="method-detail ">
+          <a name="method-i-compute"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">compute</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>MAIN method =)</pre>
+
+<p>download, decode , process each file for each source corresponding to the
+crierions ##############</p>
+            
+
+            
+            <div class="method-source-code" id="compute-source">
+<pre>
+<span class="ruby-comment"># File process/backlog.rb, line 58</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">compute</span>
+    <span class="ruby-ivar">@sources</span> = <span class="ruby-ivar">@monitors</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span> <span class="ruby-identifier">m</span>.<span class="ruby-identifier">sources</span> }.<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">uniq</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Will process backlog for monitors #{@monitors.map{ |m| m.name}.join(',')}&quot;</span>)
+    <span class="ruby-identifier">path</span> = <span class="ruby-constant">Conf</span><span class="ruby-operator">::</span><span class="ruby-identifier">directories</span>.<span class="ruby-identifier">store</span>
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-constant">SignalHandler</span>.<span class="ruby-identifier">check</span> { <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;WARNING&quot;</span>,<span class="ruby-string">&quot;SIGNINT catched .Abort.&quot;</span>);<span class="ruby-ivar">@db</span>.<span class="ruby-identifier">close</span>}
+
+        <span class="ruby-identifier">get_saved_files</span> <span class="ruby-comment">## retrieved ALL files already processed in DB</span>
+        <span class="ruby-ivar">@sources</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">source</span><span class="ruby-operator">|</span>
+            <span class="ruby-comment">## Must move get saved_file here so we check on the file GET module has</span>
+            <span class="ruby-constant">SignalHandler</span>.<span class="ruby-identifier">check</span> { <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;WARNING&quot;</span>,<span class="ruby-string">&quot;SIGNINT catched .Abort.&quot;</span>);<span class="ruby-ivar">@db</span>.<span class="ruby-identifier">close</span>}
+
+            <span class="ruby-ivar">@manager</span> = <span class="ruby-identifier">source</span>.<span class="ruby-identifier">file_manager</span>
+            <span class="ruby-ivar">@source</span> = <span class="ruby-identifier">source</span>
+            <span class="ruby-ivar">@source</span>.<span class="ruby-identifier">set_options</span>(<span class="ruby-ivar">@opts</span>)
+            <span class="ruby-identifier">files</span> = <span class="ruby-identifier">get_files</span>
+            <span class="ruby-identifier">count</span> = <span class="ruby-value">1</span>
+            <span class="ruby-ivar">@num_rows</span> = <span class="ruby-identifier">files</span>.<span class="ruby-identifier">values</span>.<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">size</span>
+            <span class="ruby-comment">## Actually analyze each file and yield it. can be downloaded if wnated</span>
+            <span class="ruby-identifier">compute_files</span>(<span class="ruby-identifier">files</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">folder</span>,<span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">str</span> = <span class="ruby-node">&quot;(#{count}/#{@num_rows}) Analyzing file #{file.name} (&quot;</span>
+                <span class="ruby-ivar">@monitors</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">mon</span><span class="ruby-operator">|</span>
+                    <span class="ruby-constant">SignalHandler</span>.<span class="ruby-identifier">check</span> { <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&gt;&gt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;WARNING&quot;</span>,<span class="ruby-string">&quot;SIGINT Catched. Abort&quot;</span>);<span class="ruby-ivar">@db</span>.<span class="ruby-identifier">close</span> } 
+                    <span class="ruby-ivar">@current</span> = <span class="ruby-identifier">mon</span>
+                    <span class="ruby-ivar">@current</span>.<span class="ruby-identifier">schema</span>.<span class="ruby-identifier">set_db</span> <span class="ruby-ivar">@db</span>
+                    <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">mon</span>.<span class="ruby-identifier">sources</span>.<span class="ruby-identifier">include?</span> <span class="ruby-ivar">@source</span>
+                    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">allowed?</span>(<span class="ruby-identifier">file</span>)
+                        <span class="ruby-identifier">str</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{mon.name}:X &quot;</span>
+                        <span class="ruby-keyword">next</span>
+                    <span class="ruby-keyword">end</span>
+                    <span class="ruby-comment">## only download the file if needed</span>
+                    <span class="ruby-ivar">@manager</span>.<span class="ruby-identifier">download_files</span> [<span class="ruby-identifier">file</span>],<span class="ruby-identifier">path</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">file</span>.<span class="ruby-identifier">downloaded?</span>
+                    <span class="ruby-identifier">file</span>.<span class="ruby-identifier">unzip!</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">file</span>.<span class="ruby-identifier">zip?</span>
+                    <span class="ruby-identifier">str</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;#{mon.name}:O &quot;</span>
+                    <span class="ruby-identifier">analyze_file</span> <span class="ruby-identifier">file</span>
+                    <span class="ruby-constant">SignalHandler</span>.<span class="ruby-identifier">check</span> { <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;WARNING&quot;</span>,<span class="ruby-string">&quot;SIGNINT catched .Abort.&quot;</span>);<span class="ruby-ivar">@db</span>.<span class="ruby-identifier">close</span>}
+                <span class="ruby-keyword">end</span>
+                <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-identifier">str</span><span class="ruby-operator">+</span><span class="ruby-string">&quot;)&quot;</span>)
+                <span class="ruby-identifier">count</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+                <span class="ruby-identifier">progression</span>(<span class="ruby-identifier">count</span>)
+                <span class="ruby-ivar">@json</span> = <span class="ruby-keyword">nil</span>
+                <span class="ruby-constant">SignalHandler</span>.<span class="ruby-identifier">check</span> { <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;WARNING&quot;</span>,<span class="ruby-string">&quot;SIGNINT catched .Abort.&quot;</span>);<span class="ruby-ivar">@db</span>.<span class="ruby-identifier">close</span>}
+
+            <span class="ruby-keyword">end</span>
+            <span class="ruby-identifier">progression</span>(<span class="ruby-value">0</span>,<span class="ruby-identifier">reset</span><span class="ruby-value">:true</span>) 
+            <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Having processed #{@records_count} records from source #{@source}&quot;</span>)
+            <span class="ruby-ivar">@records_count</span> = <span class="ruby-value">0</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- compute-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- compute-method -->
+
+      
+        <div id="compute_files-method" class="method-detail ">
+          <a name="method-i-compute_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">compute_files</span><span
+              class="method-args">(files)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Main method that will download , decode , and analyze ONE file at A TIME</p>
+            
+
+            
+            <div class="method-source-code" id="compute_files-source">
+<pre>
+<span class="ruby-comment"># File process/backlog.rb, line 180</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">compute_files</span> <span class="ruby-identifier">files</span>
+    <span class="ruby-ivar">@manager</span>.<span class="ruby-identifier">start</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-identifier">files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">folder</span>,<span class="ruby-identifier">files</span><span class="ruby-operator">|</span>
+            <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">files</span>.<span class="ruby-identifier">empty?</span>
+            <span class="ruby-identifier">files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+                <span class="ruby-keyword">yield</span> <span class="ruby-identifier">folder</span>,<span class="ruby-identifier">file</span>
+                <span class="ruby-constant">Conf</span><span class="ruby-operator">::</span><span class="ruby-constant">LocalFileManager</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">delete_files</span>(<span class="ruby-identifier">file</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">file</span>.<span class="ruby-identifier">downloaded?</span>
+            <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span> 
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- compute_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- compute_files-method -->
+
+      
+        <div id="get_files-method" class="method-detail ">
+          <a name="method-i-get_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">get_files</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>run for this source only Will retrieve files found on the source that
+corresponds to the  search criterias (date =)</p>
+            
+
+            
+            <div class="method-source-code" id="get_files-source">
+<pre>
+<span class="ruby-comment"># File process/backlog.rb, line 157</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_files</span>
+    <span class="ruby-identifier">files</span> = []
+    <span class="ruby-ivar">@manager</span>.<span class="ruby-identifier">start</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-identifier">files</span> = <span class="ruby-identifier">list_files</span> <span class="ruby-comment"># get remote files</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">files</span>.<span class="ruby-identifier">empty?</span>
+            <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-string">&quot;No file to be analyzed. Either no file &quot;</span> <span class="ruby-operator">+</span>
+                      <span class="ruby-string">&quot;or all files are already in the system!&quot;</span>)
+            <span class="ruby-keyword">return</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">saved</span> = <span class="ruby-ivar">@source</span>.<span class="ruby-identifier">schema</span>.<span class="ruby-identifier">filter_files</span> <span class="ruby-identifier">files</span>.<span class="ruby-identifier">values</span>.<span class="ruby-identifier">flatten</span>(<span class="ruby-value">1</span>)
+    <span class="ruby-identifier">files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">folder</span>,<span class="ruby-identifier">files_</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">ocount</span> = <span class="ruby-identifier">files_</span>.<span class="ruby-identifier">size</span>
+        <span class="ruby-identifier">files_</span> <span class="ruby-operator">-=</span> <span class="ruby-identifier">saved</span>
+        <span class="ruby-identifier">ncount</span> = <span class="ruby-identifier">files_</span>.<span class="ruby-identifier">size</span>
+        <span class="ruby-identifier">files</span>[<span class="ruby-identifier">folder</span>] = <span class="ruby-identifier">files_</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Filtering #{&quot;(&quot; + folder + &quot;)&quot; unless folder.empty?} : #{ocount} =&gt; #{ncount}&quot;</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">files</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- get_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- get_files-method -->
+
+      
+        <div id="get_formatted_time-method" class="method-detail ">
+          <a name="method-i-get_formatted_time"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">get_formatted_time</span><span
+              class="method-args">(record_time)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>format to the monitor interval endpoints</p>
+            
+
+            
+            <div class="method-source-code" id="get_formatted_time-source">
+<pre>
+<span class="ruby-comment"># File process/processer.rb, line 33</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_formatted_time</span> <span class="ruby-identifier">record_time</span>
+    <span class="ruby-identifier">interval</span> = <span class="ruby-ivar">@current</span>.<span class="ruby-identifier">time_interval</span>
+    <span class="ruby-identifier">time_mn</span> = <span class="ruby-identifier">record_time</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">/</span> <span class="ruby-constant">Util</span><span class="ruby-operator">::</span><span class="ruby-constant">SEC_IN_MIN</span>
+    <span class="ruby-identifier">minimum</span> = <span class="ruby-identifier">time_mn</span> <span class="ruby-operator">-</span> (<span class="ruby-identifier">time_mn</span> <span class="ruby-operator">%</span> <span class="ruby-identifier">interval</span>)
+    <span class="ruby-identifier">formatted_time</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">at</span>(<span class="ruby-identifier">minimum</span> * <span class="ruby-constant">Util</span><span class="ruby-operator">::</span><span class="ruby-constant">SEC_IN_MIN</span>).<span class="ruby-identifier">to_i</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- get_formatted_time-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- get_formatted_time-method -->
+
+      
+        <div id="progression-method" class="method-detail ">
+          <a name="method-i-progression"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">progression</span><span
+              class="method-args">(counter,opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>just print the progression, since we can not print every records(too much)
+we have to print like every ten percetn or something</p>
+            
+
+            
+            <div class="method-source-code" id="progression-source">
+<pre>
+<span class="ruby-comment"># File process/processer.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">progression</span> <span class="ruby-identifier">counter</span>,<span class="ruby-identifier">opts</span> = {}
+    (<span class="ruby-ivar">@steps</span> = <span class="ruby-keyword">nil</span>; <span class="ruby-keyword">return</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:reset</span>]
+    <span class="ruby-ivar">@steps</span> <span class="ruby-operator">||=</span> (<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">10</span>).<span class="ruby-identifier">map</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span> [(<span class="ruby-ivar">@num_rows</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-value">10</span>.<span class="ruby-identifier">to_f</span>) * <span class="ruby-identifier">n</span>,<span class="ruby-identifier">n</span>*<span class="ruby-value">10</span>] }
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@steps</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">c</span>,<span class="ruby-identifier">perc</span> = <span class="ruby-ivar">@steps</span>[<span class="ruby-value">0</span>] 
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">counter</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">c</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Having processed #{perc}%  now ...&quot;</span>,<span class="ruby-identifier">inline</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>)
+        <span class="ruby-ivar">@steps</span>.<span class="ruby-identifier">shift</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- progression-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- progression-method -->
+
+      
+        <div id="upgrade_folder-method" class="method-detail ">
+          <a name="method-i-upgrade_folder"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">upgrade_folder</span><span
+              class="method-args">(folder,json)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>In the case of normal processing, the &quot;folder&quot; field is automatically</pre>
+
+<p>retrieved from the db. Here it is NOT in the JSON output of the decoder
+This methods adds the folder field to the fields &amp; values of this hash</p>
+            
+
+            
+            <div class="method-source-code" id="upgrade_folder-source">
+<pre>
+<span class="ruby-comment"># File process/backlog.rb, line 140</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">upgrade_folder</span> <span class="ruby-identifier">folder</span>,<span class="ruby-identifier">json</span>
+    <span class="ruby-identifier">json</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>,<span class="ruby-identifier">hash</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">hash</span>[<span class="ruby-value">:fields</span>][<span class="ruby-value">:folder</span>] = <span class="ruby-identifier">hash</span>[<span class="ruby-value">:values</span>].<span class="ruby-identifier">first</span>.<span class="ruby-identifier">size</span> 
+        <span class="ruby-identifier">hash</span>[<span class="ruby-value">:values</span>].<span class="ruby-identifier">map!</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span> <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">folder</span> }
+    <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- upgrade_folder-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- upgrade_folder-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+      <div id="private-instance-method-details" class="method-section section">
+        <h3 class="section-header">Private Instance Methods</h3>
+
+      
+        <div id="allowed-3F-method" class="method-detail ">
+          <a name="method-i-allowed-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">allowed?</span><span
+              class="method-args">(file)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Will filter files for a source &amp; a monitor (@source / @current)</p>
+            
+
+            
+            <div class="method-source-code" id="allowed-3F-source">
+<pre>
+<span class="ruby-comment"># File process/backlog.rb, line 231</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">allowed?</span> <span class="ruby-identifier">file</span>
+    <span class="ruby-identifier">f2rm</span> = <span class="ruby-ivar">@files2rm</span>[<span class="ruby-ivar">@current</span>.<span class="ruby-identifier">name</span>][<span class="ruby-ivar">@source</span>.<span class="ruby-identifier">name</span>]
+    <span class="ruby-identifier">v</span> = <span class="ruby-identifier">f2rm</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">file</span>) <span class="ruby-operator">?</span> <span class="ruby-keyword">false</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">true</span> <span class="ruby-comment">## if file not preset (i.e.nil)</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">v</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- allowed-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- allowed-3F-method -->
+
+      
+        <div id="get_saved_files-method" class="method-detail ">
+          <a name="method-i-get_saved_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">get_saved_files</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Actually retrieve all saved files for all monitors for all sources store it</p>
+            
+
+            
+            <div class="method-source-code" id="get_saved_files-source">
+<pre>
+<span class="ruby-comment"># File process/backlog.rb, line 213</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_saved_files</span>
+    <span class="ruby-comment">## MONITOR =&gt; SOURCES =&gt; FILES (Set) (for speed)</span>
+    <span class="ruby-ivar">@files2rm</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span>,<span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-identifier">k</span>] = {} }
+    <span class="ruby-ivar">@monitors</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">mon</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">mon</span>.<span class="ruby-identifier">sources</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">source</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">f2rm</span> = <span class="ruby-identifier">mon</span>.<span class="ruby-identifier">schema</span>.<span class="ruby-identifier">backlog_saved_files</span> <span class="ruby-identifier">source</span>
+            <span class="ruby-ivar">@files2rm</span>[<span class="ruby-identifier">mon</span>.<span class="ruby-identifier">name</span>][<span class="ruby-identifier">source</span>.<span class="ruby-identifier">name</span>] = <span class="ruby-identifier">f2rm</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-constant">Set</span>.<span class="ruby-identifier">new</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">col</span>,<span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">col</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">f</span>; <span class="ruby-identifier">col</span>}
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- get_saved_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- get_saved_files-method -->
+
+      
+        <div id="get_source_saved_files-method" class="method-detail ">
+          <a name="method-i-get_source_saved_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">get_source_saved_files</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>acutally retrieves the files in backlog + from the source schema ^FILE
+table i.e. the “normal” table</p>
+            
+
+            
+            <div class="method-source-code" id="get_source_saved_files-source">
+<pre>
+<span class="ruby-comment"># File process/backlog.rb, line 226</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_source_saved_files</span>
+    <span class="ruby-ivar">@files2rm</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span>,<span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-identifier">k</span>] = {} }
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- get_source_saved_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- get_source_saved_files-method -->
+
+      
+        <div id="get_time_from_record-method" class="method-detail ">
+          <a name="method-i-get_time_from_record"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">get_time_from_record</span><span
+              class="method-args">(fields,record)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="get_time_from_record-source">
+<pre>
+<span class="ruby-comment"># File process/backlog.rb, line 194</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_time_from_record</span> <span class="ruby-identifier">fields</span>,<span class="ruby-identifier">record</span>
+    <span class="ruby-identifier">time_field</span> = <span class="ruby-ivar">@current</span>.<span class="ruby-identifier">flow</span>.<span class="ruby-identifier">time_field_records</span>
+    <span class="ruby-identifier">record</span>[<span class="ruby-identifier">fields</span>[<span class="ruby-identifier">time_field</span>]]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- get_time_from_record-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- get_time_from_record-method -->
+
+      
+        <div id="list_files-method" class="method-detail ">
+          <a name="method-i-list_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">list_files</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>organized by SWITCH =&gt; FILES hash</p>
+            
+
+            
+            <div class="method-source-code" id="list_files-source">
+<pre>
+<span class="ruby-comment"># File process/backlog.rb, line 200</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">list_files</span>
+    <span class="ruby-identifier">files</span> = {}
+    <span class="ruby-ivar">@source</span>.<span class="ruby-identifier">folders</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">sw</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">h</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">h</span>,<span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-identifier">k</span>] = [] }
+        <span class="ruby-identifier">f</span> = <span class="ruby-ivar">@manager</span>.<span class="ruby-identifier">find_files</span>(<span class="ruby-identifier">sw</span>).<span class="ruby-identifier">inject</span>(<span class="ruby-identifier">h</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">col</span>,<span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">col</span>[<span class="ruby-identifier">sw</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">f</span>; <span class="ruby-identifier">col</span> }
+        <span class="ruby-identifier">files</span>.<span class="ruby-identifier">merge!</span> <span class="ruby-identifier">f</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Found #{f[sw].size} files from #{sw} on #{@source.name} .&quot;</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">files</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- list_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- list_files-method -->
+
+      
+      </div><!-- private-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

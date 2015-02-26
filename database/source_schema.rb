@@ -29,6 +29,8 @@ module Database
 
         def set_options opts = {}
             @opts.merge! opts
+            @sql_fetch_all = !(@opts[:sql_no_fetch_all] || !@sql_fetch_all)
+
         end
         ## litlle utility so we can pass an already connected db
         #to this class instead of reconnecting every time
@@ -108,11 +110,12 @@ module Database
                         sql = SqlGenerator.for_files(@table_files,@source.file_length) if type == :files
                         if type == :records
                             sql = SqlGenerator.for_records(@table_records,@source.records_fields) 
+                            puts sql
                             @db.query(sql)
                             sql = SqlGenerator.for_records_union(@table_records_union,@source.records_fields, union: TableUtil::search_tables(@table_records))
+                            puts sql 
+                            @db.query(sql)
                         end
-                        puts sql 
-                        @db.query(sql)
                         Logger.<<(__FILE__,"INFO","Setup #{type} tables for #{@source.name}")
                     end
                 end

@@ -1,0 +1,1370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: Conf::FileManager</title>
+
+  <link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../index.html">Home</a>
+          <a href="../index.html#classes">Classes</a>
+          <a href="../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../config/file_manager_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="config/file_manager.rb">config/file_manager.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link"><a href="../Object.html">Object</a></p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-create">::create</a></li>
+          
+          <li><a href="#method-c-get_protocol_source">::get_protocol_source</a></li>
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-c-print_listing">::print_listing</a></li>
+          
+          <li><a href="#method-c-register_subclass">::register_subclass</a></li>
+          
+          <li><a href="#method-c-test">::test</a></li>
+          
+          <li><a href="#method-i-date_str">#date_str</a></li>
+          
+          <li><a href="#method-i-download_files">#download_files</a></li>
+          
+          <li><a href="#method-i-files_filtering">#files_filtering</a></li>
+          
+          <li><a href="#method-i-files_listing">#files_listing</a></li>
+          
+          <li><a href="#method-i-find_files">#find_files</a></li>
+          
+          <li><a href="#method-i-folders_filtering">#folders_filtering</a></li>
+          
+          <li><a href="#method-i-folders_listing">#folders_listing</a></li>
+          
+          <li><a href="#method-i-max_date-3D">#max_date=</a></li>
+          
+          <li><a href="#method-i-min_date-3D">#min_date=</a></li>
+          
+          <li><a href="#method-i-set_options">#set_options</a></li>
+          
+          <li><a href="#method-i-stop">#stop</a></li>
+          
+          <li><a href="#method-i-sub_listing">#sub_listing</a></li>
+          
+          <li><a href="#method-i-test_date">#test_date</a></li>
+          
+          <li><a href="#method-i-test_name_by_date">#test_name_by_date</a></li>
+          
+          <li><a href="#method-i-to_file">#to_file</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../Conf.html">Conf</a></li>
+        
+          <li><a href="../Conf/ActionField.html">Conf::ActionField</a></li>
+        
+          <li><a href="../Conf/App.html">Conf::App</a></li>
+        
+          <li><a href="../Conf/Database.html">Conf::Database</a></li>
+        
+          <li><a href="../Conf/Directories.html">Conf::Directories</a></li>
+        
+          <li><a href="../Conf/FileManager.html">Conf::FileManager</a></li>
+        
+          <li><a href="../Conf/Filter.html">Conf::Filter</a></li>
+        
+          <li><a href="../Conf/Flow.html">Conf::Flow</a></li>
+        
+          <li><a href="../Conf/Host.html">Conf::Host</a></li>
+        
+          <li><a href="../Conf/ListField.html">Conf::ListField</a></li>
+        
+          <li><a href="../Conf/LocalFileManager.html">Conf::LocalFileManager</a></li>
+        
+          <li><a href="../Conf/Logging.html">Conf::Logging</a></li>
+        
+          <li><a href="../Conf/MeanField.html">Conf::MeanField</a></li>
+        
+          <li><a href="../Conf/Monitor.html">Conf::Monitor</a></li>
+        
+          <li><a href="../Conf/NullFilter.html">Conf::NullFilter</a></li>
+        
+          <li><a href="../Conf/SftpFileManager.html">Conf::SftpFileManager</a></li>
+        
+          <li><a href="../Conf/Source.html">Conf::Source</a></li>
+        
+          <li><a href="../Conf/Stats.html">Conf::Stats</a></li>
+        
+          <li><a href="../Conf/SumField.html">Conf::SumField</a></li>
+        
+          <li><a href="../Database.html">Database</a></li>
+        
+          <li><a href="../Database/GenericTable.html">Database::GenericTable</a></li>
+        
+          <li><a href="../Database/Mysql.html">Database::Mysql</a></li>
+        
+          <li><a href="../Database/Mysql/Result.html">Database::Mysql::Result</a></li>
+        
+          <li><a href="../Database/Schema.html">Database::Schema</a></li>
+        
+          <li><a href="../Database/Schema/Monitor.html">Database::Schema::Monitor</a></li>
+        
+          <li><a href="../Database/Schema/Monitor/GenericSchema.html">Database::Schema::Monitor::GenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Monitor/NewGenericSchema.html">Database::Schema::Monitor::NewGenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source.html">Database::Schema::Source</a></li>
+        
+          <li><a href="../Database/Schema/Source/FileCountSchema.html">Database::Schema::Source::FileCountSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/GenericSchema.html">Database::Schema::Source::GenericSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/IndexerSchema.html">Database::Schema::Source::IndexerSchema</a></li>
+        
+          <li><a href="../Database/Schema/Source/ProceraSchema.html">Database::Schema::Source::ProceraSchema</a></li>
+        
+          <li><a href="../Database/SqlGenerator.html">Database::SqlGenerator</a></li>
+        
+          <li><a href="../Database/TableRotator.html">Database::TableRotator</a></li>
+        
+          <li><a href="../Database/TableUtil.html">Database::TableUtil</a></li>
+        
+          <li><a href="../Mapper.html">Mapper</a></li>
+        
+          <li><a href="../Mapper/GenericMapper.html">Mapper::GenericMapper</a></li>
+        
+          <li><a href="../Mapper/LogicaMapper.html">Mapper::LogicaMapper</a></li>
+        
+          <li><a href="../Mapper/MmsOutMapper.html">Mapper::MmsOutMapper</a></li>
+        
+          <li><a href="../Mapper/Nkm15Mapper.html">Mapper::Nkm15Mapper</a></li>
+        
+          <li><a href="../Mapper/PGWMapper.html">Mapper::PGWMapper</a></li>
+        
+          <li><a href="../Mapper/ProceraMapper.html">Mapper::ProceraMapper</a></li>
+        
+          <li><a href="../Mapper/SmsMapper.html">Mapper::SmsMapper</a></li>
+        
+          <li><a href="../Mapper/TAPMapper.html">Mapper::TAPMapper</a></li>
+        
+          <li><a href="../Mapper/TalMapper.html">Mapper::TalMapper</a></li>
+        
+          <li><a href="../Mapper/XDRMapper.html">Mapper::XDRMapper</a></li>
+        
+          <li><a href="../Decoder.html">Decoder</a></li>
+        
+          <li><a href="../Decoder/BigCSVDecoder.html">Decoder::BigCSVDecoder</a></li>
+        
+          <li><a href="../Decoder/CSVDecoder.html">Decoder::CSVDecoder</a></li>
+        
+          <li><a href="../Decoder/CSVFields.html">Decoder::CSVFields</a></li>
+        
+          <li><a href="../Decoder/LogicaDecoder.html">Decoder::LogicaDecoder</a></li>
+        
+          <li><a href="../Decoder/NKM15Decoder.html">Decoder::NKM15Decoder</a></li>
+        
+          <li><a href="../Decoder/NullDecoder.html">Decoder::NullDecoder</a></li>
+        
+          <li><a href="../Decoder/PGWDecoder.html">Decoder::PGWDecoder</a></li>
+        
+          <li><a href="../Decoder/TALDecoder.html">Decoder::TALDecoder</a></li>
+        
+          <li><a href="../Decoder/XDRDecoder.html">Decoder::XDRDecoder</a></li>
+        
+          <li><a href="../Inserter.html">Inserter</a></li>
+        
+          <li><a href="../Inserter/BigSourceInserter.html">Inserter::BigSourceInserter</a></li>
+        
+          <li><a href="../Inserter/GenericSourceInserter.html">Inserter::GenericSourceInserter</a></li>
+        
+          <li><a href="../Inserter/NullSourceInserter.html">Inserter::NullSourceInserter</a></li>
+        
+          <li><a href="../Inserter/PGWInserter.html">Inserter::PGWInserter</a></li>
+        
+          <li><a href="../Parser.html">Parser</a></li>
+        
+          <li><a href="../Parser/CheckParser.html">Parser::CheckParser</a></li>
+        
+          <li><a href="../Parser/DatabaseParser.html">Parser::DatabaseParser</a></li>
+        
+          <li><a href="../Parser/DirectoriesParser.html">Parser::DirectoriesParser</a></li>
+        
+          <li><a href="../Parser/OperationParser.html">Parser::OperationParser</a></li>
+        
+          <li><a href="../Getter.html">Getter</a></li>
+        
+          <li><a href="../Getter/FileCountGetter.html">Getter::FileCountGetter</a></li>
+        
+          <li><a href="../Getter/GenericSourceGetter.html">Getter::GenericSourceGetter</a></li>
+        
+          <li><a href="../Getter/NullSourceGetter.html">Getter::NullSourceGetter</a></li>
+        
+          <li><a href="../Fetchers.html">Fetchers</a></li>
+        
+          <li><a href="../Fetchers/LocalFileFetcher.html">Fetchers::LocalFileFetcher</a></li>
+        
+          <li><a href="../Fetchers/SftpFileFetcher.html">Fetchers::SftpFileFetcher</a></li>
+        
+          <li><a href="../Stats.html">Stats</a></li>
+        
+          <li><a href="../Stats/BacklogStats.html">Stats::BacklogStats</a></li>
+        
+          <li><a href="../Stats/GenericStats.html">Stats::GenericStats</a></li>
+        
+          <li><a href="../CDR.html">CDR</a></li>
+        
+          <li><a href="../CDR/File.html">CDR::File</a></li>
+        
+          <li><a href="../IncludeModule.html">IncludeModule</a></li>
+        
+          <li><a href="../IncludeModule/ModuleClass.html">IncludeModule::ModuleClass</a></li>
+        
+          <li><a href="../Collector.html">Collector</a></li>
+        
+          <li><a href="../Debug.html">Debug</a></li>
+        
+          <li><a href="../EMMConfig.html">EMMConfig</a></li>
+        
+          <li><a href="../Fixnum.html">Fixnum</a></li>
+        
+          <li><a href="../Lazy.html">Lazy</a></li>
+        
+          <li><a href="../LazyLispyEnumerable.html">LazyLispyEnumerable</a></li>
+        
+          <li><a href="../LispyEnumerable.html">LispyEnumerable</a></li>
+        
+          <li><a href="../Logger.html">Logger</a></li>
+        
+          <li><a href="../MysqlDumper.html">MysqlDumper</a></li>
+        
+          <li><a href="../Object.html">Object</a></li>
+        
+          <li><a href="../RubyUtil.html">RubyUtil</a></li>
+        
+          <li><a href="../SignalHandler.html">SignalHandler</a></li>
+        
+          <li><a href="../SuperTest.html">SuperTest</a></li>
+        
+          <li><a href="../T1.html">T1</a></li>
+        
+          <li><a href="../T2.html">T2</a></li>
+        
+          <li><a href="../Test.html">Test</a></li>
+        
+          <li><a href="../Test2.html">Test2</a></li>
+        
+          <li><a href="../TestParser.html">TestParser</a></li>
+        
+          <li><a href="../Util.html">Util</a></li>
+        
+          <li><a href="../ValueModule.html">ValueModule</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Conf::FileManager</h1>
+
+    <div id="description" class="description">
+      
+<pre>class that will handle all operations for files</pre>
+
+<p>on remote/local host for the GET operations and others</p>
+
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+      <!-- Constants -->
+      <div id="constants-list" class="section">
+        <h3 class="section-header">Constants</h3>
+        <dl>
+        
+          <dt><a name="FILE_REGEXP">FILE_REGEXP</a></dt>
+          
+          <dd class="description"><p>name that can be found with -name option of FIND GNU util</p></dd>
+          
+        
+          <dt><a name="FOLDER_REGEXP">FOLDER_REGEXP</a></dt>
+          
+          <dd class="description"><p>regex taht can be used with -regextype posix-basic -regex of Find GNU util</p>
+
+<pre>YEAR    MONTH   DAY</pre></dd>
+          
+        
+          <dt><a name="TODAY">TODAY</a></dt>
+          
+          <dd class="description"><p>from wichi <a href="FileManager.html#attribute-i-min_date">min_date</a> to
+list/download the files ! syntax from the DATE GNU <a
+href="../Util.html">Util</a></p></dd>
+          
+        
+        </dl>
+      </div>
+      
+
+      
+      <!-- Attributes -->
+      <div id="attribute-method-details" class="method-section section">
+        <h3 class="section-header">Attributes</h3>
+
+        
+        <div id="file_regexp-attribute-method" class="method-detail">
+          <a name="file_regexp"></a>
+          
+          <a name="file_regexp="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">file_regexp</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="folder_regexp-attribute-method" class="method-detail">
+          <a name="folder_regexp"></a>
+          
+          <a name="folder_regexp="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">folder_regexp</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="max_date-attribute-method" class="method-detail">
+          <a name="max_date"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">max_date</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="max_date_filter-attribute-method" class="method-detail">
+          <a name="max_date_filter"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">max_date_filter</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="min_date-attribute-method" class="method-detail">
+          <a name="min_date"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">min_date</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="min_date_filter-attribute-method" class="method-detail">
+          <a name="min_date_filter"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">min_date_filter</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="subfolders-attribute-method" class="method-detail">
+          <a name="subfolders"></a>
+          
+          <a name="subfolders="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">subfolders</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+        <div id="take-attribute-method" class="method-detail">
+          <a name="take"></a>
+          
+          <a name="take="></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">take</span><span
+              class="attribute-access-type">[RW]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+      </div><!-- attribute-method-details -->
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="create-method" class="method-detail ">
+          <a name="method-c-create"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">create</span><span
+              class="method-args">(source,opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>simple factory for getting files from multiple host with multiple protocol
+can also create <a href="LocalFileManager.html">LocalFileManager</a> for
+basic files operation directly with the constructor</p>
+            
+
+            
+            <div class="method-source-code" id="create-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 45</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">source</span>,<span class="ruby-identifier">opts</span> = {})
+    <span class="ruby-identifier">c</span> = <span class="ruby-identifier">@@subclasses</span>[<span class="ruby-identifier">source</span>.<span class="ruby-identifier">host</span>.<span class="ruby-identifier">protocol</span>]
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">c</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;ERROR&quot;</span>,<span class="ruby-string">&quot;Unknown File Manager protocol &quot;</span>)
+        <span class="ruby-identifier">abort</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">c</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">source</span>,<span class="ruby-identifier">opts</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- create-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- create-method -->
+
+      
+        <div id="get_protocol_source-method" class="method-detail ">
+          <a name="method-c-get_protocol_source"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">get_protocol_source</span><span
+              class="method-args">(protocol)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="get_protocol_source-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 443</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_protocol_source</span>(<span class="ruby-identifier">protocol</span>)
+    <span class="ruby-identifier">source</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-constant">App</span>.<span class="ruby-identifier">flows</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">flow</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">flow</span>.<span class="ruby-identifier">sources</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">source_</span><span class="ruby-operator">|</span>
+            <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">source_</span>.<span class="ruby-identifier">host</span>.<span class="ruby-identifier">protocol</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">protocol</span>
+            <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;FileManager:test have found source #{source_.name} for the specified protocol&quot;</span>)
+            <span class="ruby-identifier">source</span> = <span class="ruby-identifier">source_</span>
+            <span class="ruby-keyword">break</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">break</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">source</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">source</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- get_protocol_source-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- get_protocol_source-method -->
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(source,opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">source</span>,<span class="ruby-identifier">opts</span> = {})
+    <span class="ruby-ivar">@source</span> = <span class="ruby-identifier">source</span>
+    <span class="ruby-ivar">@host</span> = <span class="ruby-identifier">source</span>.<span class="ruby-identifier">host</span>
+    <span class="ruby-ivar">@file_regexp</span> = <span class="ruby-constant">FILE_REGEXP</span>
+    <span class="ruby-ivar">@folder_regexp</span> = <span class="ruby-constant">FOLDER_REGEXP</span>
+    <span class="ruby-ivar">@subfolders</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:min_date=</span>, <span class="ruby-constant">TODAY</span>)
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:min_date=</span>, <span class="ruby-constant">TODAY</span>)
+    <span class="ruby-ivar">@started</span> = <span class="ruby-keyword">false</span> <span class="ruby-comment"># boolean to know if operations have started or not</span>
+    <span class="ruby-ivar">@v</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:v</span>]
+    <span class="ruby-ivar">@opts</span> = <span class="ruby-identifier">opts</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+        <div id="print_listing-method" class="method-detail ">
+          <a name="method-c-print_listing"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">print_listing</span><span
+              class="method-args">(list,operation)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="print_listing-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 457</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">print_listing</span> <span class="ruby-identifier">list</span>,<span class="ruby-identifier">operation</span>
+    <span class="ruby-identifier">str</span> = <span class="ruby-identifier">operation</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot; : &quot;</span>
+    <span class="ruby-identifier">str</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;found #{list.size} elements...\n&quot;</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-identifier">str</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- print_listing-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- print_listing-method -->
+
+      
+        <div id="register_subclass-method" class="method-detail ">
+          <a name="method-c-register_subclass"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">register_subclass</span><span
+              class="method-args">(protocol)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="register_subclass-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">register_subclass</span> <span class="ruby-identifier">protocol</span>
+    <span class="ruby-identifier">@@subclasses</span>[<span class="ruby-identifier">protocol</span>] = <span class="ruby-keyword">self</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- register_subclass-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- register_subclass-method -->
+
+      
+        <div id="test-method" class="method-detail ">
+          <a name="method-c-test"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">test</span><span
+              class="method-args">(protocol)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="test-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 413</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test</span>(<span class="ruby-identifier">protocol</span>)
+    <span class="ruby-comment"># get the first source with this protocol</span>
+    <span class="ruby-identifier">source</span> = <span class="ruby-identifier">get_protocol_source</span> <span class="ruby-identifier">protocol</span>
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">source</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;ERROR&quot;</span>,<span class="ruby-string">&quot;FileManager Test did not find any sources with the protocol required&quot;</span>)
+        <span class="ruby-identifier">abort</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">manager</span> = <span class="ruby-constant">FileManager</span><span class="ruby-operator">::</span><span class="ruby-identifier">create</span>(<span class="ruby-identifier">source</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>)
+    <span class="ruby-identifier">manager</span>.<span class="ruby-identifier">instance_eval</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-identifier">manager</span>.<span class="ruby-identifier">start</span> <span class="ruby-keyword">do</span> 
+            <span class="ruby-identifier">source</span>.<span class="ruby-identifier">switches</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">switch</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">path</span> = <span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-identifier">join</span>(<span class="ruby-ivar">@source</span>.<span class="ruby-identifier">base_dir</span>, <span class="ruby-identifier">switch</span>)
+                <span class="ruby-identifier">folders</span> = <span class="ruby-identifier">folders_listing</span> <span class="ruby-identifier">path</span>
+                <span class="ruby-constant">FileManager</span><span class="ruby-operator">::</span><span class="ruby-identifier">print_listing</span> <span class="ruby-identifier">folders</span>,<span class="ruby-string">&quot;Folder Listing&quot;</span>
+                <span class="ruby-identifier">filtered_folders</span> = <span class="ruby-identifier">folders_filtering</span> <span class="ruby-identifier">folders</span>
+                <span class="ruby-constant">FileManager</span><span class="ruby-operator">::</span><span class="ruby-identifier">print_listing</span> <span class="ruby-identifier">filtered_folders</span>,<span class="ruby-string">&quot;Folders Filtering&quot;</span>
+                <span class="ruby-identifier">filtered_folders</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">folder</span><span class="ruby-operator">|</span>
+                    <span class="ruby-identifier">files</span> = <span class="ruby-identifier">files_listing</span> <span class="ruby-identifier">folder</span>
+                    <span class="ruby-constant">FileManager</span><span class="ruby-operator">::</span><span class="ruby-identifier">print_listing</span> <span class="ruby-identifier">files</span>,<span class="ruby-node">&quot;Files Listing for #{folder}&quot;</span>
+                    <span class="ruby-identifier">filtered_files</span> = <span class="ruby-identifier">files_filtering</span> <span class="ruby-identifier">files</span>
+                    <span class="ruby-constant">FileManager</span><span class="ruby-operator">::</span><span class="ruby-identifier">print_listing</span> <span class="ruby-identifier">files</span>,<span class="ruby-node">&quot;Files Filtered for #{folder}&quot;</span>
+                <span class="ruby-keyword">end</span>
+            <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- test-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- test-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="download_files-method" class="method-detail ">
+          <a name="method-i-download_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">download_files</span><span
+              class="method-args">(files,dest,opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>expect a array of CDR::Files,  and a string representing the destination
+folder</p>
+            
+
+            
+            <div class="method-source-code" id="download_files-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 116</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">download_files</span> <span class="ruby-identifier">files</span>,<span class="ruby-identifier">dest</span>,<span class="ruby-identifier">opts</span> = {}
+    <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@started</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;ERROR&quot;</span>,<span class="ruby-string">&quot;FileManager is not started yet !&quot;</span>)
+        <span class="ruby-identifier">abort</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">str</span> = <span class="ruby-node">&quot;Will download #{files.size} files to #{dest} ... &quot;</span>
+    <span class="ruby-identifier">download_all_files</span> <span class="ruby-identifier">files</span>,<span class="ruby-identifier">dest</span>
+    <span class="ruby-identifier">str</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot; Done !&quot;</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-identifier">str</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:v</span>]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- download_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- download_files-method -->
+
+      
+        <div id="find_files-method" class="method-detail ">
+          <a name="method-i-find_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">find_files</span><span
+              class="method-args">(folder)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>General function to call</pre>
+
+<p>will find all files according to spec (regex,date etc) will automatically
+handle the transition between subfolder and not return an array of <a
+href="../CDR/File.html">CDR::File</a></p>
+            
+
+            
+            <div class="method-source-code" id="find_files-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 98</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">find_files</span> <span class="ruby-identifier">folder</span>
+    <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@started</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;ERROR&quot;</span>,<span class="ruby-string">&quot;FileManager is not started yet !&quot;</span>)
+        <span class="ruby-identifier">abort</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@subfolders</span>
+        <span class="ruby-identifier">files</span> = <span class="ruby-identifier">sub_listing</span> <span class="ruby-identifier">folder</span>
+    <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">path</span> = <span class="ruby-operator">::</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-ivar">@source</span>.<span class="ruby-identifier">base_dir</span>,<span class="ruby-identifier">folder</span>)
+        <span class="ruby-identifier">files</span> =  <span class="ruby-identifier">files_listing</span> <span class="ruby-identifier">path</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">files</span> = <span class="ruby-identifier">files_filtering</span> <span class="ruby-identifier">files</span>
+    <span class="ruby-identifier">files</span> = <span class="ruby-identifier">files</span>.<span class="ruby-identifier">take</span>(<span class="ruby-ivar">@take</span>) <span class="ruby-keyword">if</span> <span class="ruby-ivar">@take</span>
+    <span class="ruby-identifier">to_file</span>(<span class="ruby-identifier">files</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- find_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- find_files-method -->
+
+      
+        <div id="max_date-3D-method" class="method-detail ">
+          <a name="method-i-max_date-3D"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">max_date=</span><span
+              class="method-args">(d)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="max_date-3D-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 89</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">max_date=</span>(<span class="ruby-identifier">d</span>)
+    <span class="ruby-ivar">@max_date</span> = <span class="ruby-identifier">d</span>
+    <span class="ruby-ivar">@max_date_filter</span> = <span class="ruby-identifier">date_str</span> <span class="ruby-ivar">@max_date</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- max_date-3D-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- max_date-3D-method -->
+
+      
+        <div id="min_date-3D-method" class="method-detail ">
+          <a name="method-i-min_date-3D"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">min_date=</span><span
+              class="method-args">(d)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>so we automatically have the string corresponding to the <a
+href="FileManager.html#attribute-i-min_date">min_date</a></p>
+            
+
+            
+            <div class="method-source-code" id="min_date-3D-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 84</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">min_date=</span>(<span class="ruby-identifier">d</span>)
+    <span class="ruby-ivar">@min_date</span> = <span class="ruby-identifier">d</span>
+    <span class="ruby-ivar">@min_date_filter</span> = <span class="ruby-identifier">date_str</span> <span class="ruby-ivar">@min_date</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- min_date-3D-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- min_date-3D-method -->
+
+      
+        <div id="set_options-method" class="method-detail ">
+          <a name="method-i-set_options"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">set_options</span><span
+              class="method-args">(opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>in case we want to change some things after being initialized best to go by
+this method, so every attr is consistent</p>
+            
+
+            
+            <div class="method-source-code" id="set_options-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 75</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_options</span>(<span class="ruby-identifier">opts</span> = {})
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:min_date=</span>,<span class="ruby-identifier">opts</span>[<span class="ruby-value">:min_date</span>]) <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:min_date</span>]
+    <span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-value">:max_date=</span>,<span class="ruby-identifier">opts</span>[<span class="ruby-value">:max_date</span>]) <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:max_date</span>]
+    <span class="ruby-ivar">@subfolders</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:subfolders</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:subfolders</span>]
+    <span class="ruby-ivar">@file_regexp</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:file_regexp</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:file_regexp</span>]
+    <span class="ruby-ivar">@folder_regexp</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-value">:folder_regexp</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:folder_regexp</span>]
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- set_options-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- set_options-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+      <div id="protected-instance-method-details" class="method-section section">
+        <h3 class="section-header">Protected Instance Methods</h3>
+
+      
+        <div id="date_str-method" class="method-detail ">
+          <a name="method-i-date_str"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">date_str</span><span
+              class="method-args">(d)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>compute the string date specified for this filemanager</p>
+            
+
+            
+            <div class="method-source-code" id="date_str-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 185</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">date_str</span> <span class="ruby-identifier">d</span>
+    <span class="ruby-constant">Util</span><span class="ruby-operator">::</span><span class="ruby-identifier">date</span>(<span class="ruby-identifier">d</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- date_str-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- date_str-method -->
+
+      
+        <div id="files_filtering-method" class="method-detail ">
+          <a name="method-i-files_filtering"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">files_filtering</span><span
+              class="method-args">(files)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>filter the files by the spec of this filemanager</p>
+            
+
+            
+            <div class="method-source-code" id="files_filtering-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 168</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">files_filtering</span> <span class="ruby-identifier">files</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">files</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@file_regexp</span>
+    <span class="ruby-identifier">f</span> = <span class="ruby-identifier">files</span>.<span class="ruby-identifier">select</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">test_name_by_date</span> <span class="ruby-identifier">file</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">f</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- files_filtering-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- files_filtering-method -->
+
+      
+        <div id="files_listing-method" class="method-detail ">
+          <a name="method-i-files_listing"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">files_listing</span><span
+              class="method-args">(path)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>list all files in a path</p>
+            
+
+            
+            <div class="method-source-code" id="files_listing-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 136</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">files_listing</span> <span class="ruby-identifier">path</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;find #{path} -type f &quot;</span>
+    <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;-regextype posix-extended &quot;</span>
+    <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;-regex \&quot;#{@file_regexp}\&quot; &quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@file_regexp</span>
+    <span class="ruby-identifier">out</span> = <span class="ruby-identifier">exec_cmd</span>(<span class="ruby-identifier">cmd</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- files_listing-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- files_listing-method -->
+
+      
+        <div id="folders_filtering-method" class="method-detail ">
+          <a name="method-i-folders_filtering"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">folders_filtering</span><span
+              class="method-args">(folders)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>filter the folders by the spec (mostly date for now)</p>
+            
+
+            
+            <div class="method-source-code" id="folders_filtering-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 177</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">folders_filtering</span> <span class="ruby-identifier">folders</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">folders</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@folder_regexp</span>
+    <span class="ruby-identifier">folders</span>.<span class="ruby-identifier">select</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">folder</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">test_name_by_date</span> <span class="ruby-identifier">folder</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- folders_filtering-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- folders_filtering-method -->
+
+      
+        <div id="folders_listing-method" class="method-detail ">
+          <a name="method-i-folders_listing"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">folders_listing</span><span
+              class="method-args">(path)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>list all folders corresponding to spec in this path</p>
+            
+
+            
+            <div class="method-source-code" id="folders_listing-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 157</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">folders_listing</span> <span class="ruby-identifier">path</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;find #{path} -type d &quot;</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@folder_regexp</span>
+        <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;-regextype posix-extended &quot;</span>
+        <span class="ruby-identifier">cmd</span> <span class="ruby-operator">+=</span> <span class="ruby-node">&quot;-regex \&quot;#{@folder_regexp}\&quot;&quot;</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">folders</span> = <span class="ruby-identifier">exec_cmd</span>(<span class="ruby-identifier">cmd</span>)
+    <span class="ruby-identifier">folders</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- folders_listing-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- folders_listing-method -->
+
+      
+        <div id="stop-method" class="method-detail ">
+          <a name="method-i-stop"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">stop</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>use only for signal processing handling (SIGINT)</p>
+            
+
+            
+            <div class="method-source-code" id="stop-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 206</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">stop</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-string">&quot;Exiting file manager gracefully ...&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- stop-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- stop-method -->
+
+      
+        <div id="sub_listing-method" class="method-detail ">
+          <a name="method-i-sub_listing"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">sub_listing</span><span
+              class="method-args">(switch)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>make a fist attempt at listing the folder, filter them out, and then do the
+listing for each of them</p>
+            
+
+            
+            <div class="method-source-code" id="sub_listing-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 145</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">sub_listing</span> <span class="ruby-identifier">switch</span>
+    <span class="ruby-identifier">path</span> = <span class="ruby-operator">::</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-ivar">@source</span>.<span class="ruby-identifier">base_dir</span>,<span class="ruby-identifier">switch</span>)
+    <span class="ruby-identifier">folders</span> = <span class="ruby-identifier">folders_listing</span> <span class="ruby-identifier">path</span>
+    <span class="ruby-identifier">folders</span> = <span class="ruby-identifier">folders_filtering</span> <span class="ruby-identifier">folders</span>
+    <span class="ruby-identifier">files</span> = []
+    <span class="ruby-identifier">folders</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">folder</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">files</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">files_listing</span> <span class="ruby-identifier">folder</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">files</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- sub_listing-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- sub_listing-method -->
+
+      
+        <div id="test_date-method" class="method-detail ">
+          <a name="method-i-test_date"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">test_date</span><span
+              class="method-args">(date)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>return true of false for a certain date regarding the spec of this file
+manager</p>
+            
+
+            
+            <div class="method-source-code" id="test_date-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 198</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test_date</span> <span class="ruby-identifier">date</span>
+    <span class="ruby-identifier">res</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-identifier">res</span> = <span class="ruby-identifier">res</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@min_date_filter</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-identifier">date</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@min_date_filter</span>
+    <span class="ruby-identifier">res</span> = <span class="ruby-identifier">res</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@max_date_filter</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-identifier">date</span> <span class="ruby-keyword">if</span> <span class="ruby-ivar">@max_date_filter</span>
+    <span class="ruby-identifier">res</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- test_date-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- test_date-method -->
+
+      
+        <div id="test_name_by_date-method" class="method-detail ">
+          <a name="method-i-test_name_by_date"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">test_name_by_date</span><span
+              class="method-args">(name)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="test_name_by_date-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 189</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test_name_by_date</span> <span class="ruby-identifier">name</span>
+    <span class="ruby-identifier">f</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">basename</span>(<span class="ruby-identifier">name</span>)
+    <span class="ruby-identifier">ret</span> = <span class="ruby-constant">Util</span><span class="ruby-operator">::</span><span class="ruby-identifier">decompose</span> <span class="ruby-identifier">f</span>,<span class="ruby-value">:day</span>
+    <span class="ruby-identifier">y</span>,<span class="ruby-identifier">m</span>,<span class="ruby-identifier">d</span> = <span class="ruby-identifier">ret</span>
+    <span class="ruby-identifier">ret</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">test_date</span>(<span class="ruby-node">&quot;#{y}#{m}#{d}&quot;</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- test_name_by_date-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- test_name_by_date-method -->
+
+      
+        <div id="to_file-method" class="method-detail ">
+          <a name="method-i-to_file"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">to_file</span><span
+              class="method-args">(files)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>return a list of <a href="../CDR/File.html">CDR::File</a> objects</p>
+            
+
+            
+            <div class="method-source-code" id="to_file-source">
+<pre>
+<span class="ruby-comment"># File config/file_manager.rb, line 131</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">to_file</span> <span class="ruby-identifier">files</span>
+    <span class="ruby-identifier">files</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-constant">CDR</span><span class="ruby-operator">::</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">f</span>) }
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- to_file-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- to_file-method -->
+
+      
+      </div><!-- protected-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

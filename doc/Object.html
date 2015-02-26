@@ -1,0 +1,2055 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: Object</title>
+
+  <link rel="stylesheet" href="./rdoc.css" type="text/css" media="screen" />
+
+  <script src="./js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="./index.html">Home</a>
+          <a href="./index.html#classes">Classes</a>
+          <a href="./index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="./och-scripts/monitoring_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="och-scripts/monitoring.rb">och-scripts/monitoring.rb</a></li>
+          
+            <li><a href="./och-scripts/ruby_closure_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="och-scripts/ruby_closure.rb">och-scripts/ruby_closure.rb</a></li>
+          
+            <li><a href="./och-scripts/training_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="och-scripts/training.rb">och-scripts/training.rb</a></li>
+          
+            <li><a href="./old/backup_cdr_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="old/backup_cdr.rb">old/backup_cdr.rb</a></li>
+          
+            <li><a href="./old/collect_cdr_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="old/collect_cdr.rb">old/collect_cdr.rb</a></li>
+          
+            <li><a href="./old/collect_mss_cdr_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="old/collect_mss_cdr.rb">old/collect_mss_cdr.rb</a></li>
+          
+            <li><a href="./old/fetch_cdr_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="old/fetch_cdr.rb">old/fetch_cdr.rb</a></li>
+          
+            <li><a href="./old/insert_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="old/insert.rb">old/insert.rb</a></li>
+          
+            <li><a href="./old/process_cdr_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="old/process_cdr.rb">old/process_cdr.rb</a></li>
+          
+            <li><a href="./test/pdfreader_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="test/pdfreader.rb">test/pdfreader.rb</a></li>
+          
+            <li><a href="./monitoring_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="monitoring.rb">monitoring.rb</a></li>
+          
+            <li><a href="./ruby_closure_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="ruby_closure.rb">ruby_closure.rb</a></li>
+          
+            <li><a href="./training_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="training.rb">training.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link">BasicObject</p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-i-another_method">#another_method</a></li>
+          
+          <li><a href="#method-i-backup">#backup</a></li>
+          
+          <li><a href="#method-i-call_with_too_few_args">#call_with_too_few_args</a></li>
+          
+          <li><a href="#method-i-call_with_too_many_args">#call_with_too_many_args</a></li>
+          
+          <li><a href="#method-i-confirm-3F">#confirm?</a></li>
+          
+          <li><a href="#method-i-custom_method">#custom_method</a></li>
+          
+          <li><a href="#method-i-decode">#decode</a></li>
+          
+          <li><a href="#method-i-download">#download</a></li>
+          
+          <li><a href="#method-i-example">#example</a></li>
+          
+          <li><a href="#method-i-execute">#execute</a></li>
+          
+          <li><a href="#method-i-f">#f</a></li>
+          
+          <li><a href="#method-i-fetch_files">#fetch_files</a></li>
+          
+          <li><a href="#method-i-fetch_files_db">#fetch_files_db</a></li>
+          
+          <li><a href="#method-i-fibo">#fibo</a></li>
+          
+          <li><a href="#method-i-filter">#filter</a></li>
+          
+          <li><a href="#method-i-g">#g</a></li>
+          
+          <li><a href="#method-i-get_fetchers">#get_fetchers</a></li>
+          
+          <li><a href="#method-i-insert">#insert</a></li>
+          
+          <li><a href="#method-i-json_template">#json_template</a></li>
+          
+          <li><a href="#method-i-lazy">#lazy</a></li>
+          
+          <li><a href="#method-i-lock">#lock</a></li>
+          
+          <li><a href="#method-i-main">#main</a></li>
+          
+          <li><a href="#method-i-make_lambda">#make_lambda</a></li>
+          
+          <li><a href="#method-i-make_proc_new">#make_proc_new</a></li>
+          
+          <li><a href="#method-i-method_without_block">#method_without_block</a></li>
+          
+          <li><a href="#method-i-new_files">#new_files</a></li>
+          
+          <li><a href="#method-i-no_arg_method">#no_arg_method</a></li>
+          
+          <li><a href="#method-i-one_arg_method">#one_arg_method</a></li>
+          
+          <li><a href="#method-i-parse_fields">#parse_fields</a></li>
+          
+          <li><a href="#method-i-perform">#perform</a></li>
+          
+          <li><a href="#method-i-process">#process</a></li>
+          
+          <li><a href="#method-i-save_for_later">#save_for_later</a></li>
+          
+          <li><a href="#method-i-six_times">#six_times</a></li>
+          
+          <li><a href="#method-i-some_method">#some_method</a></li>
+          
+          <li><a href="#method-i-store_backup">#store_backup</a></li>
+          
+          <li><a href="#method-i-test_action">#test_action</a></li>
+          
+          <li><a href="#method-i-thrice">#thrice</a></li>
+          
+          <li><a href="#method-i-thrice_with_local_x">#thrice_with_local_x</a></li>
+          
+          <li><a href="#method-i-two_arg_method">#two_arg_method</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="./images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="./Conf.html">Conf</a></li>
+        
+          <li><a href="./Conf/ActionField.html">Conf::ActionField</a></li>
+        
+          <li><a href="./Conf/App.html">Conf::App</a></li>
+        
+          <li><a href="./Conf/Database.html">Conf::Database</a></li>
+        
+          <li><a href="./Conf/Directories.html">Conf::Directories</a></li>
+        
+          <li><a href="./Conf/FileManager.html">Conf::FileManager</a></li>
+        
+          <li><a href="./Conf/Filter.html">Conf::Filter</a></li>
+        
+          <li><a href="./Conf/Flow.html">Conf::Flow</a></li>
+        
+          <li><a href="./Conf/Host.html">Conf::Host</a></li>
+        
+          <li><a href="./Conf/ListField.html">Conf::ListField</a></li>
+        
+          <li><a href="./Conf/LocalFileManager.html">Conf::LocalFileManager</a></li>
+        
+          <li><a href="./Conf/Logging.html">Conf::Logging</a></li>
+        
+          <li><a href="./Conf/MeanField.html">Conf::MeanField</a></li>
+        
+          <li><a href="./Conf/Monitor.html">Conf::Monitor</a></li>
+        
+          <li><a href="./Conf/NullFilter.html">Conf::NullFilter</a></li>
+        
+          <li><a href="./Conf/SftpFileManager.html">Conf::SftpFileManager</a></li>
+        
+          <li><a href="./Conf/Source.html">Conf::Source</a></li>
+        
+          <li><a href="./Conf/Stats.html">Conf::Stats</a></li>
+        
+          <li><a href="./Conf/SumField.html">Conf::SumField</a></li>
+        
+          <li><a href="./Database.html">Database</a></li>
+        
+          <li><a href="./Database/GenericTable.html">Database::GenericTable</a></li>
+        
+          <li><a href="./Database/Mysql.html">Database::Mysql</a></li>
+        
+          <li><a href="./Database/Mysql/Result.html">Database::Mysql::Result</a></li>
+        
+          <li><a href="./Database/Schema.html">Database::Schema</a></li>
+        
+          <li><a href="./Database/Schema/Monitor.html">Database::Schema::Monitor</a></li>
+        
+          <li><a href="./Database/Schema/Monitor/GenericSchema.html">Database::Schema::Monitor::GenericSchema</a></li>
+        
+          <li><a href="./Database/Schema/Monitor/NewGenericSchema.html">Database::Schema::Monitor::NewGenericSchema</a></li>
+        
+          <li><a href="./Database/Schema/Source.html">Database::Schema::Source</a></li>
+        
+          <li><a href="./Database/Schema/Source/FileCountSchema.html">Database::Schema::Source::FileCountSchema</a></li>
+        
+          <li><a href="./Database/Schema/Source/GenericSchema.html">Database::Schema::Source::GenericSchema</a></li>
+        
+          <li><a href="./Database/Schema/Source/IndexerSchema.html">Database::Schema::Source::IndexerSchema</a></li>
+        
+          <li><a href="./Database/Schema/Source/ProceraSchema.html">Database::Schema::Source::ProceraSchema</a></li>
+        
+          <li><a href="./Database/SqlGenerator.html">Database::SqlGenerator</a></li>
+        
+          <li><a href="./Database/TableRotator.html">Database::TableRotator</a></li>
+        
+          <li><a href="./Database/TableUtil.html">Database::TableUtil</a></li>
+        
+          <li><a href="./Mapper.html">Mapper</a></li>
+        
+          <li><a href="./Mapper/GenericMapper.html">Mapper::GenericMapper</a></li>
+        
+          <li><a href="./Mapper/LogicaMapper.html">Mapper::LogicaMapper</a></li>
+        
+          <li><a href="./Mapper/MmsOutMapper.html">Mapper::MmsOutMapper</a></li>
+        
+          <li><a href="./Mapper/Nkm15Mapper.html">Mapper::Nkm15Mapper</a></li>
+        
+          <li><a href="./Mapper/PGWMapper.html">Mapper::PGWMapper</a></li>
+        
+          <li><a href="./Mapper/ProceraMapper.html">Mapper::ProceraMapper</a></li>
+        
+          <li><a href="./Mapper/SmsMapper.html">Mapper::SmsMapper</a></li>
+        
+          <li><a href="./Mapper/TAPMapper.html">Mapper::TAPMapper</a></li>
+        
+          <li><a href="./Mapper/TalMapper.html">Mapper::TalMapper</a></li>
+        
+          <li><a href="./Mapper/XDRMapper.html">Mapper::XDRMapper</a></li>
+        
+          <li><a href="./Decoder.html">Decoder</a></li>
+        
+          <li><a href="./Decoder/BigCSVDecoder.html">Decoder::BigCSVDecoder</a></li>
+        
+          <li><a href="./Decoder/CSVDecoder.html">Decoder::CSVDecoder</a></li>
+        
+          <li><a href="./Decoder/CSVFields.html">Decoder::CSVFields</a></li>
+        
+          <li><a href="./Decoder/LogicaDecoder.html">Decoder::LogicaDecoder</a></li>
+        
+          <li><a href="./Decoder/NKM15Decoder.html">Decoder::NKM15Decoder</a></li>
+        
+          <li><a href="./Decoder/NullDecoder.html">Decoder::NullDecoder</a></li>
+        
+          <li><a href="./Decoder/PGWDecoder.html">Decoder::PGWDecoder</a></li>
+        
+          <li><a href="./Decoder/TALDecoder.html">Decoder::TALDecoder</a></li>
+        
+          <li><a href="./Decoder/XDRDecoder.html">Decoder::XDRDecoder</a></li>
+        
+          <li><a href="./Inserter.html">Inserter</a></li>
+        
+          <li><a href="./Inserter/BigSourceInserter.html">Inserter::BigSourceInserter</a></li>
+        
+          <li><a href="./Inserter/GenericSourceInserter.html">Inserter::GenericSourceInserter</a></li>
+        
+          <li><a href="./Inserter/NullSourceInserter.html">Inserter::NullSourceInserter</a></li>
+        
+          <li><a href="./Inserter/PGWInserter.html">Inserter::PGWInserter</a></li>
+        
+          <li><a href="./Parser.html">Parser</a></li>
+        
+          <li><a href="./Parser/CheckParser.html">Parser::CheckParser</a></li>
+        
+          <li><a href="./Parser/DatabaseParser.html">Parser::DatabaseParser</a></li>
+        
+          <li><a href="./Parser/DirectoriesParser.html">Parser::DirectoriesParser</a></li>
+        
+          <li><a href="./Parser/OperationParser.html">Parser::OperationParser</a></li>
+        
+          <li><a href="./Getter.html">Getter</a></li>
+        
+          <li><a href="./Getter/FileCountGetter.html">Getter::FileCountGetter</a></li>
+        
+          <li><a href="./Getter/GenericSourceGetter.html">Getter::GenericSourceGetter</a></li>
+        
+          <li><a href="./Getter/NullSourceGetter.html">Getter::NullSourceGetter</a></li>
+        
+          <li><a href="./Fetchers.html">Fetchers</a></li>
+        
+          <li><a href="./Fetchers/LocalFileFetcher.html">Fetchers::LocalFileFetcher</a></li>
+        
+          <li><a href="./Fetchers/SftpFileFetcher.html">Fetchers::SftpFileFetcher</a></li>
+        
+          <li><a href="./Stats.html">Stats</a></li>
+        
+          <li><a href="./Stats/BacklogStats.html">Stats::BacklogStats</a></li>
+        
+          <li><a href="./Stats/GenericStats.html">Stats::GenericStats</a></li>
+        
+          <li><a href="./CDR.html">CDR</a></li>
+        
+          <li><a href="./CDR/File.html">CDR::File</a></li>
+        
+          <li><a href="./IncludeModule.html">IncludeModule</a></li>
+        
+          <li><a href="./IncludeModule/ModuleClass.html">IncludeModule::ModuleClass</a></li>
+        
+          <li><a href="./Collector.html">Collector</a></li>
+        
+          <li><a href="./Debug.html">Debug</a></li>
+        
+          <li><a href="./EMMConfig.html">EMMConfig</a></li>
+        
+          <li><a href="./Fixnum.html">Fixnum</a></li>
+        
+          <li><a href="./Lazy.html">Lazy</a></li>
+        
+          <li><a href="./LazyLispyEnumerable.html">LazyLispyEnumerable</a></li>
+        
+          <li><a href="./LispyEnumerable.html">LispyEnumerable</a></li>
+        
+          <li><a href="./Logger.html">Logger</a></li>
+        
+          <li><a href="./MysqlDumper.html">MysqlDumper</a></li>
+        
+          <li><a href="./Object.html">Object</a></li>
+        
+          <li><a href="./RubyUtil.html">RubyUtil</a></li>
+        
+          <li><a href="./SignalHandler.html">SignalHandler</a></li>
+        
+          <li><a href="./SuperTest.html">SuperTest</a></li>
+        
+          <li><a href="./T1.html">T1</a></li>
+        
+          <li><a href="./T2.html">T2</a></li>
+        
+          <li><a href="./Test.html">Test</a></li>
+        
+          <li><a href="./Test2.html">Test2</a></li>
+        
+          <li><a href="./TestParser.html">TestParser</a></li>
+        
+          <li><a href="./Util.html">Util</a></li>
+        
+          <li><a href="./ValueModule.html">ValueModule</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Object</h1>
+
+    <div id="description" class="description">
+      
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+
+      <!-- Methods -->
+      
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="another_method-method" class="method-detail ">
+          <a name="method-i-another_method"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">another_method</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="another_method-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 241</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">another_method</span>
+  <span class="ruby-string">&quot;Value from method&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- another_method-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- another_method-method -->
+
+      
+        <div id="backup-method" class="method-detail ">
+          <a name="method-i-backup"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">backup</span><span
+              class="method-args">(file)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="backup-source">
+<pre>
+<span class="ruby-comment"># File old/process_cdr.rb, line 122</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">backup</span> <span class="ruby-identifier">file</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-string">&quot;./backup_cdr.rb -t CDR_MSS&quot;</span>
+    <span class="ruby-identifier">error</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-constant">Open3</span>.<span class="ruby-identifier">popen3</span>(<span class="ruby-identifier">cmd</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">stdin</span>,<span class="ruby-identifier">stdout</span>,<span class="ruby-identifier">stderr</span>,<span class="ruby-identifier">thr</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">stdin</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">file</span>)
+        <span class="ruby-identifier">stdin</span>.<span class="ruby-identifier">close</span>
+
+        <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">thr</span>.<span class="ruby-identifier">value</span>.<span class="ruby-identifier">success?</span>
+            <span class="ruby-identifier">error</span> = <span class="ruby-identifier">stderr</span>.<span class="ruby-identifier">read</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">error</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-identifier">$0</span>,<span class="ruby-string">&quot;ERROR&quot;</span>,<span class="ruby-node">&quot;Error while backup file #{file}.#{error}&quot;</span>)
+        <span class="ruby-identifier">abort</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- backup-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- backup-method -->
+
+      
+        <div id="call_with_too_few_args-method" class="method-detail ">
+          <a name="method-i-call_with_too_few_args"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">call_with_too_few_args</span><span
+              class="method-args">(closure)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="call_with_too_few_args-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 406</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">call_with_too_few_args</span>(<span class="ruby-identifier">closure</span>)
+  <span class="ruby-keyword">begin</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;closure arity: #{closure.arity}&quot;</span>
+    <span class="ruby-identifier">closure</span>.<span class="ruby-identifier">call</span>()
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Too few args worked&quot;</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Too few args threw exception #{e.class}: #{e}&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- call_with_too_few_args-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- call_with_too_few_args-method -->
+
+      
+        <div id="call_with_too_many_args-method" class="method-detail ">
+          <a name="method-i-call_with_too_many_args"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">call_with_too_many_args</span><span
+              class="method-args">(closure)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="call_with_too_many_args-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 388</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">call_with_too_many_args</span>(<span class="ruby-identifier">closure</span>)
+  <span class="ruby-keyword">begin</span>
+      <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;closure arity: #{closure.arity}&quot;</span>
+      <span class="ruby-identifier">closure</span>.<span class="ruby-identifier">call</span>(<span class="ruby-value">1</span>,<span class="ruby-value">2</span>,<span class="ruby-value">3</span>,<span class="ruby-value">4</span>,<span class="ruby-value">5</span>,<span class="ruby-value">6</span>)
+      <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Too many args worked&quot;</span>
+  <span class="ruby-keyword">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+      <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Too many args threw exception #{e.class}: #{e}&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- call_with_too_many_args-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- call_with_too_many_args-method -->
+
+      
+        <div id="confirm-3F-method" class="method-detail ">
+          <a name="method-i-confirm-3F"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">confirm?</span><span
+              class="method-args">(lines)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="confirm-3F-source">
+<pre>
+<span class="ruby-comment"># File test/pdfreader.rb, line 26</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">confirm?</span> <span class="ruby-identifier">lines</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- confirm-3F-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- confirm-3F-method -->
+
+      
+        <div id="custom_method-method" class="method-detail ">
+          <a name="method-i-custom_method"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">custom_method</span><span
+              class="method-args">(arr)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="custom_method-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/training.rb, line 115</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">custom_method</span> <span class="ruby-identifier">arr</span>
+    <span class="ruby-identifier">arr</span>.<span class="ruby-identifier">map!</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">v</span><span class="ruby-operator">+</span><span class="ruby-value">1</span> }
+    <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;Hello custom method&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- custom_method-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- custom_method-method -->
+
+      
+        <div id="decode-method" class="method-detail ">
+          <a name="method-i-decode"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">decode</span><span
+              class="method-args">(file)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>decode sequentially</p>
+            
+
+            
+            <div class="method-source-code" id="decode-source">
+<pre>
+<span class="ruby-comment"># File old/process_cdr.rb, line 88</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">decode</span> <span class="ruby-identifier">file</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;./decoder.rb -v -t #{$type} #{file} &quot;</span>
+    <span class="ruby-identifier">json</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-constant">Open3</span>.<span class="ruby-identifier">popen3</span>(<span class="ruby-identifier">cmd</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">stdin</span>,<span class="ruby-identifier">stdout</span>,<span class="ruby-identifier">stderr</span>,<span class="ruby-identifier">thr</span><span class="ruby-operator">|</span>
+       <span class="ruby-identifier">json</span> = <span class="ruby-identifier">stdout</span>.<span class="ruby-identifier">read</span> 
+       <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">thr</span>.<span class="ruby-identifier">value</span>.<span class="ruby-identifier">success?</span>
+            <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-identifier">$0</span>,<span class="ruby-string">&quot;ERROR&quot;</span>,<span class="ruby-node">&quot;Error while decoding #{file}: #{stderr.read}&quot;</span>)
+            <span class="ruby-identifier">abort</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">json</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- decode-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- decode-method -->
+
+      
+        <div id="download-method" class="method-detail ">
+          <a name="method-i-download"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">download</span><span
+              class="method-args">(json)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="download-source">
+<pre>
+<span class="ruby-comment"># File old/collect_cdr.rb, line 127</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">download</span> <span class="ruby-identifier">json</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;fetch_cdr.rb download #{$type} -f -v&quot;</span>
+    <span class="ruby-identifier">error</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-identifier">gen</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">generate</span>(<span class="ruby-identifier">json</span>)
+    <span class="ruby-constant">Open3</span>.<span class="ruby-identifier">popen3</span>(<span class="ruby-identifier">cmd</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">stdin</span>,<span class="ruby-identifier">stderr</span>,<span class="ruby-identifier">stdout</span>,<span class="ruby-identifier">thr</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">stdin</span>.<span class="ruby-identifier">puts</span> <span class="ruby-identifier">gen</span>
+        <span class="ruby-identifier">stdin</span>.<span class="ruby-identifier">close</span>
+        <span class="ruby-identifier">stdout</span>.<span class="ruby-identifier">gets</span>
+        <span class="ruby-identifier">error</span> = <span class="ruby-operator">!</span><span class="ruby-identifier">thr</span>.<span class="ruby-identifier">value</span>.<span class="ruby-identifier">success?</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">error</span>
+            <span class="ruby-identifier">error</span> =  <span class="ruby-identifier">stderr</span>.<span class="ruby-identifier">gets</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">$opts</span>[<span class="ruby-value">:v</span>]
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">error</span> 
+        <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-identifier">error</span>
+        <span class="ruby-identifier">abort</span>
+    <span class="ruby-keyword">end</span> 
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- download-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- download-method -->
+
+      
+        <div id="example-method" class="method-detail ">
+          <a name="method-i-example"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">example</span><span
+              class="method-args">(num)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>A closure is a block of code which meets three criteria:</p>
+
+<pre>* It can be passed around as a value and
+
+* executed on demand by anyone who has that value, at which time
+
+* it can refer to variables from the context in which it was created
+  (i.e. it is closed with respect to variable access, in the
+  mathematical sense of the word &quot;closed&quot;).</pre>
+
+<p>(The word “closure” actually has an imprecise meaning, and some people
+don’t think that criterion #1 is part of the definition. I think it is.)</p>
+
+<p>Closures are a mainstay of functional languages, but are present in many
+other languages as well (e.g. Java’s anonymous inner classes). You can do
+cool stuff with them: they allow deferred execution, and some elegant
+tricks of style.</p>
+
+<p>Ruby is based on the “principle of least surprise,” but I had a really
+nasty surprise in my learning process. When I understood what methods like
+“each” were doing, I thought, “Aha! Ruby has closures!” But then I found
+out that a function can’t accept multiple blocks – violating the principle
+that closures can be passed around freely as values.</p>
+
+<p>This document details what I learned in my quest to figure out what the
+deal is.</p>
+            
+
+            
+            <div class="method-source-code" id="example-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 55</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">example</span>(<span class="ruby-identifier">num</span>)
+  <span class="ruby-identifier">puts</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;------ Example #{num} ------&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- example-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- example-method -->
+
+      
+        <div id="execute-method" class="method-detail ">
+          <a name="method-i-execute"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">execute</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="execute-source">
+<pre>
+<span class="ruby-comment"># File old/collect_mss_cdr.rb, line 47</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">execute</span>
+        <span class="ruby-comment">#prepare fetchers</span>
+        <span class="ruby-identifier">coll_fetchers</span> = {}
+        <span class="ruby-ivar">@hosts</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">host</span><span class="ruby-operator">|</span>
+                <span class="ruby-ivar">@credentials</span>[<span class="ruby-value">:host</span>] = <span class="ruby-identifier">host</span>
+                <span class="ruby-identifier">fetcher</span> = <span class="ruby-constant">Fetchers</span><span class="ruby-operator">::</span><span class="ruby-constant">FileFetcher</span>.<span class="ruby-identifier">create</span>(<span class="ruby-ivar">@protocol</span>,<span class="ruby-ivar">@credentials</span>)
+                <span class="ruby-identifier">sws</span> = <span class="ruby-ivar">@switches</span>[<span class="ruby-identifier">host</span>]
+                <span class="ruby-identifier">coll_fetchers</span>[<span class="ruby-identifier">host</span>] = { <span class="ruby-identifier">fetcher</span><span class="ruby-value">:fetcher</span>,<span class="ruby-identifier">switches</span><span class="ruby-value">:sws</span>,<span class="ruby-identifier">base_path</span><span class="ruby-value">:@base_path</span>}
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-comment"># prepare table </span>
+        <span class="ruby-identifier">database</span> = <span class="ruby-constant">Database</span><span class="ruby-operator">::</span><span class="ruby-constant">Mysql</span>.<span class="ruby-identifier">default</span>
+        <span class="ruby-identifier">table</span> = <span class="ruby-constant">Database</span><span class="ruby-operator">::</span><span class="ruby-constant">GenericTable</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">database</span>,<span class="ruby-constant">EMMConfig</span>[<span class="ruby-string">'DB_TABLE_CDR_MSS'</span>])
+        <span class="ruby-identifier">database</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span>
+                <span class="ruby-comment"># make the collector works its magic </span>
+                <span class="ruby-identifier">collector</span> = <span class="ruby-constant">Collector</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">table</span>,<span class="ruby-identifier">coll_fetchers</span>)
+                <span class="ruby-identifier">collector</span>.<span class="ruby-identifier">collect</span> 
+        <span class="ruby-keyword">end</span>
+
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- execute-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- execute-method -->
+
+      
+        <div id="f-method" class="method-detail ">
+          <a name="method-i-f"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">f</span><span
+              class="method-args">(closure)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="f-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 230</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">f</span>(<span class="ruby-identifier">closure</span>)
+  <span class="ruby-identifier">puts</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;About to call closure&quot;</span>
+  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">closure</span>.<span class="ruby-identifier">call</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Closure returned: #{result}&quot;</span>
+  <span class="ruby-string">&quot;Value from f&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- f-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- f-method -->
+
+      
+        <div id="fetch_files-method" class="method-detail ">
+          <a name="method-i-fetch_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">fetch_files</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>fetch infos for the type i.e. all cdr found</p>
+            
+
+            
+            <div class="method-source-code" id="fetch_files-source">
+<pre>
+<span class="ruby-comment"># File old/collect_cdr.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">fetch_files</span>
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;fetch_cdr.rb list #{$type} -f -v&quot;</span>
+    <span class="ruby-identifier">error</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-identifier">json</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-constant">Open3</span>.<span class="ruby-identifier">popen3</span>(<span class="ruby-identifier">cmd</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">stdin</span>,<span class="ruby-identifier">stdout</span>,<span class="ruby-identifier">stderr</span>,<span class="ruby-identifier">thr</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">json</span> = <span class="ruby-identifier">stdout</span>.<span class="ruby-identifier">read</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">thr</span>.<span class="ruby-identifier">value</span>.<span class="ruby-identifier">success?</span>
+            <span class="ruby-identifier">error</span> = <span class="ruby-keyword">true</span>
+            <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-identifier">stderr</span>.<span class="ruby-identifier">read</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">$opts</span>[<span class="ruby-value">:v</span>]
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span> 
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">error</span>
+        <span class="ruby-identifier">abort</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">json</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">json</span>, <span class="ruby-identifier">symbolize_names</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>)
+    <span class="ruby-identifier">json</span> = <span class="ruby-constant">RubyUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">symbolize</span> <span class="ruby-identifier">json</span> 
+    <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">json</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-identifier">$0</span>,<span class="ruby-string">&quot;ERROR&quot;</span>,<span class="ruby-string">&quot;while parsing json output from fetch_cdr&quot;</span>)
+        <span class="ruby-identifier">abort</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">count</span> = <span class="ruby-identifier">json</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value">0</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">col</span>,(<span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span>)<span class="ruby-operator">|</span> <span class="ruby-identifier">col</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value">0</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">c2</span>,<span class="ruby-identifier">h</span><span class="ruby-operator">|</span> <span class="ruby-identifier">c2</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">h</span>[<span class="ruby-value">:files</span>].<span class="ruby-identifier">size</span> } }
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-identifier">$0</span>,<span class="ruby-string">&quot;INFO&quot;</span>, <span class="ruby-node">&quot;Found #{count} #{$type} files #{$json.keys.join(',')} ... &quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">$opts</span>[<span class="ruby-value">:v</span>]
+    <span class="ruby-identifier">json</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- fetch_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- fetch_files-method -->
+
+      
+        <div id="fetch_files_db-method" class="method-detail ">
+          <a name="method-i-fetch_files_db"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">fetch_files_db</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="fetch_files_db-source">
+<pre>
+<span class="ruby-comment"># File old/collect_cdr.rb, line 86</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">fetch_files_db</span>
+    <span class="ruby-identifier">db</span> = <span class="ruby-constant">Database</span><span class="ruby-operator">::</span><span class="ruby-constant">Mysql</span>.<span class="ruby-identifier">default</span>
+    <span class="ruby-identifier">files</span> = {}
+    <span class="ruby-identifier">table</span> = <span class="ruby-constant">EMMConfig</span>[<span class="ruby-node">&quot;DB_TABLE_CDR_#{$type}&quot;</span>]
+    <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-identifier">query</span> = <span class="ruby-node">&quot;SELECT file_name,switch FROM #{table} WHERE processed=0;&quot;</span>
+        <span class="ruby-identifier">res</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">query</span> <span class="ruby-identifier">query</span>
+        <span class="ruby-identifier">res</span>.<span class="ruby-identifier">each_hash</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">switch</span> = <span class="ruby-identifier">row</span>[<span class="ruby-string">'switch'</span>]
+            <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">files</span>[<span class="ruby-identifier">switch</span>]
+                <span class="ruby-identifier">files</span>[<span class="ruby-identifier">switch</span>] = []
+            <span class="ruby-keyword">end</span>
+            <span class="ruby-identifier">files</span>[<span class="ruby-identifier">switch</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>[<span class="ruby-string">'file_name'</span>]
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-identifier">$0</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Retrieved #{res.num_rows} entries from db...&quot;</span>) 
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">files</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- fetch_files_db-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- fetch_files_db-method -->
+
+      
+        <div id="fibo-method" class="method-detail ">
+          <a name="method-i-fibo"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">fibo</span><span
+              class="method-args">(a,b)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="fibo-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 608</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">fibo</span>(<span class="ruby-identifier">a</span>,<span class="ruby-identifier">b</span>)
+  <span class="ruby-identifier">lambda</span> { [<span class="ruby-identifier">a</span>, <span class="ruby-identifier">fibo</span>(<span class="ruby-identifier">b</span>,<span class="ruby-identifier">a</span><span class="ruby-operator">+</span><span class="ruby-identifier">b</span>)] } <span class="ruby-comment"># &lt;---- this would go into infinite recursion if it weren't in a lambda</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- fibo-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- fibo-method -->
+
+      
+        <div id="filter-method" class="method-detail ">
+          <a name="method-i-filter"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">filter</span><span
+              class="method-args">(json,dbf)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>filter the new files (json) by</pre>
+
+<p>removing thoses in dbf (list)</p>
+            
+
+            
+            <div class="method-source-code" id="filter-source">
+<pre>
+<span class="ruby-comment"># File old/collect_cdr.rb, line 107</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">filter</span> <span class="ruby-identifier">json</span>,<span class="ruby-identifier">dbf</span>
+    <span class="ruby-identifier">count</span> = <span class="ruby-value">0</span>
+    <span class="ruby-identifier">json</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">host</span>,<span class="ruby-identifier">switches</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">switches</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">sw_h</span><span class="ruby-operator">|</span>
+            <span class="ruby-keyword">if</span> <span class="ruby-identifier">dbf</span>.<span class="ruby-identifier">empty?</span> <span class="ruby-operator">||</span> <span class="ruby-operator">!</span><span class="ruby-identifier">dbf</span>[<span class="ruby-identifier">sw_h</span>[<span class="ruby-value">:name</span>]]
+                <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;No files found in db for #{sw_h[:name]} ...&quot;</span>
+                <span class="ruby-identifier">count</span> = <span class="ruby-identifier">count</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sw_h</span>[<span class="ruby-value">:files</span>].<span class="ruby-identifier">size</span>
+                <span class="ruby-keyword">next</span>
+            <span class="ruby-keyword">end</span>
+            <span class="ruby-identifier">str</span> =  <span class="ruby-node">&quot;Switch: #{sw_h[:name]} =&gt; Before : #{sw_h[:files].size} ... &quot;</span>
+            <span class="ruby-identifier">sw_h</span>[<span class="ruby-value">:files</span>] = <span class="ruby-identifier">sw_h</span>[<span class="ruby-value">:files</span>] <span class="ruby-operator">-</span> <span class="ruby-identifier">dbf</span>[<span class="ruby-identifier">sw_h</span>[<span class="ruby-value">:name</span>]]
+            <span class="ruby-identifier">str</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;After :  #{sw_h[:files].size} files ..\n&quot;</span> 
+            <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-identifier">$0</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-identifier">str</span>)
+            <span class="ruby-identifier">count</span> = <span class="ruby-identifier">count</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sw_h</span>[<span class="ruby-value">:files</span>].<span class="ruby-identifier">size</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-identifier">$0</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Will keep only #{count} files to download ...&quot;</span>)
+    <span class="ruby-identifier">json</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- filter-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- filter-method -->
+
+      
+        <div id="g-method" class="method-detail ">
+          <a name="method-i-g"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">g</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="g-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 261</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">g</span>
+  <span class="ruby-identifier">result</span> = <span class="ruby-identifier">f</span>(<span class="ruby-constant">Proc</span>.<span class="ruby-identifier">new</span> { <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;Value from Proc.new&quot;</span> })
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;f returned: &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">result</span> <span class="ruby-comment">#never executed</span>
+  <span class="ruby-string">&quot;Value from g&quot;</span>               <span class="ruby-comment">#never executed</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- g-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- g-method -->
+
+      
+        <div id="get_fetchers-method" class="method-detail ">
+          <a name="method-i-get_fetchers"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">get_fetchers</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>return the fetchers that will be used for theses hosts</p>
+            
+
+            
+            <div class="method-source-code" id="get_fetchers-source">
+<pre>
+<span class="ruby-comment"># File old/fetch_cdr.rb, line 136</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">get_fetchers</span>
+    <span class="ruby-identifier">fetchers</span> = []
+    <span class="ruby-identifier">proto</span> = <span class="ruby-constant">EMMConfig</span>[<span class="ruby-node">&quot;#{$type}_FETCH_PROTOCOL&quot;</span>].<span class="ruby-identifier">to_sym</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">proto</span>
+        <span class="ruby-keyword">when</span> <span class="ruby-value">:sftp</span>
+            <span class="ruby-comment">#careful if changing the layout of config file...</span>
+            <span class="ruby-identifier">credentials</span> = {}
+            <span class="ruby-identifier">credentials</span>[<span class="ruby-value">:login</span>] = <span class="ruby-constant">EMMConfig</span>[<span class="ruby-node">&quot;#{$type}_#{proto.upcase}_LOGIN&quot;</span>] 
+            <span class="ruby-identifier">credentials</span>[<span class="ruby-value">:pass</span>] = <span class="ruby-constant">EMMConfig</span>[<span class="ruby-node">&quot;#{$type}_#{proto.upcase}_PASS&quot;</span>]
+            <span class="ruby-identifier">$hosts</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">h</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">credentials</span>[<span class="ruby-value">:host</span>] = <span class="ruby-identifier">h</span>
+                <span class="ruby-identifier">fetchers</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Fetchers</span><span class="ruby-operator">::</span><span class="ruby-constant">FileFetcher</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">proto</span>,<span class="ruby-identifier">credentials</span>)
+            <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">fetchers</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- get_fetchers-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- get_fetchers-method -->
+
+      
+        <div id="insert-method" class="method-detail ">
+          <a name="method-i-insert"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">insert</span><span
+              class="method-args">(json)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="insert-source">
+<pre>
+<span class="ruby-comment"># File old/collect_cdr.rb, line 146</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">insert</span> <span class="ruby-identifier">json</span>
+    <span class="ruby-identifier">ijson</span> = {}
+    <span class="ruby-identifier">json</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">host</span>,<span class="ruby-identifier">switches</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">switches</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">sw_h</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">sw_h</span>[<span class="ruby-value">:files</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">ijson</span>[<span class="ruby-identifier">file</span>] = { <span class="ruby-identifier">values</span><span class="ruby-operator">:</span> { <span class="ruby-identifier">file_name</span><span class="ruby-operator">:</span> <span class="ruby-identifier">file</span>,
+                                          <span class="ruby-identifier">switch</span><span class="ruby-operator">:</span> <span class="ruby-identifier">sw_h</span>[<span class="ruby-value">:name</span>] 
+                                        }
+                                }
+            <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">table</span> = <span class="ruby-constant">EMMConfig</span>[<span class="ruby-node">&quot;DB_TABLE_CDR_#{$type}&quot;</span>]
+    <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;insert.rb -t #{table} -v -s&quot;</span>
+    <span class="ruby-identifier">error</span> = <span class="ruby-keyword">false</span>
+    <span class="ruby-identifier">out</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-constant">Open3</span>.<span class="ruby-identifier">popen3</span>(<span class="ruby-identifier">cmd</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">stdin</span>,<span class="ruby-identifier">stdout</span>,<span class="ruby-identifier">stderr</span>,<span class="ruby-identifier">thr</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">stdin</span>.<span class="ruby-identifier">puts</span> <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">generate</span>(<span class="ruby-identifier">ijson</span>)
+        <span class="ruby-identifier">stdin</span>.<span class="ruby-identifier">close</span>
+        <span class="ruby-identifier">out</span> = <span class="ruby-identifier">stdout</span>.<span class="ruby-identifier">read</span>    
+        <span class="ruby-identifier">error</span> = <span class="ruby-operator">!</span><span class="ruby-identifier">thr</span>.<span class="ruby-identifier">value</span>.<span class="ruby-identifier">success?</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">stderr</span>.<span class="ruby-identifier">gets</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">error</span>
+        <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-identifier">error</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">$opts</span>[<span class="ruby-value">:v</span>]
+        <span class="ruby-identifier">abort</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-identifier">$0</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Inserted #{out.split(&quot;\n&quot;).size} files in #{table}... &quot;</span>) 
+
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- insert-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- insert-method -->
+
+      
+        <div id="json_template-method" class="method-detail ">
+          <a name="method-i-json_template"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">json_template</span><span
+              class="method-args">(h)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>create the output json template for this host</p>
+            
+
+            
+            <div class="method-source-code" id="json_template-source">
+<pre>
+<span class="ruby-comment"># File old/fetch_cdr.rb, line 123</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">json_template</span> <span class="ruby-identifier">h</span>
+    <span class="ruby-identifier">host</span> = <span class="ruby-identifier">h</span>.<span class="ruby-identifier">to_sym</span>
+    <span class="ruby-identifier">json</span> = { <span class="ruby-identifier">host</span>.<span class="ruby-identifier">to_sym</span> =<span class="ruby-operator">&gt;</span> {}}
+    <span class="ruby-identifier">json</span>[<span class="ruby-identifier">host</span>] = []
+    <span class="ruby-constant">Util</span>.<span class="ruby-identifier">switches</span>(<span class="ruby-identifier">h</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">json</span>[<span class="ruby-identifier">host</span>] <span class="ruby-operator">&lt;&lt;</span> { <span class="ruby-identifier">name</span><span class="ruby-value">:v</span>, <span class="ruby-identifier">files</span><span class="ruby-operator">:</span> [] } }
+<span class="ruby-identifier">json</span> 
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- json_template-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- json_template-method -->
+
+      
+        <div id="lazy-method" class="method-detail ">
+          <a name="method-i-lazy"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">lazy</span><span
+              class="method-args">(&b)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="lazy-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 645</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">lazy</span>(&amp;<span class="ruby-identifier">b</span>)
+  <span class="ruby-constant">Lazy</span>.<span class="ruby-identifier">new</span> &amp;<span class="ruby-identifier">b</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- lazy-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- lazy-method -->
+
+      
+        <div id="lock-method" class="method-detail ">
+          <a name="method-i-lock"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">lock</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>TODO</p>
+            
+
+            
+            <div class="method-source-code" id="lock-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/monitoring.rb, line 86</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">lock</span> 
+    
+    <span class="ruby-identifier">fname</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-keyword">__FILE__</span>),<span class="ruby-string">&quot;locks&quot;</span>,<span class="ruby-constant">ARGV</span>.<span class="ruby-identifier">join</span>(<span class="ruby-string">'-'</span>)) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;.LOCK&quot;</span>
+    <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">fname</span>,<span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-constant">RDWR</span><span class="ruby-operator">|</span><span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-constant">CREAT</span>,<span class="ruby-value">0644</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">flock</span>( <span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-constant">LOCK_NB</span> <span class="ruby-operator">|</span> <span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-constant">LOCK_EX</span> )
+            <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-string">&quot;Instance already running. Abort.&quot;</span>)
+            <span class="ruby-identifier">f</span>.<span class="ruby-identifier">close</span>
+            <span class="ruby-identifier">exit</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-constant">SignalHandler</span>.<span class="ruby-identifier">ensure_block</span> { <span class="ruby-identifier">f</span>.<span class="ruby-identifier">close</span> }
+        <span class="ruby-identifier">main</span> <span class="ruby-constant">ARGV</span>,<span class="ruby-identifier">$opts</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- lock-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- lock-method -->
+
+      
+        <div id="main-method" class="method-detail ">
+          <a name="method-i-main"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">main</span><span
+              class="method-args">(args,opts)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="main-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/monitoring.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">main</span> <span class="ruby-identifier">args</span>,<span class="ruby-identifier">opts</span>
+    <span class="ruby-identifier">argv</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">clone</span>
+    <span class="ruby-identifier">opt</span> = <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">clone</span>
+    <span class="ruby-identifier">opt</span>[<span class="ruby-value">:argv</span>] = <span class="ruby-identifier">argv</span>.<span class="ruby-identifier">clone</span> <span class="ruby-comment">## so parser can still get the full line if needed</span>
+    <span class="ruby-constant">Dir</span>[<span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-identifier">dirname</span>(<span class="ruby-keyword">__FILE__</span>) <span class="ruby-operator">+</span> <span class="ruby-string">&quot;/parser/*.rb&quot;</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">require_relative</span> <span class="ruby-node">&quot;parser/#{File::basename(f)}&quot;</span> 
+    <span class="ruby-keyword">end</span>
+    
+    <span class="ruby-identifier">word</span> = <span class="ruby-identifier">argv</span>.<span class="ruby-identifier">shift</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">to_sym</span>
+    
+    <span class="ruby-constant">Parser</span><span class="ruby-operator">::</span><span class="ruby-identifier">constants</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">parser</span><span class="ruby-operator">|</span>
+        <span class="ruby-keyword">next</span> <span class="ruby-keyword">unless</span> <span class="ruby-constant">Parser</span><span class="ruby-operator">::</span><span class="ruby-identifier">const_get</span>(<span class="ruby-identifier">parser</span>)<span class="ruby-operator">::</span><span class="ruby-constant">KEYWORDS</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">word</span>
+        <span class="ruby-constant">Parser</span><span class="ruby-operator">::</span><span class="ruby-identifier">const_get</span>(<span class="ruby-identifier">parser</span>).<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">argv</span>,<span class="ruby-identifier">opt</span>)
+        <span class="ruby-keyword">break</span> <span class="ruby-comment"># only one operation at a time !</span>
+    <span class="ruby-keyword">end</span>
+    
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-string">&quot;Closing monitoring tool ...&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- main-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- main-method -->
+
+      
+        <div id="make_lambda-method" class="method-detail ">
+          <a name="method-i-make_lambda"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">make_lambda</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="make_lambda-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 313</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">make_lambda</span>
+  <span class="ruby-keyword">begin</span>
+      <span class="ruby-identifier">lambda</span> { <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;Value from lambda&quot;</span> }
+  <span class="ruby-keyword">ensure</span>
+      <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;make_lambda exited&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- make_lambda-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- make_lambda-method -->
+
+      
+        <div id="make_proc_new-method" class="method-detail ">
+          <a name="method-i-make_proc_new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">make_proc_new</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="make_proc_new-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 278</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">make_proc_new</span>
+  <span class="ruby-keyword">begin</span>
+      <span class="ruby-constant">Proc</span>.<span class="ruby-identifier">new</span> { <span class="ruby-keyword">return</span> <span class="ruby-string">&quot;Value from Proc.new&quot;</span> } <span class="ruby-comment"># this &quot;return&quot; will return from make_proc_new</span>
+  <span class="ruby-keyword">ensure</span>
+      <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;make_proc_new exited&quot;</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- make_proc_new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- make_proc_new-method -->
+
+      
+        <div id="method_without_block-method" class="method-detail ">
+          <a name="method-i-method_without_block"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">method_without_block</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="method_without_block-source">
+<pre>
+<span class="ruby-comment"># File training.rb, line 219</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">method_without_block</span> 
+    <span class="ruby-identifier">print</span> <span class="ruby-string">&quot;inside method without block&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- method_without_block-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- method_without_block-method -->
+
+      
+        <div id="new_files-method" class="method-detail ">
+          <a name="method-i-new_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new_files</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>get files to be processed <a href="http://:folder">Hash</a> = [f1,f2,f3…]</p>
+            
+
+            
+            <div class="method-source-code" id="new_files-source">
+<pre>
+<span class="ruby-comment"># File old/process_cdr.rb, line 69</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new_files</span>
+    <span class="ruby-identifier">db</span> = <span class="ruby-constant">Database</span><span class="ruby-operator">::</span><span class="ruby-constant">Mysql</span>.<span class="ruby-identifier">default</span>
+    <span class="ruby-identifier">table</span> = <span class="ruby-constant">Database</span><span class="ruby-operator">::</span><span class="ruby-constant">GenericTable</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">db</span>,<span class="ruby-identifier">$table</span>)
+    <span class="ruby-comment"># generate the hash structure</span>
+    <span class="ruby-identifier">files</span> = <span class="ruby-constant">Util</span>.<span class="ruby-identifier">folders</span>(<span class="ruby-identifier">$type</span>).<span class="ruby-identifier">inject</span>({}) {<span class="ruby-operator">|</span><span class="ruby-identifier">col</span>,<span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">col</span>[<span class="ruby-identifier">f</span>] = []; <span class="ruby-identifier">col</span>}
+    <span class="ruby-identifier">puts</span> <span class="ruby-identifier">files</span>.<span class="ruby-identifier">inspect</span>
+    <span class="ruby-identifier">db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">select</span> = [<span class="ruby-string">&quot;*&quot;</span>]
+        <span class="ruby-identifier">where</span> = { <span class="ruby-identifier">processed</span><span class="ruby-operator">:</span> <span class="ruby-value">0</span> }
+        <span class="ruby-identifier">res</span> = <span class="ruby-identifier">table</span>.<span class="ruby-identifier">search_and</span> <span class="ruby-identifier">select</span>,<span class="ruby-identifier">where</span>  
+        <span class="ruby-identifier">res</span>.<span class="ruby-identifier">each_hash</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">files</span>[<span class="ruby-identifier">row</span>[<span class="ruby-string">&quot;switch&quot;</span>]] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>[<span class="ruby-string">&quot;file_name&quot;</span>]
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Found #{res.num_rows} new files to process in #{$table}...&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">$opts</span>[<span class="ruby-value">:v</span>]
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-identifier">files</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new_files-method -->
+
+      
+        <div id="no_arg_method-method" class="method-detail ">
+          <a name="method-i-no_arg_method"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">no_arg_method</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="no_arg_method-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 441</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">no_arg_method</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- no_arg_method-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- no_arg_method-method -->
+
+      
+        <div id="one_arg_method-method" class="method-detail ">
+          <a name="method-i-one_arg_method"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">one_arg_method</span><span
+              class="method-args">(x)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="one_arg_method-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 425</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">one_arg_method</span>(<span class="ruby-identifier">x</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- one_arg_method-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- one_arg_method-method -->
+
+      
+        <div id="parse_fields-method" class="method-detail ">
+          <a name="method-i-parse_fields"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">parse_fields</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="parse_fields-source">
+<pre>
+<span class="ruby-comment"># File old/insert.rb, line 113</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">parse_fields</span>
+    <span class="ruby-keyword">begin</span>
+        <span class="ruby-identifier">$fields</span> = <span class="ruby-constant">JSON</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">$input</span>)
+        <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;JSON parsed.&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">$opts</span>[<span class="ruby-value">:v</span>]
+    <span class="ruby-keyword">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+        <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">message</span>
+        <span class="ruby-identifier">abort</span>
+    <span class="ruby-keyword">end</span> 
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- parse_fields-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- parse_fields-method -->
+
+      
+        <div id="perform-method" class="method-detail ">
+          <a name="method-i-perform"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">perform</span><span
+              class="method-args">(fetcher)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="perform-source">
+<pre>
+<span class="ruby-comment"># File old/fetch_cdr.rb, line 153</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">perform</span> <span class="ruby-identifier">fetcher</span>
+    <span class="ruby-identifier">base_path</span> = <span class="ruby-constant">EMMConfig</span>[<span class="ruby-node">&quot;#{$type}_BASE_DIR&quot;</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot;/&quot;</span>
+    <span class="ruby-identifier">fetcher</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-identifier">$json</span>[<span class="ruby-identifier">fetcher</span>.<span class="ruby-identifier">host</span>.<span class="ruby-identifier">to_sym</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">sw_h</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">path</span> = <span class="ruby-identifier">base_path</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sw_h</span>[<span class="ruby-value">:name</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot;/&quot;</span>
+
+            <span class="ruby-keyword">if</span> <span class="ruby-identifier">$operation</span> <span class="ruby-operator">==</span> <span class="ruby-value">:list</span>
+                <span class="ruby-identifier">sw_h</span>[<span class="ruby-value">:files</span>] = <span class="ruby-identifier">sw_h</span>[<span class="ruby-value">:files</span>] <span class="ruby-operator">+</span> <span class="ruby-identifier">fetcher</span>.<span class="ruby-identifier">list_files_from</span>(<span class="ruby-identifier">path</span>).<span class="ruby-identifier">to_a</span> 
+
+            <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">$operation</span> <span class="ruby-operator">==</span> <span class="ruby-value">:download</span>
+                <span class="ruby-identifier">local_path</span> = <span class="ruby-constant">Util</span>.<span class="ruby-identifier">data_path</span>(<span class="ruby-constant">EMMConfig</span>[<span class="ruby-string">&quot;DATA_DOWN_DIR&quot;</span>],<span class="ruby-identifier">sw_h</span>[<span class="ruby-value">:name</span>])
+                <span class="ruby-comment"># download them</span>
+                <span class="ruby-identifier">fetcher</span>.<span class="ruby-identifier">download_files</span> <span class="ruby-identifier">local_path</span>,<span class="ruby-identifier">path</span>,<span class="ruby-identifier">sw_h</span>[<span class="ruby-value">:files</span>]
+                <span class="ruby-comment">## move them</span>
+                <span class="ruby-identifier">store_path</span>  = <span class="ruby-constant">Util</span>.<span class="ruby-identifier">data_path</span>(<span class="ruby-constant">EMMConfig</span>[<span class="ruby-string">&quot;DATA_STORE_DIR&quot;</span>],<span class="ruby-identifier">sw_h</span>[<span class="ruby-value">:name</span>])
+                <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;mv -t #{store_path} #{sw_h[:files].map { |f| local_path + &quot;/&quot; + f }.join(' ')} &quot;</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">system</span>(<span class="ruby-identifier">cmd</span>)
+                    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-identifier">$0</span>,<span class="ruby-string">&quot;ERROR&quot;</span>,<span class="ruby-node">&quot;Error while mv command #{cmd[0..40]}&quot;</span>)
+                    <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Error while mv cmd #{cmd[0..40]}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">$opts</span>[<span class="ruby-value">:v</span>]
+                   <span class="ruby-identifier">abort</span>
+                <span class="ruby-keyword">end</span> 
+            <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- perform-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- perform-method -->
+
+      
+        <div id="process-method" class="method-detail ">
+          <a name="method-i-process"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">process</span><span
+              class="method-args">(db)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>mark them processed in the specified table i.e. put 1 in processed column</p>
+            
+
+            
+            <div class="method-source-code" id="process-source">
+<pre>
+<span class="ruby-comment"># File old/backup_cdr.rb, line 60</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">process</span> <span class="ruby-identifier">db</span>
+   <span class="ruby-comment">#verify if table exists</span>
+   <span class="ruby-identifier">table</span> = <span class="ruby-constant">EMMConfig</span>[<span class="ruby-node">&quot;DB_TABLE_#{$opts[:table]}&quot;</span>]
+   <span class="ruby-identifier">sql</span>=<span class="ruby-node">&quot;UPDATE  #{table} SET processed=1 WHERE file_name IN &quot;</span>
+   <span class="ruby-identifier">sql</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;(&quot;</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">$files</span>.<span class="ruby-identifier">map</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;'#{File.basename(k)}'&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-string">','</span>) <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-string">&quot;);&quot;</span>
+   <span class="ruby-identifier">puts</span> <span class="ruby-identifier">sql</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">$opts</span>[<span class="ruby-value">:v</span>]
+   <span class="ruby-identifier">db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- process-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- process-method -->
+
+      
+        <div id="save_for_later-method" class="method-detail ">
+          <a name="method-i-save_for_later"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">save_for_later</span><span
+              class="method-args">(&b)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="save_for_later-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 136</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">save_for_later</span>(&amp;<span class="ruby-identifier">b</span>)
+  <span class="ruby-ivar">@saved</span> = <span class="ruby-identifier">b</span>  <span class="ruby-comment"># Note: no ampersand! This turns a block into a closure of sorts.</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- save_for_later-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- save_for_later-method -->
+
+      
+        <div id="six_times-method" class="method-detail ">
+          <a name="method-i-six_times"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">six_times</span><span
+              class="method-args">(&block)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="six_times-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 116</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">six_times</span>(&amp;<span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">thrice</span>(&amp;<span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">thrice</span>(&amp;<span class="ruby-identifier">block</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- six_times-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- six_times-method -->
+
+      
+        <div id="some_method-method" class="method-detail ">
+          <a name="method-i-some_method"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">some_method</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="some_method-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 195</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">some_method</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-string">&quot;I'm declared as a method.&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- some_method-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- some_method-method -->
+
+      
+        <div id="store_backup-method" class="method-detail ">
+          <a name="method-i-store_backup"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">store_backup</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>move the files to the back_up dir and compress them</p>
+            
+
+            
+            <div class="method-source-code" id="store_backup-source">
+<pre>
+<span class="ruby-comment"># File old/backup_cdr.rb, line 71</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">store_backup</span>
+    <span class="ruby-identifier">ret</span> = <span class="ruby-keyword">true</span>
+    <span class="ruby-identifier">base</span> = <span class="ruby-constant">Util</span>.<span class="ruby-identifier">data_path</span>(<span class="ruby-constant">EMMConfig</span>[<span class="ruby-string">&quot;DATA_BACK_DIR&quot;</span>])
+    <span class="ruby-identifier">$files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+        <span class="ruby-comment"># directory of the file </span>
+        <span class="ruby-comment"># LSMSS10, LSMSS30 , etc</span>
+        <span class="ruby-identifier">dir</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">basename</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-node">&quot;#{f}/..&quot;</span>))
+        <span class="ruby-identifier">back_path</span> = <span class="ruby-identifier">base</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;/&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">dir</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;/&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">basename</span>(<span class="ruby-identifier">f</span>)
+        <span class="ruby-identifier">cmd</span> = <span class="ruby-node">&quot;mv #{f} #{back_path}&quot;</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">system</span>(<span class="ruby-identifier">cmd</span>)
+           <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Move #{cmd} did not work ... Next&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">$opts</span>[<span class="ruby-value">:v</span>]
+            <span class="ruby-identifier">ret</span> = <span class="ruby-keyword">false</span>
+            <span class="ruby-keyword">next</span>
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-comment"># compress the file</span>
+        <span class="ruby-identifier">cmd</span> = <span class="ruby-constant">EMMConfig</span>[<span class="ruby-string">&quot;COMPRESS&quot;</span>] <span class="ruby-operator">+</span> <span class="ruby-node">&quot; #{back_path}&quot;</span>
+        <span class="ruby-keyword">unless</span> <span class="ruby-identifier">system</span>(<span class="ruby-identifier">cmd</span>)
+            <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Compress #{cmd} did not work ... Next&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">$opts</span>[<span class="ruby-value">:v</span>]
+            <span class="ruby-identifier">ret</span> = <span class="ruby-keyword">false</span>
+            <span class="ruby-keyword">next</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>    
+    <span class="ruby-identifier">ret</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- store_backup-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- store_backup-method -->
+
+      
+        <div id="test_action-method" class="method-detail ">
+          <a name="method-i-test_action"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">test_action</span><span
+              class="method-args">(klass, action)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="test_action-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/training.rb, line 84</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">test_action</span>(<span class="ruby-identifier">klass</span>, <span class="ruby-identifier">action</span>)
+
+    <span class="ruby-identifier">klass</span>.<span class="ruby-identifier">instance_eval</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-identifier">define_method</span> <span class="ruby-identifier">action</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span>*<span class="ruby-identifier">args</span>, &amp;<span class="ruby-identifier">block</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;#{klass.name}(v = #{@value}) : #{action} =&gt; #{args.inspect}&quot;</span>
+            <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;BLOCK RESULT =&gt; #{instance_eval(&amp;block)}&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">block</span> 
+        <span class="ruby-keyword">end</span>
+
+        <span class="ruby-identifier">define_method</span> <span class="ruby-value">:block_method</span> <span class="ruby-keyword">do</span>
+            <span class="ruby-string">&quot;INSIDE CUSTOM DEFINED BLOCK METHOD&quot;</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- test_action-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- test_action-method -->
+
+      
+        <div id="thrice-method" class="method-detail ">
+          <a name="method-i-thrice"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">thrice</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="thrice-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 66</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">thrice</span>
+  <span class="ruby-keyword">yield</span>
+  <span class="ruby-keyword">yield</span>
+  <span class="ruby-keyword">yield</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- thrice-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- thrice-method -->
+
+      
+        <div id="thrice_with_local_x-method" class="method-detail ">
+          <a name="method-i-thrice_with_local_x"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">thrice_with_local_x</span><span
+              class="method-args">()</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="thrice_with_local_x-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 81</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">thrice_with_local_x</span>
+  <span class="ruby-identifier">x</span> = <span class="ruby-value">100</span>
+  <span class="ruby-keyword">yield</span>
+  <span class="ruby-keyword">yield</span>
+  <span class="ruby-keyword">yield</span>
+  <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;value of x at end of thrice_with_local_x: #{x}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- thrice_with_local_x-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- thrice_with_local_x-method -->
+
+      
+        <div id="two_arg_method-method" class="method-detail ">
+          <a name="method-i-two_arg_method"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">two_arg_method</span><span
+              class="method-args">(x,y)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="two_arg_method-source">
+<pre>
+<span class="ruby-comment"># File och-scripts/ruby_closure.rb, line 398</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">two_arg_method</span>(<span class="ruby-identifier">x</span>,<span class="ruby-identifier">y</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- two_arg_method-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- two_arg_method-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+

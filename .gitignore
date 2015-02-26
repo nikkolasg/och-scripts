@@ -7,3 +7,4 @@ config.rb
 log/*
 locks/*
 nohup.out
+*.gz

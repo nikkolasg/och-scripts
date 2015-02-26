@@ -28,6 +28,7 @@ module Database
             class NewGenericSchema 
                 TABLE_SOURCE_INDEX = "SOURCE_INDEX"
                 TABLE_TYPE_INDEX = "TYPE_INDEX"
+                attr_reader :table_stats
                 def initialize monitor,opts ={}
                     @monitor = monitor
                     @db = Mysql.default

@@ -41,6 +41,7 @@ monitor "mss_stats" do
     national = Proc.new do |ton,number,&block|
         res = false
         if ton == 6
+            number = number[2..-1] if number.start_with?("41") && number.length > 10
             res = true & block.call(number)
         elsif ton == 5
             if number.start_with?("41")    

@@ -131,10 +131,16 @@ module Decoder
 
     class NullDecoder
         include Decoder
+        require 'fileutils'
+        TEST_FILE = 'null_test'
+        DUMP_FILE = 'null_dump'
         def initialize infos
+            FileUtils::touch File::join(File.dirname(__FILE__),TEST_FILE)
+            FileUtils::touch File::join(File.dirname(__FILE__),DUMP_FILE)
             @opts = infos
         end
-        def decode
+        def decode file
+            return { "NULL" => { fields: { }, values: [] } }
         end
     end
 

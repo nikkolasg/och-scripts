@@ -35,8 +35,12 @@ module Mapper
         def map_json json
             json.each do |name,hash|
                 fields = hash[:fields]
+                gcr = fields[:global_call_reference]
+                cr = fields[:call_reference]
                 hash[:fields] = rename_fields fields,@fields2change 
                 hash[:values].each do |row|
+                   row[gcr] = row[gcr].upcase if gcr
+                   row[cr] = row[cr].upcase if cr
                    transform_time_values row,*hash[:fields].values_at(*@fields2change.values)
                 end
             end

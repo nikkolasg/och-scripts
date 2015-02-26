@@ -55,6 +55,9 @@ opt_parse = OptionParser.new do |opt|
     opt.on("--insert-only","If you only want to insert files and look in the db after, but WITHOUT any processing on theses records (old ones for example), you can specify it here. It will simply marks the files it inserts as already processed in the monitors sections. OPTIONS BETA. NOT TESTED so be aware.") do |n|
         $opts[:insert_only] = true
     end
+    opt.on("--no-fetch-all","Add this optioon if you think that the MySql query will have millions of results and could not fit into memory. It will trigger one record at a time and let the ruby gc work it out for you.") do |n|
+        $opts[:sql_no_fetch_all] = true
+    end
    
 end
 

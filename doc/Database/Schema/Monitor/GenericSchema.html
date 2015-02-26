@@ -1,0 +1,1058 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>Class: Database::Schema::Monitor::GenericSchema</title>
+
+  <link rel="stylesheet" href="../../../rdoc.css" type="text/css" media="screen" />
+
+  <script src="../../../js/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../../js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../../js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../../../js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body id="top" class="class">
+
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="../../../index.html">Home</a>
+          <a href="../../../index.html#classes">Classes</a>
+          <a href="../../../index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="file-metadata">
+      <div id="file-list-section" class="section">
+        <h3 class="section-header">In Files</h3>
+        <div class="section-body">
+          <ul>
+          
+            <li><a href="../../../database/monitor_schema_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+              class="thickbox" title="database/monitor_schema.rb">database/monitor_schema.rb</a></li>
+          
+          </ul>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <div id="class-metadata">
+      
+      <!-- Parent Class -->
+      <div id="parent-class-section" class="section">
+        <h3 class="section-header">Parent</h3>
+        
+        <p class="link"><a href="../../../Object.html">Object</a></p>
+        
+      </div>
+      
+
+      
+
+      
+
+      
+      <!-- Method Quickref -->
+      <div id="method-list-section" class="section">
+        <h3 class="section-header">Methods</h3>
+        <ul class="link-list">
+          
+          <li><a href="#method-c-new">::new</a></li>
+          
+          <li><a href="#method-i-backlog_processed_files">#backlog_processed_files</a></li>
+          
+          <li><a href="#method-i-backlog_saved_files">#backlog_saved_files</a></li>
+          
+          <li><a href="#method-i-column_name">#column_name</a></li>
+          
+          <li><a href="#method-i-columns_name">#columns_name</a></li>
+          
+          <li><a href="#method-i-create">#create</a></li>
+          
+          <li><a href="#method-i-delete">#delete</a></li>
+          
+          <li><a href="#method-i-delete_filesid">#delete_filesid</a></li>
+          
+          <li><a href="#method-i-insert_row_stats">#insert_row_stats</a></li>
+          
+          <li><a href="#method-i-insert_stats">#insert_stats</a></li>
+          
+          <li><a href="#method-i-processed_files">#processed_files</a></li>
+          
+          <li><a href="#method-i-rename_source">#rename_source</a></li>
+          
+          <li><a href="#method-i-reset">#reset</a></li>
+          
+          <li><a href="#method-i-set_db">#set_db</a></li>
+          
+          <li><a href="#method-i-stats_columns">#stats_columns</a></li>
+          
+          <li><a href="#method-i-table_records">#table_records</a></li>
+          
+        </ul>
+      </div>
+      
+
+      
+    </div>
+
+    <div id="project-metadata">
+      
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class/Module Index
+          <span class="search-toggle"><img src="../../../images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+          <li><a href="../../../Conf.html">Conf</a></li>
+        
+          <li><a href="../../../Conf/ActionField.html">Conf::ActionField</a></li>
+        
+          <li><a href="../../../Conf/App.html">Conf::App</a></li>
+        
+          <li><a href="../../../Conf/Database.html">Conf::Database</a></li>
+        
+          <li><a href="../../../Conf/Directories.html">Conf::Directories</a></li>
+        
+          <li><a href="../../../Conf/FileManager.html">Conf::FileManager</a></li>
+        
+          <li><a href="../../../Conf/Filter.html">Conf::Filter</a></li>
+        
+          <li><a href="../../../Conf/Flow.html">Conf::Flow</a></li>
+        
+          <li><a href="../../../Conf/Host.html">Conf::Host</a></li>
+        
+          <li><a href="../../../Conf/ListField.html">Conf::ListField</a></li>
+        
+          <li><a href="../../../Conf/LocalFileManager.html">Conf::LocalFileManager</a></li>
+        
+          <li><a href="../../../Conf/Logging.html">Conf::Logging</a></li>
+        
+          <li><a href="../../../Conf/MeanField.html">Conf::MeanField</a></li>
+        
+          <li><a href="../../../Conf/Monitor.html">Conf::Monitor</a></li>
+        
+          <li><a href="../../../Conf/NullFilter.html">Conf::NullFilter</a></li>
+        
+          <li><a href="../../../Conf/SftpFileManager.html">Conf::SftpFileManager</a></li>
+        
+          <li><a href="../../../Conf/Source.html">Conf::Source</a></li>
+        
+          <li><a href="../../../Conf/Stats.html">Conf::Stats</a></li>
+        
+          <li><a href="../../../Conf/SumField.html">Conf::SumField</a></li>
+        
+          <li><a href="../../../Database.html">Database</a></li>
+        
+          <li><a href="../../../Database/GenericTable.html">Database::GenericTable</a></li>
+        
+          <li><a href="../../../Database/Mysql.html">Database::Mysql</a></li>
+        
+          <li><a href="../../../Database/Mysql/Result.html">Database::Mysql::Result</a></li>
+        
+          <li><a href="../../../Database/Schema.html">Database::Schema</a></li>
+        
+          <li><a href="../../../Database/Schema/Monitor.html">Database::Schema::Monitor</a></li>
+        
+          <li><a href="../../../Database/Schema/Monitor/GenericSchema.html">Database::Schema::Monitor::GenericSchema</a></li>
+        
+          <li><a href="../../../Database/Schema/Monitor/NewGenericSchema.html">Database::Schema::Monitor::NewGenericSchema</a></li>
+        
+          <li><a href="../../../Database/Schema/Source.html">Database::Schema::Source</a></li>
+        
+          <li><a href="../../../Database/Schema/Source/FileCountSchema.html">Database::Schema::Source::FileCountSchema</a></li>
+        
+          <li><a href="../../../Database/Schema/Source/GenericSchema.html">Database::Schema::Source::GenericSchema</a></li>
+        
+          <li><a href="../../../Database/Schema/Source/IndexerSchema.html">Database::Schema::Source::IndexerSchema</a></li>
+        
+          <li><a href="../../../Database/Schema/Source/ProceraSchema.html">Database::Schema::Source::ProceraSchema</a></li>
+        
+          <li><a href="../../../Database/SqlGenerator.html">Database::SqlGenerator</a></li>
+        
+          <li><a href="../../../Database/TableRotator.html">Database::TableRotator</a></li>
+        
+          <li><a href="../../../Database/TableUtil.html">Database::TableUtil</a></li>
+        
+          <li><a href="../../../Mapper.html">Mapper</a></li>
+        
+          <li><a href="../../../Mapper/GenericMapper.html">Mapper::GenericMapper</a></li>
+        
+          <li><a href="../../../Mapper/LogicaMapper.html">Mapper::LogicaMapper</a></li>
+        
+          <li><a href="../../../Mapper/MmsOutMapper.html">Mapper::MmsOutMapper</a></li>
+        
+          <li><a href="../../../Mapper/Nkm15Mapper.html">Mapper::Nkm15Mapper</a></li>
+        
+          <li><a href="../../../Mapper/PGWMapper.html">Mapper::PGWMapper</a></li>
+        
+          <li><a href="../../../Mapper/ProceraMapper.html">Mapper::ProceraMapper</a></li>
+        
+          <li><a href="../../../Mapper/SmsMapper.html">Mapper::SmsMapper</a></li>
+        
+          <li><a href="../../../Mapper/TAPMapper.html">Mapper::TAPMapper</a></li>
+        
+          <li><a href="../../../Mapper/TalMapper.html">Mapper::TalMapper</a></li>
+        
+          <li><a href="../../../Mapper/XDRMapper.html">Mapper::XDRMapper</a></li>
+        
+          <li><a href="../../../Decoder.html">Decoder</a></li>
+        
+          <li><a href="../../../Decoder/BigCSVDecoder.html">Decoder::BigCSVDecoder</a></li>
+        
+          <li><a href="../../../Decoder/CSVDecoder.html">Decoder::CSVDecoder</a></li>
+        
+          <li><a href="../../../Decoder/CSVFields.html">Decoder::CSVFields</a></li>
+        
+          <li><a href="../../../Decoder/LogicaDecoder.html">Decoder::LogicaDecoder</a></li>
+        
+          <li><a href="../../../Decoder/NKM15Decoder.html">Decoder::NKM15Decoder</a></li>
+        
+          <li><a href="../../../Decoder/NullDecoder.html">Decoder::NullDecoder</a></li>
+        
+          <li><a href="../../../Decoder/PGWDecoder.html">Decoder::PGWDecoder</a></li>
+        
+          <li><a href="../../../Decoder/TALDecoder.html">Decoder::TALDecoder</a></li>
+        
+          <li><a href="../../../Decoder/XDRDecoder.html">Decoder::XDRDecoder</a></li>
+        
+          <li><a href="../../../Inserter.html">Inserter</a></li>
+        
+          <li><a href="../../../Inserter/BigSourceInserter.html">Inserter::BigSourceInserter</a></li>
+        
+          <li><a href="../../../Inserter/GenericSourceInserter.html">Inserter::GenericSourceInserter</a></li>
+        
+          <li><a href="../../../Inserter/NullSourceInserter.html">Inserter::NullSourceInserter</a></li>
+        
+          <li><a href="../../../Inserter/PGWInserter.html">Inserter::PGWInserter</a></li>
+        
+          <li><a href="../../../Parser.html">Parser</a></li>
+        
+          <li><a href="../../../Parser/CheckParser.html">Parser::CheckParser</a></li>
+        
+          <li><a href="../../../Parser/DatabaseParser.html">Parser::DatabaseParser</a></li>
+        
+          <li><a href="../../../Parser/DirectoriesParser.html">Parser::DirectoriesParser</a></li>
+        
+          <li><a href="../../../Parser/OperationParser.html">Parser::OperationParser</a></li>
+        
+          <li><a href="../../../Getter.html">Getter</a></li>
+        
+          <li><a href="../../../Getter/FileCountGetter.html">Getter::FileCountGetter</a></li>
+        
+          <li><a href="../../../Getter/GenericSourceGetter.html">Getter::GenericSourceGetter</a></li>
+        
+          <li><a href="../../../Getter/NullSourceGetter.html">Getter::NullSourceGetter</a></li>
+        
+          <li><a href="../../../Fetchers.html">Fetchers</a></li>
+        
+          <li><a href="../../../Fetchers/LocalFileFetcher.html">Fetchers::LocalFileFetcher</a></li>
+        
+          <li><a href="../../../Fetchers/SftpFileFetcher.html">Fetchers::SftpFileFetcher</a></li>
+        
+          <li><a href="../../../Stats.html">Stats</a></li>
+        
+          <li><a href="../../../Stats/BacklogStats.html">Stats::BacklogStats</a></li>
+        
+          <li><a href="../../../Stats/GenericStats.html">Stats::GenericStats</a></li>
+        
+          <li><a href="../../../CDR.html">CDR</a></li>
+        
+          <li><a href="../../../CDR/File.html">CDR::File</a></li>
+        
+          <li><a href="../../../IncludeModule.html">IncludeModule</a></li>
+        
+          <li><a href="../../../IncludeModule/ModuleClass.html">IncludeModule::ModuleClass</a></li>
+        
+          <li><a href="../../../Collector.html">Collector</a></li>
+        
+          <li><a href="../../../Debug.html">Debug</a></li>
+        
+          <li><a href="../../../EMMConfig.html">EMMConfig</a></li>
+        
+          <li><a href="../../../Fixnum.html">Fixnum</a></li>
+        
+          <li><a href="../../../Lazy.html">Lazy</a></li>
+        
+          <li><a href="../../../LazyLispyEnumerable.html">LazyLispyEnumerable</a></li>
+        
+          <li><a href="../../../LispyEnumerable.html">LispyEnumerable</a></li>
+        
+          <li><a href="../../../Logger.html">Logger</a></li>
+        
+          <li><a href="../../../MysqlDumper.html">MysqlDumper</a></li>
+        
+          <li><a href="../../../Object.html">Object</a></li>
+        
+          <li><a href="../../../RubyUtil.html">RubyUtil</a></li>
+        
+          <li><a href="../../../SignalHandler.html">SignalHandler</a></li>
+        
+          <li><a href="../../../SuperTest.html">SuperTest</a></li>
+        
+          <li><a href="../../../T1.html">T1</a></li>
+        
+          <li><a href="../../../T2.html">T2</a></li>
+        
+          <li><a href="../../../Test.html">Test</a></li>
+        
+          <li><a href="../../../Test2.html">Test2</a></li>
+        
+          <li><a href="../../../TestParser.html">TestParser</a></li>
+        
+          <li><a href="../../../Util.html">Util</a></li>
+        
+          <li><a href="../../../ValueModule.html">ValueModule</a></li>
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    <h1 class="class">Database::Schema::Monitor::GenericSchema</h1>
+
+    <div id="description" class="description">
+      
+    </div><!-- description -->
+
+    
+    
+    
+    <div id="5Buntitled-5D" class="documentation-section">
+      
+
+      
+
+      
+
+      
+      <!-- Attributes -->
+      <div id="attribute-method-details" class="method-section section">
+        <h3 class="section-header">Attributes</h3>
+
+        
+        <div id="table_stats-attribute-method" class="method-detail">
+          <a name="table_stats"></a>
+          
+          <div class="method-heading attribute-method-heading">
+            <span class="method-name">table_stats</span><span
+              class="attribute-access-type">[R]</span>
+          </div>
+
+          <div class="method-description">
+          
+          
+          
+          </div>
+        </div>
+        
+      </div><!-- attribute-method-details -->
+      
+
+      <!-- Methods -->
+      
+      <div id="public-class-method-details" class="method-section section">
+        <h3 class="section-header">Public Class Methods</h3>
+
+      
+        <div id="new-method" class="method-detail ">
+          <a name="method-c-new"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">new</span><span
+              class="method-args">(monitor,opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="new-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 43</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">monitor</span>,<span class="ruby-identifier">opts</span> = {}
+    <span class="ruby-ivar">@monitor</span> = <span class="ruby-identifier">monitor</span>
+    <span class="ruby-ivar">@db</span> = <span class="ruby-constant">Mysql</span>.<span class="ruby-identifier">default</span>
+    <span class="ruby-ivar">@table_stats</span> = <span class="ruby-node">&quot;MON_#{@monitor.name.upcase}&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- new-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- new-method -->
+
+      
+      </div><!-- public-class-method-details -->
+    
+      <div id="public-instance-method-details" class="method-section section">
+        <h3 class="section-header">Public Instance Methods</h3>
+
+      
+        <div id="backlog_processed_files-method" class="method-detail ">
+          <a name="method-i-backlog_processed_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">backlog_processed_files</span><span
+              class="method-args">(source,files)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>insert into db the name of processed files by the backlog process</p>
+            
+
+            
+            <div class="method-source-code" id="backlog_processed_files-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 181</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">backlog_processed_files</span> <span class="ruby-identifier">source</span>,<span class="ruby-identifier">files</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">files</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">sql</span> = <span class="ruby-string">&quot;INSERT INTO &quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-node">&quot;#{table_records(source,backlog: true)} &quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-string">&quot;(file_name) &quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-string">&quot;VALUES &quot;</span> <span class="ruby-operator">+</span> 
+        <span class="ruby-identifier">files</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-string">&quot;('&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">f</span>.<span class="ruby-identifier">name</span><span class="ruby-operator">+</span><span class="ruby-string">&quot;')&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-string">','</span>)
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- backlog_processed_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- backlog_processed_files-method -->
+
+      
+        <div id="backlog_saved_files-method" class="method-detail ">
+          <a name="method-i-backlog_saved_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">backlog_saved_files</span><span
+              class="method-args">(source)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>return the name of the files stored in the backlog table</p>
+            
+
+            
+            <div class="method-source-code" id="backlog_saved_files-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 194</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">backlog_saved_files</span> <span class="ruby-identifier">source</span>
+    <span class="ruby-identifier">l</span> = []
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;SELECT file_name FROM #{table_records(source,backlog: true)} &quot;</span>
+        <span class="ruby-identifier">res</span> = <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+        <span class="ruby-identifier">res</span>.<span class="ruby-identifier">each_hash</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">row</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">l</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">CDR</span><span class="ruby-operator">::</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">row</span>[<span class="ruby-string">'file_name'</span>])
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">l</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- backlog_saved_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- backlog_saved_files-method -->
+
+      
+        <div id="column_name-method" class="method-detail ">
+          <a name="method-i-column_name"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">column_name</span><span
+              class="method-args">(stats_col,source)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>return one column name for a source</p>
+            
+
+            
+            <div class="method-source-code" id="column_name-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 77</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">column_name</span> <span class="ruby-identifier">stats_col</span>,<span class="ruby-identifier">source</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-node">&quot;#{source.name}_#{stats_col}&quot;</span>.<span class="ruby-identifier">to_sym</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- column_name-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- column_name-method -->
+
+      
+        <div id="columns_name-method" class="method-detail ">
+          <a name="method-i-columns_name"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">columns_name</span><span
+              class="method-args">(source)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>return all columns name for a source</p>
+            
+
+            
+            <div class="method-source-code" id="columns_name-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 73</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">columns_name</span> <span class="ruby-identifier">source</span>
+    <span class="ruby-ivar">@monitor</span>.<span class="ruby-identifier">stats</span>.<span class="ruby-identifier">columns</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> <span class="ruby-identifier">column_name</span>(<span class="ruby-identifier">c</span>,<span class="ruby-identifier">source</span>) }
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- columns_name-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- columns_name-method -->
+
+      
+        <div id="create-method" class="method-detail ">
+          <a name="method-i-create"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">create</span><span
+              class="method-args">(type)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>can accept :stats, or :files as arguments</p>
+            
+
+            
+            <div class="method-source-code" id="create-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 98</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span> <span class="ruby-identifier">type</span>
+    <span class="ruby-identifier">sql</span> = <span class="ruby-string">&quot;&quot;</span>
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:stats</span>
+            <span class="ruby-identifier">cols</span> = <span class="ruby-ivar">@monitor</span>.<span class="ruby-identifier">sources</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-identifier">stats_columns</span>(<span class="ruby-identifier">s</span>) }.<span class="ruby-identifier">flatten</span>
+            <span class="ruby-identifier">sql</span> = <span class="ruby-constant">SqlGenerator</span>.<span class="ruby-identifier">for_monitor_stats</span>(<span class="ruby-ivar">@table_stats</span>,<span class="ruby-identifier">cols</span>)
+           <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+            <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Setup stats table for #{@monitor.name}&quot;</span>)
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:files</span>
+            <span class="ruby-ivar">@monitor</span>.<span class="ruby-identifier">sources</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">source</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">table_name</span> = <span class="ruby-identifier">table_records</span>(<span class="ruby-identifier">source</span>)
+                <span class="ruby-identifier">sql</span>= <span class="ruby-constant">SqlGenerator</span>.<span class="ruby-identifier">for_monitor_source</span>(<span class="ruby-identifier">table_name</span>)
+                <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+                <span class="ruby-identifier">table_name</span> = <span class="ruby-identifier">table_records</span>(<span class="ruby-identifier">source</span>,<span class="ruby-identifier">backlog</span><span class="ruby-value">:true</span>)
+                <span class="ruby-identifier">sql</span> = <span class="ruby-constant">SqlGenerator</span>.<span class="ruby-identifier">for_monitor_source_backlog</span>(<span class="ruby-identifier">table_name</span>)
+                <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>) 
+                <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Setup files table of #{source.name} for #{@monitor.name}&quot;</span>)
+            <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- create-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- create-method -->
+
+      
+        <div id="delete-method" class="method-detail ">
+          <a name="method-i-delete"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">delete</span><span
+              class="method-args">(type)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="delete-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 120</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete</span> <span class="ruby-identifier">type</span>
+    <span class="ruby-identifier">sql</span> = <span class="ruby-string">&quot;&quot;</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:stats</span>
+        <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">delete_table</span>(<span class="ruby-ivar">@table_stats</span>)
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Delete stats table for #{@monitor.name}&quot;</span>)
+
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:files</span>
+        <span class="ruby-ivar">@monitor</span>.<span class="ruby-identifier">sources</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">source</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">table</span> = <span class="ruby-identifier">table_records</span>(<span class="ruby-identifier">source</span>)
+            <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">delete_table</span>(<span class="ruby-identifier">table</span>)
+            <span class="ruby-identifier">table</span> = <span class="ruby-identifier">table_records</span>(<span class="ruby-identifier">source</span>,<span class="ruby-identifier">backlog</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>)
+            <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">delete_table</span>(<span class="ruby-identifier">table</span>)
+            <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Delete files table of #{source.name} for #{@monitor.name}&quot;</span>)
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- delete-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- delete-method -->
+
+      
+        <div id="delete_filesid-method" class="method-detail ">
+          <a name="method-i-delete_filesid"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">delete_filesid</span><span
+              class="method-args">(source,files_id)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>Delete the entries relative to theses files id for this source</pre>
+
+<p>no backlog yet</p>
+
+<p>not used yet … todo: implement the date filtering options in schemas</p>
+            
+
+            
+            <div class="method-source-code" id="delete_filesid-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 211</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">delete_filesid</span> <span class="ruby-identifier">source</span>,<span class="ruby-identifier">files_id</span>
+    <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;DELETE FROM #{table_records(source)} WHERE &quot;</span> <span class="ruby-operator">+</span> 
+        <span class="ruby-node">&quot;file_id IN (#{RubyUtil::sqlize(files_id,no_parenthesis: true)}&quot;</span>
+    <span class="ruby-identifier">sql_stats</span> = <span class="ruby-node">&quot;DELETE FROM #{@table_stats} WHERE &quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-node">&quot;file_id IN (#{RubyUtil::sqlize(files_id,mo_parenthesis: true)}&quot;</span>
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql_stats</span>)
+        <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Deleted entries for #{@monitor.name}&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- delete_filesid-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- delete_filesid-method -->
+
+      
+        <div id="insert_stats-method" class="method-detail ">
+          <a name="method-i-insert_stats"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">insert_stats</span><span
+              class="method-args">(source)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Insert the statistics of this monitor for this source</p>
+            
+
+            
+            <div class="method-source-code" id="insert_stats-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 155</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">insert_stats</span> <span class="ruby-identifier">source</span> 
+    <span class="ruby-identifier">stats</span> = <span class="ruby-ivar">@monitor</span>.<span class="ruby-identifier">stats</span>
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span>
+        <span class="ruby-comment">## Timestamp ==&gt; columns</span>
+        <span class="ruby-identifier">stats</span>.<span class="ruby-identifier">summary</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">ts</span>,<span class="ruby-identifier">hash</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">row</span> = [[<span class="ruby-constant">Conf</span><span class="ruby-operator">::</span><span class="ruby-identifier">database</span>.<span class="ruby-identifier">timestamp</span>,<span class="ruby-identifier">ts</span>]]
+            <span class="ruby-comment">## Column ==&gt; value</span>
+            <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">column</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">column_name</span>(<span class="ruby-identifier">column</span>,<span class="ruby-identifier">source</span>),<span class="ruby-identifier">value</span>]
+            <span class="ruby-keyword">end</span>
+            <span class="ruby-identifier">insert_row_stats</span> <span class="ruby-identifier">row</span>
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- insert_stats-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- insert_stats-method -->
+
+      
+        <div id="processed_files-method" class="method-detail ">
+          <a name="method-i-processed_files"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">processed_files</span><span
+              class="method-args">(source, ids)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>Mark the files id as proccessed for this source</p>
+            
+
+            
+            <div class="method-source-code" id="processed_files-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 171</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">processed_files</span> <span class="ruby-identifier">source</span>, <span class="ruby-identifier">ids</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">ids</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;INSERT INTO #{table_records(source)} &quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-string">&quot;(file_id) VALUES &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">ids</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;(#{i})&quot;</span>}.<span class="ruby-identifier">join</span>(<span class="ruby-string">','</span>) 
+    <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">connect</span> <span class="ruby-keyword">do</span> 
+        <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- processed_files-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- processed_files-method -->
+
+      
+        <div id="rename_source-method" class="method-detail ">
+          <a name="method-i-rename_source"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">rename_source</span><span
+              class="method-args">(source, nname)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="rename_source-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">rename_source</span> <span class="ruby-identifier">source</span>, <span class="ruby-identifier">nname</span>
+    <span class="ruby-identifier">name</span> = <span class="ruby-identifier">table_records</span> <span class="ruby-identifier">source</span>
+    <span class="ruby-identifier">bname</span> =<span class="ruby-identifier">table_records</span> <span class="ruby-identifier">source</span>,<span class="ruby-identifier">backlog</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>
+    <span class="ruby-identifier">ntname</span> = <span class="ruby-identifier">name</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-identifier">source</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">upcase</span>.<span class="ruby-identifier">to_s</span>,<span class="ruby-identifier">nname</span>.<span class="ruby-identifier">upcase</span>.<span class="ruby-identifier">to_s</span>)
+    <span class="ruby-identifier">nbtname</span> = <span class="ruby-identifier">bname</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-identifier">source</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">upcase</span>.<span class="ruby-identifier">to_s</span>,<span class="ruby-identifier">nname</span>.<span class="ruby-identifier">upcase</span>.<span class="ruby-identifier">to_s</span>)
+   <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">rename_table</span> <span class="ruby-identifier">name</span>,<span class="ruby-identifier">ntname</span>
+   <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">rename_table</span> <span class="ruby-identifier">bname</span>,<span class="ruby-identifier">nbtname</span>
+   <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Renamed records source table for monitor #{@monitor.name}&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- rename_source-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- rename_source-method -->
+
+      
+        <div id="reset-method" class="method-detail ">
+          <a name="method-i-reset"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">reset</span><span
+              class="method-args">(type)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="reset-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 137</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reset</span> <span class="ruby-identifier">type</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:stats</span>
+        <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">reset_table</span>(<span class="ruby-ivar">@table_stats</span>)
+        <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Reset stats table for #{@monitor.name}&quot;</span>)
+
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">type</span> <span class="ruby-operator">==</span> <span class="ruby-value">:files</span>
+        <span class="ruby-ivar">@monitor</span>.<span class="ruby-identifier">sources</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">source</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">table</span> = <span class="ruby-identifier">table_records</span>(<span class="ruby-identifier">source</span>)
+            <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">reset_table</span>(<span class="ruby-identifier">table</span>)
+            <span class="ruby-identifier">table</span> = <span class="ruby-identifier">table_records</span>(<span class="ruby-identifier">source</span>,<span class="ruby-identifier">backlog</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>)
+            <span class="ruby-constant">TableUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">reset_table</span>(<span class="ruby-identifier">table</span>)
+            <span class="ruby-constant">Logger</span>.<span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-keyword">__FILE__</span>,<span class="ruby-string">&quot;INFO&quot;</span>,<span class="ruby-node">&quot;Reset files table of #{source.name} for #{@monitor.name}&quot;</span>)
+
+        <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- reset-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- reset-method -->
+
+      
+        <div id="set_db-method" class="method-detail ">
+          <a name="method-i-set_db"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">set_db</span><span
+              class="method-args">(db)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            
+            
+
+            
+            <div class="method-source-code" id="set_db-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 49</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">set_db</span> <span class="ruby-identifier">db</span>
+    <span class="ruby-ivar">@db</span> = <span class="ruby-identifier">db</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- set_db-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- set_db-method -->
+
+      
+        <div id="stats_columns-method" class="method-detail ">
+          <a name="method-i-stats_columns"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">stats_columns</span><span
+              class="method-args">(source = nil)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>return the columns name of the table for this monitor</pre>
+
+<p>either for this source or for all sources DO NOT INCLUDE timestamp =)</p>
+            
+
+            
+            <div class="method-source-code" id="stats_columns-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 85</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">stats_columns</span> <span class="ruby-identifier">source</span> = <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">source</span> <span class="ruby-comment">## only for this source</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-identifier">columns_name</span> <span class="ruby-identifier">source</span>
+    <span class="ruby-keyword">else</span> <span class="ruby-comment">## all columns</span>
+        <span class="ruby-ivar">@all_columns</span> <span class="ruby-operator">||=</span> <span class="ruby-ivar">@monitor</span>.<span class="ruby-identifier">sources</span>.<span class="ruby-identifier">inject</span>([]) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">col</span>,<span class="ruby-identifier">s</span><span class="ruby-operator">|</span>
+            <span class="ruby-identifier">col</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">columns_name</span> <span class="ruby-identifier">s</span>
+            <span class="ruby-identifier">col</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">return</span> <span class="ruby-ivar">@all_columns</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- stats_columns-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- stats_columns-method -->
+
+      
+        <div id="table_records-method" class="method-detail ">
+          <a name="method-i-table_records"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">table_records</span><span
+              class="method-args">(source,opts = {})</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <pre>return the table name used by this monitor for this source</pre>
+
+<p>i.e. the table where the file_id for this source are stored</p>
+            
+
+            
+            <div class="method-source-code" id="table_records-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 66</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">table_records</span> <span class="ruby-identifier">source</span>,<span class="ruby-identifier">opts</span> = {}
+    <span class="ruby-identifier">s</span> = <span class="ruby-string">&quot;MON_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;RECORDS_&quot;</span> <span class="ruby-operator">+</span><span class="ruby-ivar">@monitor</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">upcase</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">source</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">upcase</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-identifier">s</span> <span class="ruby-operator">+=</span> <span class="ruby-string">&quot;_BCK&quot;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value">:backlog</span>]
+    <span class="ruby-keyword">return</span> <span class="ruby-identifier">s</span>
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- table_records-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- table_records-method -->
+
+      
+      </div><!-- public-instance-method-details -->
+    
+      <div id="private-instance-method-details" class="method-section section">
+        <h3 class="section-header">Private Instance Methods</h3>
+
+      
+        <div id="insert_row_stats-method" class="method-detail ">
+          <a name="method-i-insert_row_stats"></a>
+
+          
+          <div class="method-heading">
+            <span class="method-name">insert_row_stats</span><span
+              class="method-args">(row)</span>
+            <span class="method-click-advice">click to toggle source</span>
+          </div>
+          
+
+          <div class="method-description">
+            
+            <p>utilityy used by <a
+href="GenericSchema.html#method-i-insert_stats">insert_stats</a> method.
+Since we dont know if each column is there in every row, preferable to
+insert row by row</p>
+            
+
+            
+            <div class="method-source-code" id="insert_row_stats-source">
+<pre>
+<span class="ruby-comment"># File database/monitor_schema.rb, line 228</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">insert_row_stats</span> <span class="ruby-identifier">row</span>
+    <span class="ruby-keyword">return</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">row</span>.<span class="ruby-identifier">empty?</span>
+    <span class="ruby-identifier">h</span> = <span class="ruby-constant">Hash</span>[<span class="ruby-identifier">row</span>]
+    <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;INSERT INTO #{@table_stats} &quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-constant">RubyUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">sqlize</span>(<span class="ruby-identifier">h</span>.<span class="ruby-identifier">keys</span>,<span class="ruby-identifier">no_quote</span><span class="ruby-value">:true</span>) <span class="ruby-operator">+</span>
+        <span class="ruby-string">&quot; VALUES &quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-constant">RubyUtil</span><span class="ruby-operator">::</span><span class="ruby-identifier">sqlize</span>(<span class="ruby-identifier">h</span>.<span class="ruby-identifier">values</span>,<span class="ruby-identifier">no_quote</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>) <span class="ruby-operator">+</span>
+        <span class="ruby-string">&quot; ON DUPLICATE KEY UPDATE &quot;</span> <span class="ruby-operator">+</span>
+        <span class="ruby-identifier">h</span>.<span class="ruby-identifier">keys</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">map</span> {
+            <span class="ruby-operator">|</span><span class="ruby-identifier">col</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;#{col}=#{col}+VALUES(#{col})&quot;</span>}.<span class="ruby-identifier">join</span>(<span class="ruby-string">','</span>)
+        <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">sql</span>)
+<span class="ruby-keyword">end</span></pre>
+            </div><!-- insert_row_stats-source -->
+            
+          </div>
+
+          
+
+          
+        </div><!-- insert_row_stats-method -->
+
+      
+      </div><!-- private-instance-method-details -->
+    
+    </div><!-- 5Buntitled-5D -->
+  
+
+  </div><!-- documentation -->
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+
+</body>
+</html>
+
