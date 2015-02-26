@@ -1,0 +1,8 @@
+Installation :
+    - run install.sh. It should install
+        -> ruby 1.9.3
+        -> ruby-mysql package
+        -> install Gems from Gemfile
+        Please verify your installed packages. this script has NOT been tested.
+    - Configure access to database in config.rb file
+    - Enjoy.
