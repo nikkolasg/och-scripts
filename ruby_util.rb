@@ -121,9 +121,17 @@ end
 class Fixnum
     MIN_IN_HOURS = 60
     HOURS_IN_DAY = 24
-    def day
+    ## Approximatively
+    DAYS_IN_MONTH = 30
+    def months
+        days * DAYS_IN_MONTH
+    end
+    alias :month :months
+
+    def days
         hours * HOURS_IN_DAY
     end
+    alias :day :days
 
     def hours
         minutes * MIN_IN_HOURS
